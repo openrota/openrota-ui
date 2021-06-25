@@ -1,0 +1,28 @@
+{
+  "name": "@openrota/api",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "keywords": [
+    "axios",
+    "typescript",
+    "@openrota/api"
+  ],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose --noClean",
+    "build": "tsc --outDir dist/",
+    "prepublishOnly": "npm run build",
+    "clean": "rimraf -rf ./dist"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "rimraf": "~3.0.2",
+    "@types/node": "^12.11.5",
+    "typescript": "^3.6.4"
+  }
+}

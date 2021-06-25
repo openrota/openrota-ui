@@ -1,0 +1,27 @@
+{
+  "name": "@rota/rota",
+  "description": "Example of using webpack in a TS monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "webpack serve --https --host prod.foo.redhat.com --port 1337 --hot",
+    "build": "webpack --mode production",
+    "serve": "serve dist -p 3001",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@openrota/app": "0.0.1",
+    "@openrota/api": "0.0.1"
+  },
+  "peerDependencies": {
+    "@patternfly/react-core": "^4.87.2",
+    "@patternfly/react-icons": "^4.7.11",
+    "@patternfly/react-styles": "^4.7.8",
+    "@patternfly/react-table": "^4.24.1",
+    "axios": "^0.21.1",
+    "keycloak-js": "^9.0.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-router-dom": "^5.2.0"
+  }
+}

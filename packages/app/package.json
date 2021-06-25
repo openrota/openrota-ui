@@ -1,0 +1,45 @@
+{
+  "name": "@openrota/app",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mono/mono.git",
+    "directory": "packages/app"
+  },
+  "main": "dist/index.js",
+  "module": "dist/app.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose --noClean",
+    "build": "tsdx build --tsconfig tsconfig.build.json",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build",
+    "clean": "rimraf -rf ./dist"
+  },
+  "dependencies": {
+    "@openrota/api": "^0.0.1",
+    "@openrota/utils": "^0.0.1",
+    "tslib": "^2.2.0"
+  },
+  "peerDependencies": {
+    "@patternfly/react-core": "^4.87.2",
+    "@patternfly/react-icons": "^4.7.11",
+    "@patternfly/react-styles": "^4.7.8",
+    "@patternfly/react-table": "^4.24.1",
+    "i18next": "^19.9.1",
+    "i18next-browser-languagedetector": "^6.0.1",
+    "i18next-http-backend": "^1.2.2",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-i18next": "^11.8.8",
+    "react-router-dom": "^5.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

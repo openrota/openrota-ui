@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.build.json",
+  "include": ["packages", "types", "scripts", "openrota"],
+  "compilerOptions": {
+    "allowJs": false,
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "paths": {
+      "@openrota/api": ["packages/api/src"],
+      "@openrota/app": ["packages/app/src"],
+      "@openrota/utils": ["packages/utils/src"],
+      
+      "@rota/rota": ["packages/*/src"],
+      "$test/*": ["test/*"]
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "name": "ts-monorepo",
+  "description": "Template for setting up a TypeScript monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "openrota"
+  ],
+  "scripts": {
+    "lerna": "lerna",
+    "start": "lerna run start --stream --parallel --scope @openrota/*",
+    "test": "lerna run test --",
+    "lint": "lerna run lint -- --fix",
+    "build": "lerna run build",
+    "prepublish": "lerna run build",
+    "docs": "doctoc --title '**Table of content**' README.md",
+    "start:app:openrota": "yarn run build && yarn start:app:openrota:run",
+    "start:app:openrota:run": "yarn --cwd openrota && yarn --cwd openrota start",
+    "clean": "lerna run clean",
+    "pub": "lerna publish"
+  },
+  "dependencies": {
+    "@patternfly/react-core": "^4.106.2",
+    "@patternfly/react-icons": "^4.7.11",
+    "@patternfly/react-styles": "^4.7.8",
+    "@patternfly/react-table": "^4.24.1",
+    "axios": "^0.21.1",
+    "i18next": "^19.9.1",
+    "i18next-browser-languagedetector": "^6.0.1",
+    "i18next-http-backend": "^1.2.2",
+    "i18next-parser": "^3.11.0",
+    "lodash.debounce": "^4.0.8",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-error-boundary": "^3.1.1",
+    "react-i18next": "^11.8.8",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.14.5",
+    "@nighttrax/eslint-config-tsx": "~8.0.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@rollup/plugin-url": "^6.0.0",
+    "@svgr/rollup": "^5.5.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^13.1.9",
+    "@types/lodash.debounce": "^4.0.6",
+    "@types/react-dom": "^17.0.7",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/testing-library__jest-dom": "^5.14.0",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.2.6",
+    "doctoc": "~2.0.0",
+    "dotenv-webpack": "^7.0.3",
+    "eslint": "~7.28.0",
+    "eslint-plugin-import": "~2.23.0",
+    "formik": "^2.2.9",
+    "html-webpack-plugin": "^5.3.1",
+    "keycloak-js": "^9.0.0",
+    "lerna": "~4.0.0",
+    "mini-css-extract-plugin": "^1.6.0",
+    "node-sass": "^6.0.0",
+    "react-refresh": "^0.10.0",
+    "sass-loader": "^12.1.0",
+    "ts-loader": "^9.2.3",
+    "tsdx": "^0.14.1",
+    "typescript": "~4.3.0",
+    "webpack": "^5.39.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2",
+    "yup": "^0.32.9"
+  },
+  "eslint": {
+    "extends": [
+      "plugin:jest-dom/recommended",
+      "plugin:react-hooks/recommended",
+      "plugin:testing-library/recommended",
+      "plugin:testing-library/react"
+    ],
+    "plugins": [
+      "react-hooks",
+      "jest-dom",
+      "testing-library"
+    ],
+    "overrides": [
+      {
+        "env": {
+          "node": true,
+          "commonjs": true,
+          "browser": true,
+          "jest": true
+        }
+      }
+    ]
+  },
+  "resolutions": {
+    "@types/webpack": "^5.28.0",
+    "**/@typescript-eslint/eslint-plugin": "^4.26.0",
+    "**/@typescript-eslint/parser": "^4.26.0",
+    "**/jest": "^26.0.0",
+    "**/rollup-plugin-typescript2": "^0.30.0",
+    "**/ts-jest": "^26.0.0",
+    "**/typescript": "^4.3.2"
+  }
+}

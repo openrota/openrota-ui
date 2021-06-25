@@ -1,0 +1,11 @@
+{
+  "titleDashboard": "Dashboard",
+  "candidateManagement": "Candidate Management",
+  "createCandidate": "Create Candidate",
+  "projectManagement": "Project Management",
+  "projectsCalendar": "Projects Calendar",
+  "loading": "Loading",
+  "myProfile": "My Profile",
+  "userManagement": "User Management",
+  "logout": "Logout"
+}

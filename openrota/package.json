@@ -1,6 +1,6 @@
 {
-  "name": "@rota/rota",
-  "description": "Example of using webpack in a TS monorepo",
+  "name": "openrota",
+  "description": "Shared resources rostering app",
   "private": true,
   "version": "1.0.0",
   "scripts": {

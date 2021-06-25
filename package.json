@@ -16,6 +16,8 @@
     "docs": "doctoc --title '**Table of content**' README.md",
     "start:app:openrota": "yarn run build && yarn start:app:openrota:run",
     "start:app:openrota:run": "yarn --cwd openrota && yarn --cwd openrota start",
+    "cypress:open": "cypress open",
+    "cypress": "cypress run --headless --browser chrome",
     "clean": "lerna run clean",
     "pub": "lerna publish"
   },
@@ -25,6 +27,7 @@
     "@patternfly/react-styles": "^4.7.8",
     "@patternfly/react-table": "^4.24.1",
     "axios": "^0.21.1",
+    "cypress": "^7.6.0",
     "i18next": "^19.9.1",
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-http-backend": "^1.2.2",

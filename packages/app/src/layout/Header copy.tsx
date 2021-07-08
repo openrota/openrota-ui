@@ -12,14 +12,12 @@ import {
   Nav,
   NavList,
   NavItem,
-  Button,
-  ButtonVariant,
 } from '@patternfly/react-core';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import logo from './Logo-Red_Hat-Middleware-A-White-RGB.svg';
+import logo from './Patternfly-Logo.svg';
 import imgAvatar from './avatarImg.svg';
-import HelpIcon from '@patternfly/react-icons/dist/js/icons/help-icon';
+
 interface IHeader {
   isNavOpen: boolean;
   isMobileView: boolean;
@@ -27,7 +25,7 @@ interface IHeader {
   onNavToggle: () => void;
 }
 
-export const Header: FunctionComponent<IHeader> = () => {
+export const Header1: FunctionComponent<IHeader> = ({ isNavOpen, isMobileView, onNavToggleMobile, onNavToggle }) => {
   const { t } = useTranslation();
   const [isUserToolbarDropdownOpen, setIsUserToolbarDropdownOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
@@ -52,11 +50,6 @@ export const Header: FunctionComponent<IHeader> = () => {
   const HeaderTools = (
     <PageHeaderTools>
       <PageHeaderToolsGroup>
-        <PageHeaderToolsItem>
-          <Button aria-label="Help actions" variant={ButtonVariant.plain}>
-            <HelpIcon />
-          </Button>
-        </PageHeaderToolsItem>
         <PageHeaderToolsItem
           visibility={{ default: 'hidden', md: 'visible' }} /** this user dropdown is hidden on mobile sizes */
         >
@@ -77,21 +70,34 @@ export const Header: FunctionComponent<IHeader> = () => {
     <Nav onSelect={onNavSelect} aria-label="Nav" variant="horizontal">
       <NavList>
         <NavItem itemId={0} isActive={activeItem === 0} to="#">
-          Home
+          System Panel
         </NavItem>
         <NavItem itemId={1} isActive={activeItem === 1} to="#">
-          Candidate
+          Policy
         </NavItem>
         <NavItem itemId={2} isActive={activeItem === 2} to="#">
-          Projects
+          Authentication
         </NavItem>
         <NavItem itemId={3} isActive={activeItem === 3} to="#">
-          Calendar
+          Network Services
+        </NavItem>
+        <NavItem itemId={4} isActive={activeItem === 4} to="#">
+          Server
         </NavItem>
       </NavList>
     </Nav>
   );
-  return <PageHeader logo={<LogoImg />} headerTools={HeaderTools} aria-label={'global_navigation'} topNav={PageNav} />;
+  return (
+    <PageHeader
+      logo={<LogoImg />}
+      showNavToggle
+      isNavOpen={isNavOpen}
+      headerTools={HeaderTools}
+      onNavToggle={isMobileView ? onNavToggleMobile : onNavToggle}
+      aria-label={'global_navigation'}
+      topNav={PageNav}
+    />
+  );
 };
 
 function LogoImg() {

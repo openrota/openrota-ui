@@ -7,5 +7,6 @@
   "loading": "Loading",
   "myProfile": "My Profile",
   "userManagement": "User Management",
-  "logout": "Logout"
+  "logout": "Logout",
+  "isRequired": "is required."
 }

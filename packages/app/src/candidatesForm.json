@@ -1,0 +1,51 @@
+[
+  {
+    "category": "CONNECTION",
+    "description": "Unique name that identifies the database server and all recorded offsets, and that is used as a prefix for all schemas and topics. Each distinct installation should have a separate namespace and be monitored by at most one Debezium connector.",
+    "displayName": "Namespace",
+    "isMandatory": true,
+    "name": "database.server.name",
+    "type": "STRING"
+  },
+  {
+    "category": "CONNECTION",
+    "description": "Resolvable hostname or IP address of the database server.",
+    "displayName": "Hostname",
+    "isMandatory": true,
+    "name": "database.hostname",
+    "type": "STRING"
+  },
+  {
+    "category": "CONNECTION",
+    "defaultValue": 5432,
+    "description": "Port of the database server.",
+    "displayName": "Port",
+    "isMandatory": false,
+    "name": "database.port",
+    "type": "INT"
+  },
+  {
+    "category": "CONNECTION",
+    "description": "Name of the database user to be used when connecting to the database.",
+    "displayName": "User",
+    "isMandatory": true,
+    "name": "database.user",
+    "type": "STRING"
+  },
+  {
+    "category": "CONNECTION",
+    "description": "Password of the database user to be used when connecting to the database.",
+    "displayName": "Password",
+    "isMandatory": false,
+    "name": "database.password",
+    "type": "PASSWORD"
+  },
+  {
+    "category": "CONNECTION",
+    "description": "The name of the database the connector should be monitoring",
+    "displayName": "Database",
+    "isMandatory": true,
+    "name": "database.dbname",
+    "type": "STRING"
+  }
+]

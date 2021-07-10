@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.build.json",
-  "include": ["packages", "types", "scripts", "openrota"],
+  "include": ["packages", "types", "scripts", "openrota", "./types/react-big-scheduler.d.ts"],
   "compilerOptions": {
     "allowJs": false,
     "baseUrl": ".",

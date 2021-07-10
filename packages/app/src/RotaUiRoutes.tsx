@@ -2,7 +2,8 @@ import { PageSection } from '@patternfly/react-core';
 import React, { FunctionComponent } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { AppContextProvider } from './AppContext';
-import { Dashboard, ProjectManagement, CandidateManagement, ProjectsCalendar, CreateCandidate } from './components';
+import { ProjectManagement, CandidateManagement, ProjectsCalendar, CreateCandidate } from './components';
+import Dash from './components/Dashboard';
 
 type RotaUiRoutesProps = {
   getToken: Promise<string>;
@@ -15,7 +16,7 @@ export const RotaUiRoutes: FunctionComponent<RotaUiRoutesProps> = ({ getToken, a
       <Switch>
         <Route path={'/'} exact>
           <PageSection isFilled>
-            <Dashboard />
+            <Dash />
           </PageSection>
         </Route>
         <Route path={'/candidate-management'}>

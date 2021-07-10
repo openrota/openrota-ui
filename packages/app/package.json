@@ -41,5 +41,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/react-big-scheduler": "^0.2.3"
   }
 }

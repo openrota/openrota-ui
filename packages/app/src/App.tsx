@@ -13,11 +13,20 @@ import { AppLayout } from './layout/AppLayout';
 import { Loading } from '@openrota/utils';
 import { RotaUiRoutes } from './RotaUiRoutes';
 import { AuthContext } from './auth/AuthContext';
+import { ApolloClient } from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 let keycloak: Keycloak.KeycloakInstance | undefined;
 
 export const App: FunctionComponent = () => {
   const [initialized, setInitialized] = useState(false);
+
+  const httpLink = new HttpLink({
+    // @ts-ignore
+    uri: 'http://locahost:8080/graphql'
+  });
 
   // Initialize the client
   useEffect(() => {
@@ -28,7 +37,14 @@ export const App: FunctionComponent = () => {
     init();
   }, []);
 
+  const cache = new InMemoryCache();
+  const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+    cache,
+    link: httpLink
+  });
+
   return (
+    <ApolloProvider client={client}>
     <KeycloakContext.Provider value={{ keycloak, profile: keycloak?.profile }}>
       <KeycloakAuthProvider>
         <I18nextProvider i18n={i18n}>
@@ -42,6 +58,7 @@ export const App: FunctionComponent = () => {
         </I18nextProvider>
       </KeycloakAuthProvider>
     </KeycloakContext.Provider>
+    </ApolloProvider>
   )
 }
 const ConnectedRoutes = () => {

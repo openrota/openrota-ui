@@ -1,17 +1,30 @@
 {
-  "extends": "./tsconfig.build.json",
-  "include": ["packages", "types", "scripts", "openrota", "./types/react-big-scheduler.d.ts"],
   "compilerOptions": {
-    "allowJs": false,
     "baseUrl": ".",
-    "typeRoots": ["./node_modules/@types", "./types"],
+    "rootDir": ".",
+    "outDir": "dist",
+    "module": "esnext",
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "sourceMap": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "paths": {
-      "@openrota/api": ["packages/api/src"],
-      "@openrota/app": ["packages/app/src"],
-      "@openrota/utils": ["packages/utils/src"],
-      
-      "@rota/rota": ["packages/*/src"],
-      "$test/*": ["test/*"]
-    }
-  }
+      "@app/*": ["src/app/*"],
+      "@i18n/*": ["src/i18n/*"],
+      "@assets/*": ["node_modules/@patternfly/react-core/dist/styles/assets/*"]
+    },
+    "importHelpers": true,
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.jsx", "**/*.js"],
+  "exclude": ["node_modules"]
 }

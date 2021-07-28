@@ -11,7 +11,7 @@ If you are contributing please check out the [Contributing Guidelines.](https://
 ```bash
 git clone https://github.com/shareNwork/shareNwork-ui
 cd patternfly-react-seed
-yarn install && npm run start:dev
+yarn install && yarn run start:dev
 ```
 ## Development scripts
 ```sh

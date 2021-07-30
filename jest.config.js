@@ -35,6 +35,6 @@ module.exports = {
   testEnvironment: "jsdom",
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
-  snapshotSerializers: ['enzyme-to-json/serializer'],
+  //snapshotSerializers: ['enzyme-to-json/serializer'],
 
 };

@@ -3,3 +3,9 @@ node_modules
 results
 .nyc_output
 *.tsbuildinfo
+
+# test/supporting generated content
+generated/
+coverage/
+e2e/failure_output
+.out/

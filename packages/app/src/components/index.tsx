@@ -1,5 +1,0 @@
-export * from './Dashboard'
-export * from './ProjectManagement'
-export * from './CandidateManagement'
-export * from './CreateCandidate'
-export * from './ProjectsCalendar'

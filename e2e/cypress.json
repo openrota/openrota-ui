@@ -1,0 +1,15 @@
+{
+  "baseUrl": "https://prod.foo.redhat.com:1337",
+  "screenshotsFolder": "e2e/failure_output/screenshots",
+  "videosFolder": "e2e/failure_output/videos",
+  "video": false,
+  "integrationFolder": "e2e/tests",
+  "fixturesFolder": "e2e/fixtures",
+  "supportFile": "e2e/support/index.ts",
+  "pluginsFile": "e2e/plugins/index.ts",
+  "testFiles": "**/*.feature.*",
+  "retries": {
+    "runMode": 2,
+    "openMode": 1
+  }
+}

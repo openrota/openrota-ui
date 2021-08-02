@@ -1,0 +1,14 @@
+{
+  "pm": {},
+  "cm": {},
+  "title_dashboard": "Dashboard",
+  "candidate_management": "Candidate Management",
+  "create_candidate": "Create Candidate",
+  "project_management": "Project Management",
+  "projects_calendar": "Projects Calendar",
+  "loading": "Loading",
+  "my_profile": "My Profile",
+  "user_management": "User Management",
+  "logout": "Logout",
+  "is_required": "is required."
+}

@@ -1,10 +1,9 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
 import { PageSection, Title } from '@patternfly/react-core';
-import { getEmployees } from '@app/graphql';
+import { useGetEmployeesQuery } from '@app/models';
 
 const Dashboard: React.FC = () => {
-  const { loading, error, data } = useQuery(getEmployees);
+  const {data, error, loading} = useGetEmployeesQuery();
 
   return (
     <PageSection>

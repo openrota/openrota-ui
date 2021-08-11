@@ -1,11 +1,9 @@
 import { gql } from '@apollo/client';
 
-const getEmployees = gql`
+export const getEmployees = gql`
 query getEmployees {  
     sharedResource{
      id,
      firstName
     }      
 }`;
-
-export { getEmployees };

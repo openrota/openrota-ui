@@ -17,6 +17,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "resolveJsonModule": true,
     "paths": {
       "@app/*": ["src/app/*"],
       "@i18n/*": ["src/i18n/*"],

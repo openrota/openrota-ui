@@ -13,6 +13,27 @@ git clone https://github.com/shareNwork/shareNwork-ui
 cd patternfly-react-seed
 yarn install && yarn run start:dev
 ```
+### Configuring hosts file to run on prod.foo.redhat.com
+
+You will need to configure your hosts file to run on prod.foo.redhat.com. Type the following command in your terminal: 
+
+```sh
+sudo vi /etc/hosts
+```
+You can also choose to use any other terminal editor of your choice. 
+
+And add the following to the hosts file:
+
+```sh
+127.0.0.1   prod.foo.redhat.com
+127.0.0.1   stage.foo.redhat.com
+127.0.0.1   qa.foo.redhat.com
+127.0.0.1   ci.foo.redhat.com
+```
+Save and exit the terminal editor. Restart your system. [Start openrota](#starting-openrota) on your terminal.
+
+This will ensure that openrota goes through the Red Hat SSO before opening.
+
 ## Development scripts
 ```sh
 # Install development/build dependencies

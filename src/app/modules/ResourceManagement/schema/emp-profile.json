@@ -1,0 +1,85 @@
+{
+  "title": "Add/Update Profile",
+  "fields": [
+    {
+      "name": "layout",
+      "component": "column-layout",
+      "column": "2",
+      "fields": [
+        {
+          "component": "text-field",
+          "name": "firstName",
+          "label": "First Name",
+          "helperText": "",
+          "isRequired": true,
+          "validate": [{ "type": "required" }]
+        },
+        {
+          "component": "text-field",
+          "name": "lastName",
+          "label": "Last Name"
+        }
+      ]
+    },
+    {
+      "component": "text-field",
+      "name": "designation",
+      "label": "Designation",
+      "helperText": "",
+      "isRequired": true,
+      "validate": [{ "type": "required" }]
+    },
+    {
+      "component": "text-field",
+      "name": "totalExperience",
+      "label": "Total Experience",
+      "helperText": "",
+      "isRequired": true,
+      "validate": [{ "type": "required" }]
+    },
+    {
+      "component": "text-field",
+      "name": "email",
+      "label": "Email",
+      "helperText": "",
+      "isRequired": true,
+      "validate": [
+        { "type": "required" },
+        {
+          "type": "pattern",
+          "pattern": "[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$",
+          "message": "Enter valid email id"
+        }
+      ]
+    },
+    {
+      "component": "text-field",
+      "name": "about",
+      "label": "About"
+    },
+    {
+      "component": "text-field",
+      "name": "hobby",
+      "label": "Hobbies"
+    },
+    {
+      "component": "text-field",
+      "name": "interest",
+      "label": "Interests"
+    },
+    {
+      "component": "select",
+      "name": "skill",
+      "label": "Skills",
+      "isMulti": true,
+      "isRequired": true,
+      "validate": [
+        { "type": "required" },
+        { "type": "min-items", "threshold": 3, "message": "Select at least 3 skills" }
+      ],
+      "actions": {
+        "resolveProps": ["loadOptions"]
+      }
+    }
+  ]
+}

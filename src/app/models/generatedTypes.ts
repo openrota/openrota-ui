@@ -83,16 +83,16 @@ export type Mutation = {
   updateSkillOfSR?: Maybe<EmployeeSkillProficiency>;
   /** Delete SR */
   deleteSharedResource?: Maybe<SharedResource>;
-  /** Add a new skill */
-  createSkill?: Maybe<Skill>;
-  /** Create a new SR */
-  createOrUpdateSharedResource?: Maybe<SharedResource>;
-  /** Create a new Employee */
-  createEmployee?: Maybe<Employee>;
   /** Delete skills of SR */
   deleteSkillForSR?: Maybe<EmployeeSkillProficiency>;
   /** Add skills to SR */
   addSkillsToSR?: Maybe<SharedResource>;
+  /** Create a new Employee */
+  createEmployee?: Maybe<Employee>;
+  /** Create a new SR */
+  createOrUpdateSharedResource?: Maybe<SharedResource>;
+  /** Add a new skill */
+  createSkill?: Maybe<Skill>;
 };
 
 
@@ -116,24 +116,6 @@ export type MutationDeleteSharedResourceArgs = {
 
 
 /** Mutation root */
-export type MutationCreateSkillArgs = {
-  skill?: Maybe<SkillInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateOrUpdateSharedResourceArgs = {
-  resource?: Maybe<SharedResourceInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateEmployeeArgs = {
-  employee?: Maybe<EmployeeInput>;
-};
-
-
-/** Mutation root */
 export type MutationDeleteSkillForSrArgs = {
   id?: Maybe<Scalars['BigInteger']>;
   employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
@@ -144,6 +126,24 @@ export type MutationDeleteSkillForSrArgs = {
 export type MutationAddSkillsToSrArgs = {
   id?: Maybe<Scalars['BigInteger']>;
   employeeSkillProficiencies?: Maybe<Array<Maybe<EmployeeSkillProficiencyInput>>>;
+};
+
+
+/** Mutation root */
+export type MutationCreateEmployeeArgs = {
+  employee?: Maybe<EmployeeInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateOrUpdateSharedResourceArgs = {
+  resource?: Maybe<SharedResourceInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateSkillArgs = {
+  skill?: Maybe<SkillInput>;
 };
 
 export type Project = {
@@ -168,28 +168,34 @@ export type ProjectInput = {
 
 /** Query root */
 export type Query = {
-  /** Get all Employees using the filters eq, lt,le,gt,ge */
-  employeesWithFilter?: Maybe<Array<Maybe<Employee>>>;
-  /** Get all skills */
-  skill?: Maybe<Array<Maybe<Skill>>>;
-  /** Get all Employees */
-  employee?: Maybe<Array<Maybe<Employee>>>;
-  /** Get all resources */
-  sharedResource?: Maybe<Array<Maybe<SharedResource>>>;
   /** Get all projects */
   project?: Maybe<Array<Maybe<Project>>>;
+  /** Get all Employees using the filters eq, lt,le,gt,ge */
+  employeesWithFilter?: Maybe<Array<Maybe<Employee>>>;
+  /** Get all Employees */
+  employee?: Maybe<Array<Maybe<Employee>>>;
+  /** Get an employee by id */
+  employeeById?: Maybe<Employee>;
   /** Get all resources using the filters eq, lt,le,gt,ge */
   sharedResourceWithFilters?: Maybe<Array<Maybe<Employee>>>;
   /** Get an SR by id */
   sharedResourceById?: Maybe<SharedResource>;
-  /** Get an employee by id */
-  employeeById?: Maybe<Employee>;
+  /** Get all skills */
+  skill?: Maybe<Array<Maybe<Skill>>>;
+  /** Get all resources */
+  sharedResource?: Maybe<Array<Maybe<SharedResource>>>;
 };
 
 
 /** Query root */
 export type QueryEmployeesWithFilterArgs = {
   filter?: Maybe<EmployeeFilterInput>;
+};
+
+
+/** Query root */
+export type QueryEmployeeByIdArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
 };
 
 
@@ -201,12 +207,6 @@ export type QuerySharedResourceWithFiltersArgs = {
 
 /** Query root */
 export type QuerySharedResourceByIdArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Query root */
-export type QueryEmployeeByIdArgs = {
   id?: Maybe<Scalars['BigInteger']>;
 };
 
@@ -273,6 +273,11 @@ export type GetEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetEmployeesQuery = { sharedResource?: Maybe<Array<Maybe<Pick<SharedResource, 'id' | 'firstName'>>>> };
 
+export type SkillsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SkillsQuery = { skill?: Maybe<Array<Maybe<Pick<Skill, 'id' | 'name'>>>> };
+
 
 export const GetEmployeesDocument = gql`
     query getEmployees {
@@ -309,3 +314,38 @@ export function useGetEmployeesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetEmployeesQueryHookResult = ReturnType<typeof useGetEmployeesQuery>;
 export type GetEmployeesLazyQueryHookResult = ReturnType<typeof useGetEmployeesLazyQuery>;
 export type GetEmployeesQueryResult = Apollo.QueryResult<GetEmployeesQuery, GetEmployeesQueryVariables>;
+export const SkillsDocument = gql`
+    query skills {
+  skill {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useSkillsQuery__
+ *
+ * To run a query within a React component, call `useSkillsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSkillsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSkillsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSkillsQuery(baseOptions?: Apollo.QueryHookOptions<SkillsQuery, SkillsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SkillsQuery, SkillsQueryVariables>(SkillsDocument, options);
+      }
+export function useSkillsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SkillsQuery, SkillsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SkillsQuery, SkillsQueryVariables>(SkillsDocument, options);
+        }
+export type SkillsQueryHookResult = ReturnType<typeof useSkillsQuery>;
+export type SkillsLazyQueryHookResult = ReturnType<typeof useSkillsLazyQuery>;
+export type SkillsQueryResult = Apollo.QueryResult<SkillsQuery, SkillsQueryVariables>;

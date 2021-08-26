@@ -10,7 +10,7 @@ If you are contributing please check out the [Contributing Guidelines.](https://
 
 ```bash
 git clone https://github.com/shareNwork/shareNwork-ui
-cd patternfly-react-seed
+cd shareNwork-ui
 yarn install && yarn run start:dev
 ```
 ### Configuring hosts file to run on prod.foo.redhat.com

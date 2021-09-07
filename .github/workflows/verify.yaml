@@ -1,0 +1,48 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Verify Workflow
+
+on:
+  push:
+    paths-ignore: # Add paths to be ignored to eliminate unnecessary builds
+      - '.github/**'
+      - '.gitignore'
+      - '.prettierignore'
+      - 'LICENSE'
+      - 'README*'
+    branches: [ main ]
+  pull_request:
+    paths-ignore:
+      - '.github/**'
+      - '.gitignore'
+      - '.prettierignore'
+      - 'LICENSE'
+      - 'README*'
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    if: github.repository_owner == 'shareNwork'
+    steps:
+
+    - name: Checkout Code with Ref '${{ github.ref }}'
+      uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - run: yarn install --frozen-lockfile
+
+    - run: yarn lint # will run `yarn lint` command
+
+    - run: yarn build # will run `yarn build` command
+
+    - run: yarn test # will run `yarn test` command
+      

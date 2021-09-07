@@ -38,11 +38,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - run: yarn install --frozen-lockfile
+    - name: Install build dependencies
+      run: yarn install --frozen-lockfile
 
-    - run: yarn lint # will run `yarn lint` command
+    - name: Run the linter
+      run: yarn run lint    
 
-    - run: yarn build # will run `yarn build` command
+    - name: Run the test suite
+      run: yarn run test
 
-    - run: yarn test # will run `yarn test` command
+    - name: Run Production build
+      run: yarn run build
       

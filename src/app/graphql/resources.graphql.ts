@@ -6,4 +6,4 @@ query skills {
         id,
         name
     }     
-}`;
+}`; 

@@ -75,30 +75,43 @@ export type FilterFieldInput = {
   value?: Maybe<Scalars['String']>;
 };
 
+export type InvitationInput = {
+  emailId?: Maybe<Scalars['String']>;
+  status?: Maybe<InvitationStatus>;
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
+export type InvitationResponse = {
+  responseStatus: Scalars['Int'];
+  token?: Maybe<Scalars['String']>;
+};
+
+export enum InvitationStatus {
+  Completed = 'COMPLETED',
+  Expired = 'EXPIRED',
+  Pending = 'PENDING'
+}
+
 /** Mutation root */
 export type Mutation = {
-  /** Create a new Employee */
-  createProject?: Maybe<Project>;
   /** Update skill of SR */
   updateSkillOfSR?: Maybe<EmployeeSkillProficiency>;
-  /** Delete SR */
-  deleteSharedResource?: Maybe<SharedResource>;
+  /** Create a new SR */
+  createOrUpdateSharedResource?: Maybe<SharedResource>;
+  /** Create a new Employee */
+  createProject?: Maybe<Project>;
+  /** Add a new skill */
+  createSkill?: Maybe<Skill>;
   /** Delete skills of SR */
   deleteSkillForSR?: Maybe<EmployeeSkillProficiency>;
+  /** Delete SR */
+  deleteSharedResource?: Maybe<SharedResource>;
   /** Add skills to SR */
   addSkillsToSR?: Maybe<SharedResource>;
   /** Create a new Employee */
   createEmployee?: Maybe<Employee>;
-  /** Create a new SR */
-  createOrUpdateSharedResource?: Maybe<SharedResource>;
-  /** Add a new skill */
-  createSkill?: Maybe<Skill>;
-};
-
-
-/** Mutation root */
-export type MutationCreateProjectArgs = {
-  project?: Maybe<ProjectInput>;
+  /** Create a new token */
+  createInvitationToken?: Maybe<InvitationResponse>;
 };
 
 
@@ -110,8 +123,20 @@ export type MutationUpdateSkillOfSrArgs = {
 
 
 /** Mutation root */
-export type MutationDeleteSharedResourceArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
+export type MutationCreateOrUpdateSharedResourceArgs = {
+  resource?: Maybe<SharedResourceInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateProjectArgs = {
+  project?: Maybe<ProjectInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateSkillArgs = {
+  skill?: Maybe<SkillInput>;
 };
 
 
@@ -119,6 +144,12 @@ export type MutationDeleteSharedResourceArgs = {
 export type MutationDeleteSkillForSrArgs = {
   id?: Maybe<Scalars['BigInteger']>;
   employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
+};
+
+
+/** Mutation root */
+export type MutationDeleteSharedResourceArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
 };
 
 
@@ -136,14 +167,8 @@ export type MutationCreateEmployeeArgs = {
 
 
 /** Mutation root */
-export type MutationCreateOrUpdateSharedResourceArgs = {
-  resource?: Maybe<SharedResourceInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateSkillArgs = {
-  skill?: Maybe<SkillInput>;
+export type MutationCreateInvitationTokenArgs = {
+  invitation?: Maybe<InvitationInput>;
 };
 
 export type Project = {
@@ -168,34 +193,24 @@ export type ProjectInput = {
 
 /** Query root */
 export type Query = {
-  /** Get all projects */
-  project?: Maybe<Array<Maybe<Project>>>;
-  /** Get all Employees using the filters eq, lt,le,gt,ge */
-  employeesWithFilter?: Maybe<Array<Maybe<Employee>>>;
-  /** Get all Employees */
-  employee?: Maybe<Array<Maybe<Employee>>>;
-  /** Get an employee by id */
-  employeeById?: Maybe<Employee>;
   /** Get all resources using the filters eq, lt,le,gt,ge */
   sharedResourceWithFilters?: Maybe<Array<Maybe<Employee>>>;
   /** Get an SR by id */
   sharedResourceById?: Maybe<SharedResource>;
+  /** Get all Employees */
+  employee?: Maybe<Array<Maybe<Employee>>>;
+  /** Get all Employees using the filters eq, lt,le,gt,ge */
+  employeesWithFilter?: Maybe<Array<Maybe<Employee>>>;
+  /** Get all projects */
+  project?: Maybe<Array<Maybe<Project>>>;
   /** Get all skills */
   skill?: Maybe<Array<Maybe<Skill>>>;
   /** Get all resources */
   sharedResource?: Maybe<Array<Maybe<SharedResource>>>;
-};
-
-
-/** Query root */
-export type QueryEmployeesWithFilterArgs = {
-  filter?: Maybe<EmployeeFilterInput>;
-};
-
-
-/** Query root */
-export type QueryEmployeeByIdArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
+  /** Verify Email */
+  verify: Scalars['Boolean'];
+  /** Get an employee by id */
+  employeeById?: Maybe<Employee>;
 };
 
 
@@ -207,6 +222,25 @@ export type QuerySharedResourceWithFiltersArgs = {
 
 /** Query root */
 export type QuerySharedResourceByIdArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Query root */
+export type QueryEmployeesWithFilterArgs = {
+  filter?: Maybe<EmployeeFilterInput>;
+};
+
+
+/** Query root */
+export type QueryVerifyArgs = {
+  emailId?: Maybe<Scalars['String']>;
+  token?: Maybe<Scalars['String']>;
+};
+
+
+/** Query root */
+export type QueryEmployeeByIdArgs = {
   id?: Maybe<Scalars['BigInteger']>;
 };
 
@@ -273,6 +307,19 @@ export type GetEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetEmployeesQuery = { sharedResource?: Maybe<Array<Maybe<Pick<SharedResource, 'id' | 'firstName'>>>> };
 
+export type VerifyTokenQueryVariables = Exact<{
+  emailId: Scalars['String'];
+  token: Scalars['String'];
+}>;
+
+
+export type VerifyTokenQuery = Pick<Query, 'verify'>;
+
+export type CreateInvitationTokenMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CreateInvitationTokenMutation = { createInvitationToken?: Maybe<Pick<InvitationResponse, 'responseStatus' | 'token'>> };
+
 export type SkillsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -314,6 +361,73 @@ export function useGetEmployeesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetEmployeesQueryHookResult = ReturnType<typeof useGetEmployeesQuery>;
 export type GetEmployeesLazyQueryHookResult = ReturnType<typeof useGetEmployeesLazyQuery>;
 export type GetEmployeesQueryResult = Apollo.QueryResult<GetEmployeesQuery, GetEmployeesQueryVariables>;
+export const VerifyTokenDocument = gql`
+    query verifyToken($emailId: String!, $token: String!) {
+  verify(emailId: $emailId, token: $token)
+}
+    `;
+
+/**
+ * __useVerifyTokenQuery__
+ *
+ * To run a query within a React component, call `useVerifyTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVerifyTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVerifyTokenQuery({
+ *   variables: {
+ *      emailId: // value for 'emailId'
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useVerifyTokenQuery(baseOptions: Apollo.QueryHookOptions<VerifyTokenQuery, VerifyTokenQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<VerifyTokenQuery, VerifyTokenQueryVariables>(VerifyTokenDocument, options);
+      }
+export function useVerifyTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<VerifyTokenQuery, VerifyTokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<VerifyTokenQuery, VerifyTokenQueryVariables>(VerifyTokenDocument, options);
+        }
+export type VerifyTokenQueryHookResult = ReturnType<typeof useVerifyTokenQuery>;
+export type VerifyTokenLazyQueryHookResult = ReturnType<typeof useVerifyTokenLazyQuery>;
+export type VerifyTokenQueryResult = Apollo.QueryResult<VerifyTokenQuery, VerifyTokenQueryVariables>;
+export const CreateInvitationTokenDocument = gql`
+    mutation createInvitationToken {
+  createInvitationToken(invitation: {emailId: ""}) {
+    responseStatus
+    token
+  }
+}
+    `;
+export type CreateInvitationTokenMutationFn = Apollo.MutationFunction<CreateInvitationTokenMutation, CreateInvitationTokenMutationVariables>;
+
+/**
+ * __useCreateInvitationTokenMutation__
+ *
+ * To run a mutation, you first call `useCreateInvitationTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateInvitationTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createInvitationTokenMutation, { data, loading, error }] = useCreateInvitationTokenMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCreateInvitationTokenMutation(baseOptions?: Apollo.MutationHookOptions<CreateInvitationTokenMutation, CreateInvitationTokenMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateInvitationTokenMutation, CreateInvitationTokenMutationVariables>(CreateInvitationTokenDocument, options);
+      }
+export type CreateInvitationTokenMutationHookResult = ReturnType<typeof useCreateInvitationTokenMutation>;
+export type CreateInvitationTokenMutationResult = Apollo.MutationResult<CreateInvitationTokenMutation>;
+export type CreateInvitationTokenMutationOptions = Apollo.BaseMutationOptions<CreateInvitationTokenMutation, CreateInvitationTokenMutationVariables>;
 export const SkillsDocument = gql`
     query skills {
   skill {

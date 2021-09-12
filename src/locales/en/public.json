@@ -10,5 +10,6 @@
   "my_profile": "My Profile",
   "user_management": "User Management",
   "logout": "Logout",
-  "is_required": "is required."
+  "is_required": "is required.",
+  "invitation_management": "Invitation Management"
 }

@@ -96,6 +96,9 @@ export const Header: React.FC<HeaderProps> = () => {
         <NavItem itemId={3} isActive={activeItem === 3} to="#/roaster-management">
           Calendar
         </NavItem>
+        <NavItem itemId={4} isActive={activeItem === 4} to="#/invitation-management">
+         Invitation
+        </NavItem>
       </NavList>
     </Nav>
   );

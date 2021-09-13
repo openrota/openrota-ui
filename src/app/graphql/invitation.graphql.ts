@@ -10,8 +10,8 @@ export const getVerificationInvitation = gql`
 `;
 
 export const createInvitationTokenMutation = gql`
-  mutation createInvitationToken {
-    createInvitationToken(invitation: {emailId: ""}) {
+  mutation createInvitationToken($emailId: String!) {
+    createInvitationToken(invitation: {emailId: $emailId}) {
       responseStatus
       token
     }

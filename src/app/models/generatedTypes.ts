@@ -315,7 +315,9 @@ export type VerifyTokenQueryVariables = Exact<{
 
 export type VerifyTokenQuery = Pick<Query, 'verify'>;
 
-export type CreateInvitationTokenMutationVariables = Exact<{ [key: string]: never; }>;
+export type CreateInvitationTokenMutationVariables = Exact<{
+  emailId: Scalars['String'];
+}>;
 
 
 export type CreateInvitationTokenMutation = { createInvitationToken?: Maybe<Pick<InvitationResponse, 'responseStatus' | 'token'>> };
@@ -396,8 +398,8 @@ export type VerifyTokenQueryHookResult = ReturnType<typeof useVerifyTokenQuery>;
 export type VerifyTokenLazyQueryHookResult = ReturnType<typeof useVerifyTokenLazyQuery>;
 export type VerifyTokenQueryResult = Apollo.QueryResult<VerifyTokenQuery, VerifyTokenQueryVariables>;
 export const CreateInvitationTokenDocument = gql`
-    mutation createInvitationToken {
-  createInvitationToken(invitation: {emailId: ""}) {
+    mutation createInvitationToken($emailId: String!) {
+  createInvitationToken(invitation: {emailId: $emailId}) {
     responseStatus
     token
   }
@@ -418,6 +420,7 @@ export type CreateInvitationTokenMutationFn = Apollo.MutationFunction<CreateInvi
  * @example
  * const [createInvitationTokenMutation, { data, loading, error }] = useCreateInvitationTokenMutation({
  *   variables: {
+ *      emailId: // value for 'emailId'
  *   },
  * });
  */

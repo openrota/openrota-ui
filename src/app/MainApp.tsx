@@ -1,6 +1,7 @@
 import React from 'react';
 import App from './App';
-import { ApolloClient, InMemoryCache, ApolloProvider, DefaultOptions } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 // const defaultOptions: DefaultOptions = { query: { fetchPolicy: 'network-only' } };
 
@@ -12,7 +13,13 @@ const client = new ApolloClient({
 export default function MainApp() {
   return (
     <ApolloProvider client={client}>
-      <App />
+      <BrowserRouter>
+        <Switch>
+          <Route>
+            <App />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </ApolloProvider>
   );
 }

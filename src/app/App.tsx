@@ -7,35 +7,32 @@ import { AppRoutes } from '@app/routes';
 import { initI18N } from '@i18n/i18n';
 import { KeycloakAuthProvider, KeycloakContext, getKeycloakInstance } from '@app/auth/keycloak';
 import '@app/app.css';
-import { useVerifyTokenQuery } from '@app/models';
+import { useVerifyTokenLazyQuery } from '@app/models';
+import { useLocation, useParams } from 'react-router-dom';
 
 let keycloak: Keycloak.KeycloakInstance | undefined;
 let tokenresponse: string | boolean | unknown;
 
 const App: React.FunctionComponent = () => {
   const [initialized, setInitialized] = useState(false);
-  const location = window.location;
-  const params = new URLSearchParams(location.search);
-  const token = params.get('token') as string;
-  const email = params.get('email') as string;
-  const { loading, error, data } = useVerifyTokenQuery({
-    variables: {
-      emailId: email,
-      token: token,
-    },
+  const query = new URLSearchParams(useLocation().search);
+  const token = query.get('token');
+  const email = query.get('email');
+  const [getVerify, { loading, error, data }] = useVerifyTokenLazyQuery({
     fetchPolicy: 'cache-and-network',
     notifyOnNetworkStatusChange: true,
   });
   useEffect(() => {
     const init = async () => {
       keycloak = await getKeycloakInstance();
-      if (!loading && token && email) {
+      // Gets tokenresponse from backend
+      if (token && email) {
+        getVerify({ variables: { emailId: email, token: token } });
         tokenresponse = data?.verify;
-        if (tokenresponse) {
-          setInitialized(true);
-        }
       }
-      setInitialized(true);
+      if (keycloak || tokenresponse) {
+        setInitialized(true);
+      }
     };
     init();
   }, [data]);

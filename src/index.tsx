@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MainApp from '@app/MainApp';
+import { BrowserRouter } from "react-router-dom";
 
 if (process.env.NODE_ENV !== "production") {
   const config = {
@@ -16,4 +17,4 @@ if (process.env.NODE_ENV !== "production") {
   axe(React, ReactDOM, 1000, config);
 }
 
-ReactDOM.render(<MainApp />, document.getElementById("root") as HTMLElement);
+ReactDOM.render(<BrowserRouter><MainApp /></BrowserRouter>, document.getElementById("root") as HTMLElement);

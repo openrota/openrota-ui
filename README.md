@@ -1,16 +1,18 @@
-# shareNwork
+[![Verify Workflow](https://github.com/openrota/openrota-ui/actions/workflows/verify.yaml/badge.svg)](https://github.com/openrota/openrota-ui/actions/workflows/verify.yaml)
 
-Welcome to the repository that hosts the UIs for shareNwork.
+# openrota
+
+Welcome to the repository that hosts the UIs for openrota.
 
 ## Contributing
 
-If you are contributing please check out the [Contributing Guidelines.](https://github.com/shareNwork/shareNwork-ui/blob/main/CONTRIBUTING.md)
+If you are contributing please check out the [Contributing Guidelines.](https://github.com/openrota/openrota-ui/blob/main/CONTRIBUTING.md)
 
 ## Quick-start
 
 ```bash
-git clone https://github.com/shareNwork/shareNwork-ui
-cd shareNwork-ui
+git clone https://github.com/openrota/openrota-ui
+cd openrota-ui
 yarn install && yarn run start:dev
 ```
 ### Configuring hosts file to run on prod.foo.redhat.com

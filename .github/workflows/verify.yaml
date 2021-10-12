@@ -25,7 +25,7 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
-    if: github.repository_owner == 'shareNwork'
+    if: github.repository_owner == 'openrota'
     steps:
 
     - name: Checkout Code with Ref '${{ github.ref }}'

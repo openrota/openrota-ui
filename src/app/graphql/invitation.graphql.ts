@@ -2,7 +2,6 @@ import { gql, useMutation } from '@apollo/client';
 
 // Define mutation
 
-
 export const getVerificationInvitation = gql`
   query verifyToken($emailId: String!, $token: String!) {
     verify(emailId: $emailId, token: $token)
@@ -10,17 +9,25 @@ export const getVerificationInvitation = gql`
 `;
 
 export const createInvitationTokenMutation = gql`
-  mutation createInvitationToken($emailId: String!) {
-    createInvitationToken(invitation: {emailId: $emailId}) {
+  type Invitation {
+    emailId: String!
+  }
+  type InvitationInput {
+    emailId: String!
+  }
+  mutation createInvitationToken($invitationlist: [InvitationInput]) {
+    createInvitationToken(invitationlist: $invitationlist) {
       responseStatus
       token
     }
   }
 `;
 
-// import { gql } from '@apollo/client';
-//
-// export const getInvitationVerification = gql`
-// query verifyToken {
-//   verify(emailId: "", token: "")
-// }`;
+export const getInvitations = gql`
+  query invitation {
+    invitation {
+      emailId
+      status
+    }
+  }
+`;

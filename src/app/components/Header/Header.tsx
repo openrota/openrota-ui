@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -21,6 +21,7 @@ import logo from '@app/images/Logo-Red_Hat-Middleware-A-White-RGB.svg';
 import imgAvatar from '@app/images/avatarImg.svg';
 import HelpIcon from '@patternfly/react-icons/dist/js/icons/help-icon';
 import './Header.css';
+import { useAuth } from '@app/context';
 
 export type HeaderProps = {
   isNavOpen: boolean;
@@ -30,10 +31,14 @@ export type HeaderProps = {
 };
 
 export const Header: React.FC<HeaderProps> = () => {
+  const auth = useAuth();
   const { t } = useTranslation();
   const [isUserToolbarDropdownOpen, setIsUserToolbarDropdownOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
-
+  const [userName, setUserName] = useState("");
+  useEffect(() => {
+    auth?.getUsername().then(userName => setUserName(userName));
+  }, []);
   const toggleUserToolbarDropdown = (toggle: boolean) => {
     setIsUserToolbarDropdownOpen(toggle);
   };
@@ -48,7 +53,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const userDropdownItems = [
     <DropdownGroup key="user">
-      <DropdownItem key="my-profile">{t('my_profile')}</DropdownItem>
+      <DropdownItem key="my-profile" href="#/profile-management">{t('my_profile')}</DropdownItem>
       <DropdownItem key="user-management" component="button">
         {t('user_management')}
       </DropdownItem>
@@ -72,7 +77,7 @@ export const Header: React.FC<HeaderProps> = () => {
             position="right"
             onSelect={onPageDropdownSelect}
             isOpen={isUserToolbarDropdownOpen}
-            toggle={<DropdownToggle onToggle={toggleUserToolbarDropdown}>Developer</DropdownToggle>}
+            toggle={<DropdownToggle onToggle={toggleUserToolbarDropdown}>{userName}</DropdownToggle>}
             dropdownItems={userDropdownItems}
           />
         </PageHeaderToolsItem>
@@ -95,6 +100,12 @@ export const Header: React.FC<HeaderProps> = () => {
         </NavItem>
         <NavItem itemId={3} isActive={activeItem === 3} to="#/roaster-management">
           Calendar
+        </NavItem>
+        <NavItem itemId={4} isActive={activeItem === 4} to="#/create-resource-request">
+          Create Resource Request
+        </NavItem>
+        <NavItem itemId={5} isActive={activeItem === 5} to="#/view-resource-requests">
+          All resource requests
         </NavItem>
       </NavList>
     </Nav>

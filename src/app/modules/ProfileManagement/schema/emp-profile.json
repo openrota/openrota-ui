@@ -10,6 +10,7 @@
           "component": "text-field",
           "name": "firstName",
           "label": "First Name",
+          "isDisabled": true,
           "helperText": "",
           "isRequired": true,
           "validate": [{ "type": "required" }]
@@ -17,7 +18,24 @@
         {
           "component": "text-field",
           "name": "lastName",
+          "isDisabled": true,
           "label": "Last Name"
+        }
+      ]
+    },
+    {
+      "component": "text-field",
+      "name": "emailId",
+      "label": "Email",
+      "isDisabled" : true,
+      "helperText": "",
+      "isRequired": true,
+      "validate": [
+        { "type": "required" },
+        {
+          "type": "pattern",
+          "pattern": "[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$",
+          "message": "Enter valid email id"
         }
       ]
     },
@@ -39,21 +57,6 @@
     },
     {
       "component": "text-field",
-      "name": "email",
-      "label": "Email",
-      "helperText": "",
-      "isRequired": true,
-      "validate": [
-        { "type": "required" },
-        {
-          "type": "pattern",
-          "pattern": "[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$",
-          "message": "Enter valid email id"
-        }
-      ]
-    },
-    {
-      "component": "text-field",
       "name": "about",
       "label": "About"
     },
@@ -72,13 +75,12 @@
       "name": "skill",
       "label": "Skills",
       "isMulti": true,
-      "isRequired": true,
+      "isRequired": false,
       "validate": [
-        { "type": "required" },
-        { "type": "min-items", "threshold": 3, "message": "Select at least 3 skills" }
+        { "type": "required" }
       ],
       "actions": {
-        "resolveProps": ["loadOptions"]
+        "resolveProps": ["loadSkills"]
       }
     }
   ]

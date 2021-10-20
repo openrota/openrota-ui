@@ -22,7 +22,10 @@ const App: React.FunctionComponent = () => {
   React.useEffect(() => {
     const init = async () => {
       keycloak = await getKeycloakInstance();
-      setInitialized(true);
+      console.log('aaya ', keycloak);
+      if (keycloak?.authenticated) {
+        setInitialized(true);
+      }
     };
     init();
   }, []);

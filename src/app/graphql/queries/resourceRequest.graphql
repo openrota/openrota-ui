@@ -1,0 +1,19 @@
+query getResourceRequests {
+  sharedResourceRequest {
+    requester{
+      firstName
+    }
+    project
+    pillar
+    startDate
+    endDate
+    status
+    id 
+  }
+}
+
+mutation createResourceRequest($resourceRequest : ResourceRequestInput){
+  createOrUpdateResourceRequest( resourceRequest: $resourceRequest) {
+    id
+  }
+}

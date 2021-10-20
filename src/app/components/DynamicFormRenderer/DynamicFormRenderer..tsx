@@ -29,10 +29,11 @@ const mapperExtension = {
   'column-layout': ColumnLayout,
 };
 
-const DynamicFormRenderer: React.FC<any> = ({ componentMapper, actionMapper, ...props }) => {
+const DynamicFormRenderer: React.FC<any> = ({ componentMapper, initialValues, actionMapper, ...props }) => {
   return (
     <FormRenderer
       FormTemplate={FormTemplate}
+      initialValues={initialValues}
       componentMapper={{
         ...pf4ComponentMapper,
         ...mapperExtension,

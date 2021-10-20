@@ -1,0 +1,41 @@
+query getAllSharedResource {
+  sharedResource {
+    totalExperience
+    lastName
+    status
+    firstName
+    designation
+    emailId
+    employeeId
+    id
+  }
+}
+
+query getSRById ($id: BigInteger){
+  sharedResourceById(id: $id) {
+    totalExperience
+    designation
+    employeeId
+    skillProficiencies {
+      id
+      skill {
+        id
+      }
+    }
+    id
+  }
+}
+
+query getSharedResourceByEmailId ($emailId: String){
+  sharedResourceByEmailId(emailId: $emailId) {
+    id
+  }
+}
+
+mutation createOrUpdateSharedResource($resource: SharedResourceInput) {
+    createOrUpdateSharedResource( resource: $resource) {
+      id
+    }
+}
+
+  

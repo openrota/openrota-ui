@@ -5,6 +5,7 @@ export type Auth = {
      * Get the username of the authenticated user
      */
     getUsername: () => Promise<string>;
+    getUserInfo: () => Promise<Object>;
     getToken: () => Promise<string>;
 };
 

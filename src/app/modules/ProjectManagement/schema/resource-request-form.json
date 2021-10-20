@@ -1,0 +1,78 @@
+{
+  "title": "Create resource request",
+  "fields": [
+    {
+      "component": "text-field",
+      "name": "requesterName",
+      "label": "Requester Name",
+      "helperText": "",
+      "isRequired": true,
+      "isDisabled" : true,
+      "validate": [
+        {
+          "type": "required"
+        }
+      ]
+    },
+    {
+      "component": "text-field",
+      "name": "emailId",
+      "label": "Email",
+      "helperText": "",
+      "isRequired": true,
+      "isDisabled" : true,
+      "validate": [
+        {
+          "type": "required"
+        },
+        {
+          "type": "pattern",
+          "pattern": "[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$",
+          "message": "Enter valid email id"
+        }
+      ]
+    },
+    {
+      "component": "text-field",
+      "name": "pillar",
+      "label": "Pillar"
+    },
+    {
+      "component": "text-field",
+      "name": "project",
+      "label": "Project / task"
+    },
+    {
+      "component": "text-field",
+      "name": "taskDetails",
+      "label": "Tasks Details"
+    },
+    {
+      "component": "date-picker",
+      "label": "Start Date",
+      "name": "startDate"
+    },
+    {
+      "component": "date-picker",
+      "label": "End Date",
+      "name": "endDate"
+    },
+    {
+      "component": "select",
+      "name": "skill",
+      "label": "Skills",
+      "isMulti": true,
+      "isRequired": false,
+      "validate": [
+        {
+          "type": "required"
+        }
+      ],
+      "actions": {
+        "resolveProps": [
+          "loadSkills"
+        ]
+      }
+    }
+  ]
+}

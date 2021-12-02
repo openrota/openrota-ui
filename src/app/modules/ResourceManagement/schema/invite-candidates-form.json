@@ -1,0 +1,22 @@
+{
+    "title": "Invite Candidate",
+    "fields": [
+        {
+            "component": "text-field",
+            "name": "emailId",
+            "label": "Email",
+            "helperText": "",
+            "isRequired": true,
+            "validate": [
+              {
+                "type": "required"
+              },
+              {
+                "type": "pattern",
+                "pattern": "[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$",
+                "message": "Enter valid email id"
+              }
+            ]
+          }
+    ]
+  }

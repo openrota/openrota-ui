@@ -8,7 +8,7 @@ interface ViewResourceProps {
     skills: Maybe<Maybe<Pick<ResourceRequestSkillsProficiency, "id" | "proficiencyLevel"> & { skill?: Maybe<Pick<Skill, "id" | "name">> | undefined; }>[]> | undefined
 }
 
-const ViewResourceRequest: React.FC<ViewResourceProps> = ({ resourceRequestObject, skills }) => {
+const CandidateProfileView: React.FC<ViewResourceProps> = ({ resourceRequestObject, skills }) => {
     const [requestObj, setRequestObj] = useState<any>({});
     useEffect(() => {
         setRequestObj(resourceRequestObject);
@@ -17,32 +17,20 @@ const ViewResourceRequest: React.FC<ViewResourceProps> = ({ resourceRequestObjec
         <React.Fragment>
             <DescriptionList>
                 <DescriptionListGroup>
-                    <DescriptionListTerm>Requested By</DescriptionListTerm>
+                    <DescriptionListTerm>Name</DescriptionListTerm>
                     <DescriptionListDescription>{requestObj?.requester?.firstName}</DescriptionListDescription>
                 </DescriptionListGroup>
                 <DescriptionListGroup>
-                    <DescriptionListTerm>Request Date</DescriptionListTerm>
+                    <DescriptionListTerm>Email</DescriptionListTerm>
                     <DescriptionListDescription>{(new Date(requestObj?.createdAt)).toLocaleString()}</DescriptionListDescription>
                 </DescriptionListGroup>
                 <DescriptionListGroup>
-                    <DescriptionListTerm>Pillar</DescriptionListTerm>
+                    <DescriptionListTerm>Designation</DescriptionListTerm>
                     <DescriptionListDescription>{requestObj?.pillar}</DescriptionListDescription>
                 </DescriptionListGroup>
                 <DescriptionListGroup>
-                    <DescriptionListTerm>Project</DescriptionListTerm>
+                    <DescriptionListTerm>Total Work Experience</DescriptionListTerm>
                     <DescriptionListDescription>{requestObj?.project}</DescriptionListDescription>
-                </DescriptionListGroup>
-                <DescriptionListGroup>
-                    <DescriptionListTerm>Task description</DescriptionListTerm>
-                    <DescriptionListDescription>{requestObj?.taskDetails}</DescriptionListDescription>
-                </DescriptionListGroup>
-                <DescriptionListGroup>
-                    <DescriptionListTerm>Start Date</DescriptionListTerm>
-                    <DescriptionListDescription>{requestObj?.startDate}</DescriptionListDescription>
-                </DescriptionListGroup>
-                <DescriptionListGroup>
-                    <DescriptionListTerm>End Date</DescriptionListTerm>
-                    <DescriptionListDescription>{requestObj?.endDate}</DescriptionListDescription>
                 </DescriptionListGroup>
                 <DescriptionListGroup>
                     <DescriptionListTerm>Skills required</DescriptionListTerm>
@@ -53,4 +41,4 @@ const ViewResourceRequest: React.FC<ViewResourceProps> = ({ resourceRequestObjec
     );
 
 }
-export default ViewResourceRequest;
+export default CandidateProfileView;

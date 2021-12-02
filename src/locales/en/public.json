@@ -8,6 +8,9 @@
   "projects_calendar": "Projects Calendar",
   "loading": "Loading",
   "my_profile": "My Profile",
+  "view requests" : "View all requests",
+  "add candidates" : "Add candidates",
+  "Create request" : " Create request",
   "user_management": "User Management",
   "logout": "Logout",
   "is_required": "is required."

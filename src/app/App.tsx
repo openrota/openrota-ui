@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import '@patternfly/react-core/dist/styles/base.css';
@@ -8,6 +7,7 @@ import { AppRoutes } from '@app/routes';
 import { initI18N } from '@i18n/i18n';
 import { KeycloakAuthProvider, KeycloakContext, getKeycloakInstance } from '@app/auth/keycloak';
 import '@app/app.css';
+import { HashRouter as Router} from 'react-router-dom';
 
 let keycloak: Keycloak.KeycloakInstance | undefined;
 
@@ -22,7 +22,6 @@ const App: React.FunctionComponent = () => {
   React.useEffect(() => {
     const init = async () => {
       keycloak = await getKeycloakInstance();
-      console.log('aaya ', keycloak);
       if (keycloak?.authenticated) {
         setInitialized(true);
       }

@@ -1,0 +1,30 @@
+query getAllInvitations {
+  invitation {
+    emailId
+    status
+    id
+  }
+}
+query getInvitationById ($id: BigInteger!){
+  getInvitationById( id: $id) {
+    token
+    createdAt
+    emailId
+    status
+    id
+  }
+}
+mutation createInvitation ($invitation: InvitationInput) {
+  createInvitationToken( invitation: $invitation) {
+    token
+    responseStatus
+    responseText
+  }
+}
+
+mutation verifyInvitation ($emailId: String, $token : String, $name : String) {
+  verifyInvitation(emailId: $emailId, token : $token, name : $name) {
+         responseStatus
+         responseText
+  }
+}

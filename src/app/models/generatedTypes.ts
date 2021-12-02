@@ -16,7 +16,10 @@ export type Scalars = {
   BigInteger: any;
   /** Scalar for Date */
   Date: any;
+  /** Scalar for DateTime */
+  DateTime: any;
 };
+
 
 
 
@@ -44,18 +47,6 @@ export type EmployeeInput = {
   id?: Maybe<Scalars['BigInteger']>;
 };
 
-export type EmployeeProjectDetail = {
-  projectName?: Maybe<Scalars['String']>;
-  sharedResource?: Maybe<SharedResource>;
-  id?: Maybe<Scalars['BigInteger']>;
-};
-
-export type EmployeeProjectDetailInput = {
-  projectName?: Maybe<Scalars['String']>;
-  sharedResource?: Maybe<SharedResourceInput>;
-  id?: Maybe<Scalars['BigInteger']>;
-};
-
 export type EmployeeSkillProficiency = {
   employee?: Maybe<SharedResource>;
   proficiencyLevel?: Maybe<SkillProficiencyLevel>;
@@ -76,19 +67,26 @@ export type FilterFieldInput = {
 };
 
 export type Invitation = {
+  /** ISO-8601 */
+  createdAt?: Maybe<Scalars['DateTime']>;
   emailId?: Maybe<Scalars['String']>;
   status?: Maybe<InvitationStatus>;
+  token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['BigInteger']>;
 };
 
 export type InvitationInput = {
+  /** ISO-8601 */
+  createdAt?: Maybe<Scalars['DateTime']>;
   emailId?: Maybe<Scalars['String']>;
   status?: Maybe<InvitationStatus>;
+  token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['BigInteger']>;
 };
 
 export type InvitationResponse = {
   responseStatus: Scalars['Int'];
+  responseText?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
 };
 
@@ -100,45 +98,34 @@ export enum InvitationStatus {
 
 /** Mutation root */
 export type Mutation = {
-  /** Create a new resource request */
-  createOrUpdateResourceRequest?: Maybe<ResourceRequest>;
-  /** Delete SR */
-  deleteSharedResource?: Maybe<SharedResource>;
-  /** Delete skills of SR */
-  deleteSkillForSR?: Maybe<EmployeeSkillProficiency>;
-  /** Add skills to SR */
-  addSkillsToSR?: Maybe<SharedResource>;
-  /** Create a new token */
-  createInvitationToken?: Maybe<Array<Maybe<InvitationResponse>>>;
-  /** Create a new Employee */
-  createProject?: Maybe<Project>;
-  /** Update skill of SR */
-  updateSkillOfSR?: Maybe<EmployeeSkillProficiency>;
-  /** Add a new skill */
-  createSkill?: Maybe<Skill>;
-  /** Create a new Employee */
-  createEmployee?: Maybe<Employee>;
   /** Create a new SR */
   createOrUpdateSharedResource?: Maybe<SharedResource>;
+  /** Add skills to SR */
+  addSkillsToSR?: Maybe<SharedResource>;
+  /** Delete skills of SR */
+  deleteSkillForSR?: Maybe<EmployeeSkillProficiency>;
+  /** Create a new Employee */
+  createProject?: Maybe<Project>;
+  /** Add a new skill */
+  createSkill?: Maybe<Skill>;
+  /** Create a new resource request */
+  createOrUpdateResourceRequest?: Maybe<ResourceRequest>;
+  /** Update skill of SR */
+  updateSkillOfSR?: Maybe<EmployeeSkillProficiency>;
+  /** Create a new token */
+  createInvitationToken?: Maybe<InvitationResponse>;
+  /** Create a new Employee */
+  createEmployee?: Maybe<Employee>;
+  /** Verify Invitation */
+  verifyInvitation?: Maybe<InvitationResponse>;
+  /** Delete SR */
+  deleteSharedResource?: Maybe<SharedResource>;
 };
 
 
 /** Mutation root */
-export type MutationCreateOrUpdateResourceRequestArgs = {
-  resourceRequest?: Maybe<ResourceRequestInput>;
-};
-
-
-/** Mutation root */
-export type MutationDeleteSharedResourceArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Mutation root */
-export type MutationDeleteSkillForSrArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-  employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
+export type MutationCreateOrUpdateSharedResourceArgs = {
+  resource?: Maybe<SharedResourceInput>;
 };
 
 
@@ -150,14 +137,27 @@ export type MutationAddSkillsToSrArgs = {
 
 
 /** Mutation root */
-export type MutationCreateInvitationTokenArgs = {
-  invitationlist?: Maybe<Array<Maybe<InvitationInput>>>;
+export type MutationDeleteSkillForSrArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
+  employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
 };
 
 
 /** Mutation root */
 export type MutationCreateProjectArgs = {
   project?: Maybe<ProjectInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateSkillArgs = {
+  skill?: Maybe<SkillInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateOrUpdateResourceRequestArgs = {
+  resourceRequest?: Maybe<ResourceRequestInput>;
 };
 
 
@@ -169,8 +169,8 @@ export type MutationUpdateSkillOfSrArgs = {
 
 
 /** Mutation root */
-export type MutationCreateSkillArgs = {
-  skill?: Maybe<SkillInput>;
+export type MutationCreateInvitationTokenArgs = {
+  invitation?: Maybe<InvitationInput>;
 };
 
 
@@ -181,8 +181,16 @@ export type MutationCreateEmployeeArgs = {
 
 
 /** Mutation root */
-export type MutationCreateOrUpdateSharedResourceArgs = {
-  resource?: Maybe<SharedResourceInput>;
+export type MutationVerifyInvitationArgs = {
+  emailId?: Maybe<Scalars['String']>;
+  token?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+
+/** Mutation root */
+export type MutationDeleteSharedResourceArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
 };
 
 export type Project = {
@@ -207,30 +215,34 @@ export type ProjectInput = {
 
 /** Query root */
 export type Query = {
-  /** Get an SR by id */
-  sharedResourceById?: Maybe<SharedResource>;
-  /** Get all Employees */
-  employee?: Maybe<Array<Maybe<Employee>>>;
-  /** Get all skills */
-  skill?: Maybe<Array<Maybe<Skill>>>;
-  /** Get all invitations */
-  invitation?: Maybe<Array<Maybe<Invitation>>>;
-  /** Verify Email */
-  verify: Scalars['Boolean'];
-  /** Get all resources request */
-  sharedResourceRequest?: Maybe<Array<Maybe<ResourceRequest>>>;
-  /** Get all resources using the filters eq, lt,le,gt,ge */
-  sharedResourceWithFilters?: Maybe<Array<Maybe<Employee>>>;
-  /** Get all resources */
-  sharedResource?: Maybe<Array<Maybe<SharedResource>>>;
   /** Get all projects */
   project?: Maybe<Array<Maybe<Project>>>;
+  /** Get all resources */
+  sharedResource?: Maybe<Array<Maybe<SharedResource>>>;
+  /** Get an SR by id */
+  sharedResourceById?: Maybe<SharedResource>;
+  /** Get all resources using the filters eq, lt,le,gt,ge */
+  sharedResourceWithFilters?: Maybe<Array<Maybe<Employee>>>;
+  /** Get required skills of request Id */
+  getSkillsByRequestId?: Maybe<Array<Maybe<ResourceRequestSkillsProficiency>>>;
+  /** Get all resources request */
+  sharedResourceRequest?: Maybe<Array<Maybe<ResourceRequest>>>;
+  /** Get invitations by Id */
+  getInvitationById?: Maybe<Invitation>;
   /** Get all Employees using the filters eq, lt,le,gt,ge */
   employeesWithFilter?: Maybe<Array<Maybe<Employee>>>;
-  /** Get an SR by emailId */
-  sharedResourceByEmailId?: Maybe<SharedResource>;
+  /** Get all skills */
+  skill?: Maybe<Array<Maybe<Skill>>>;
+  /** Get all Employees */
+  employee?: Maybe<Array<Maybe<Employee>>>;
+  /** Get resources request by id */
+  sharedResourceRequestById?: Maybe<ResourceRequest>;
   /** Get an employee by id */
   employeeById?: Maybe<Employee>;
+  /** Get an SR by emailId */
+  sharedResourceByEmailId?: Maybe<SharedResource>;
+  /** Get all invitations */
+  invitation?: Maybe<Array<Maybe<Invitation>>>;
 };
 
 
@@ -241,15 +253,20 @@ export type QuerySharedResourceByIdArgs = {
 
 
 /** Query root */
-export type QueryVerifyArgs = {
-  emailId?: Maybe<Scalars['String']>;
-  token?: Maybe<Scalars['String']>;
+export type QuerySharedResourceWithFiltersArgs = {
+  filter?: Maybe<EmployeeFilterInput>;
 };
 
 
 /** Query root */
-export type QuerySharedResourceWithFiltersArgs = {
-  filter?: Maybe<EmployeeFilterInput>;
+export type QueryGetSkillsByRequestIdArgs = {
+  id: Scalars['BigInteger'];
+};
+
+
+/** Query root */
+export type QueryGetInvitationByIdArgs = {
+  id: Scalars['BigInteger'];
 };
 
 
@@ -260,14 +277,20 @@ export type QueryEmployeesWithFilterArgs = {
 
 
 /** Query root */
-export type QuerySharedResourceByEmailIdArgs = {
-  emailId?: Maybe<Scalars['String']>;
+export type QuerySharedResourceRequestByIdArgs = {
+  id: Scalars['BigInteger'];
 };
 
 
 /** Query root */
 export type QueryEmployeeByIdArgs = {
   id?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Query root */
+export type QuerySharedResourceByEmailIdArgs = {
+  emailId?: Maybe<Scalars['String']>;
 };
 
 export enum ResourceAvailabilityStatus {
@@ -277,10 +300,13 @@ export enum ResourceAvailabilityStatus {
 
 export type ResourceRequest = {
   /** ISO-8601 */
+  createdAt?: Maybe<Scalars['DateTime']>;
+  /** ISO-8601 */
   endDate?: Maybe<Scalars['Date']>;
   pillar?: Maybe<Scalars['String']>;
   project?: Maybe<Scalars['String']>;
   requester?: Maybe<Employee>;
+  skillProficiencies?: Maybe<Array<Maybe<ResourceRequestSkillsProficiency>>>;
   /** ISO-8601 */
   startDate?: Maybe<Scalars['Date']>;
   status?: Maybe<ResourceRequestStatus>;
@@ -290,14 +316,31 @@ export type ResourceRequest = {
 
 export type ResourceRequestInput = {
   /** ISO-8601 */
+  createdAt?: Maybe<Scalars['DateTime']>;
+  /** ISO-8601 */
   endDate?: Maybe<Scalars['Date']>;
   pillar?: Maybe<Scalars['String']>;
   project?: Maybe<Scalars['String']>;
   requester?: Maybe<EmployeeInput>;
+  skillProficiencies?: Maybe<Array<Maybe<ResourceRequestSkillsProficiencyInput>>>;
   /** ISO-8601 */
   startDate?: Maybe<Scalars['Date']>;
   status?: Maybe<ResourceRequestStatus>;
   taskDetails?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
+export type ResourceRequestSkillsProficiency = {
+  proficiencyLevel?: Maybe<SkillProficiencyLevel>;
+  resourceRequest?: Maybe<ResourceRequest>;
+  skill?: Maybe<Skill>;
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
+export type ResourceRequestSkillsProficiencyInput = {
+  proficiencyLevel?: Maybe<SkillProficiencyLevel>;
+  resourceRequest?: Maybe<ResourceRequestInput>;
+  skill?: Maybe<SkillInput>;
   id?: Maybe<Scalars['BigInteger']>;
 };
 
@@ -313,7 +356,6 @@ export enum ResourceRequestStatus {
 }
 
 export type SharedResource = {
-  employeeProjectDetails?: Maybe<Array<Maybe<EmployeeProjectDetail>>>;
   skillProficiencies?: Maybe<Array<Maybe<EmployeeSkillProficiency>>>;
   status?: Maybe<ResourceAvailabilityStatus>;
   totalExperience?: Maybe<Scalars['String']>;
@@ -326,7 +368,6 @@ export type SharedResource = {
 };
 
 export type SharedResourceInput = {
-  employeeProjectDetails?: Maybe<Array<Maybe<EmployeeProjectDetailInput>>>;
   skillProficiencies?: Maybe<Array<Maybe<EmployeeSkillProficiencyInput>>>;
   status?: Maybe<ResourceAvailabilityStatus>;
   totalExperience?: Maybe<Scalars['String']>;
@@ -372,6 +413,34 @@ export type SlotInput = {
   id?: Maybe<Scalars['BigInteger']>;
 };
 
+export type GetAllInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllInvitationsQuery = { invitation?: Maybe<Array<Maybe<Pick<Invitation, 'emailId' | 'status' | 'id'>>>> };
+
+export type GetInvitationByIdQueryVariables = Exact<{
+  id: Scalars['BigInteger'];
+}>;
+
+
+export type GetInvitationByIdQuery = { getInvitationById?: Maybe<Pick<Invitation, 'token' | 'createdAt' | 'emailId' | 'status' | 'id'>> };
+
+export type CreateInvitationMutationVariables = Exact<{
+  invitation?: Maybe<InvitationInput>;
+}>;
+
+
+export type CreateInvitationMutation = { createInvitationToken?: Maybe<Pick<InvitationResponse, 'token' | 'responseStatus' | 'responseText'>> };
+
+export type VerifyInvitationMutationVariables = Exact<{
+  emailId?: Maybe<Scalars['String']>;
+  token?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+}>;
+
+
+export type VerifyInvitationMutation = { verifyInvitation?: Maybe<Pick<InvitationResponse, 'responseStatus' | 'responseText'>> };
+
 export type GetResourceRequestsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -379,6 +448,26 @@ export type GetResourceRequestsQuery = { sharedResourceRequest?: Maybe<Array<May
     Pick<ResourceRequest, 'project' | 'pillar' | 'startDate' | 'endDate' | 'status' | 'id'>
     & { requester?: Maybe<Pick<Employee, 'firstName'>> }
   )>>> };
+
+export type GetSkillsByRequestIdQueryVariables = Exact<{
+  id: Scalars['BigInteger'];
+}>;
+
+
+export type GetSkillsByRequestIdQuery = { getSkillsByRequestId?: Maybe<Array<Maybe<(
+    Pick<ResourceRequestSkillsProficiency, 'id' | 'proficiencyLevel'>
+    & { skill?: Maybe<Pick<Skill, 'id' | 'name'>> }
+  )>>> };
+
+export type GetResourceRequestByIdQueryVariables = Exact<{
+  id: Scalars['BigInteger'];
+}>;
+
+
+export type GetResourceRequestByIdQuery = { sharedResourceRequestById?: Maybe<(
+    Pick<ResourceRequest, 'createdAt' | 'taskDetails' | 'project' | 'pillar' | 'startDate' | 'endDate' | 'status' | 'id'>
+    & { requester?: Maybe<Pick<Employee, 'firstName'>> }
+  )> };
 
 export type CreateResourceRequestMutationVariables = Exact<{
   resourceRequest?: Maybe<ResourceRequestInput>;
@@ -425,6 +514,152 @@ export type SkillsQueryVariables = Exact<{ [key: string]: never; }>;
 export type SkillsQuery = { skill?: Maybe<Array<Maybe<Pick<Skill, 'id' | 'name'>>>> };
 
 
+export const GetAllInvitationsDocument = gql`
+    query getAllInvitations {
+  invitation {
+    emailId
+    status
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetAllInvitationsQuery__
+ *
+ * To run a query within a React component, call `useGetAllInvitationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllInvitationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllInvitationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllInvitationsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllInvitationsQuery, GetAllInvitationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllInvitationsQuery, GetAllInvitationsQueryVariables>(GetAllInvitationsDocument, options);
+      }
+export function useGetAllInvitationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllInvitationsQuery, GetAllInvitationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllInvitationsQuery, GetAllInvitationsQueryVariables>(GetAllInvitationsDocument, options);
+        }
+export type GetAllInvitationsQueryHookResult = ReturnType<typeof useGetAllInvitationsQuery>;
+export type GetAllInvitationsLazyQueryHookResult = ReturnType<typeof useGetAllInvitationsLazyQuery>;
+export type GetAllInvitationsQueryResult = Apollo.QueryResult<GetAllInvitationsQuery, GetAllInvitationsQueryVariables>;
+export const GetInvitationByIdDocument = gql`
+    query getInvitationById($id: BigInteger!) {
+  getInvitationById(id: $id) {
+    token
+    createdAt
+    emailId
+    status
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetInvitationByIdQuery__
+ *
+ * To run a query within a React component, call `useGetInvitationByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInvitationByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInvitationByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetInvitationByIdQuery(baseOptions: Apollo.QueryHookOptions<GetInvitationByIdQuery, GetInvitationByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetInvitationByIdQuery, GetInvitationByIdQueryVariables>(GetInvitationByIdDocument, options);
+      }
+export function useGetInvitationByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInvitationByIdQuery, GetInvitationByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetInvitationByIdQuery, GetInvitationByIdQueryVariables>(GetInvitationByIdDocument, options);
+        }
+export type GetInvitationByIdQueryHookResult = ReturnType<typeof useGetInvitationByIdQuery>;
+export type GetInvitationByIdLazyQueryHookResult = ReturnType<typeof useGetInvitationByIdLazyQuery>;
+export type GetInvitationByIdQueryResult = Apollo.QueryResult<GetInvitationByIdQuery, GetInvitationByIdQueryVariables>;
+export const CreateInvitationDocument = gql`
+    mutation createInvitation($invitation: InvitationInput) {
+  createInvitationToken(invitation: $invitation) {
+    token
+    responseStatus
+    responseText
+  }
+}
+    `;
+export type CreateInvitationMutationFn = Apollo.MutationFunction<CreateInvitationMutation, CreateInvitationMutationVariables>;
+
+/**
+ * __useCreateInvitationMutation__
+ *
+ * To run a mutation, you first call `useCreateInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createInvitationMutation, { data, loading, error }] = useCreateInvitationMutation({
+ *   variables: {
+ *      invitation: // value for 'invitation'
+ *   },
+ * });
+ */
+export function useCreateInvitationMutation(baseOptions?: Apollo.MutationHookOptions<CreateInvitationMutation, CreateInvitationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateInvitationMutation, CreateInvitationMutationVariables>(CreateInvitationDocument, options);
+      }
+export type CreateInvitationMutationHookResult = ReturnType<typeof useCreateInvitationMutation>;
+export type CreateInvitationMutationResult = Apollo.MutationResult<CreateInvitationMutation>;
+export type CreateInvitationMutationOptions = Apollo.BaseMutationOptions<CreateInvitationMutation, CreateInvitationMutationVariables>;
+export const VerifyInvitationDocument = gql`
+    mutation verifyInvitation($emailId: String, $token: String, $name: String) {
+  verifyInvitation(emailId: $emailId, token: $token, name: $name) {
+    responseStatus
+    responseText
+  }
+}
+    `;
+export type VerifyInvitationMutationFn = Apollo.MutationFunction<VerifyInvitationMutation, VerifyInvitationMutationVariables>;
+
+/**
+ * __useVerifyInvitationMutation__
+ *
+ * To run a mutation, you first call `useVerifyInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVerifyInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [verifyInvitationMutation, { data, loading, error }] = useVerifyInvitationMutation({
+ *   variables: {
+ *      emailId: // value for 'emailId'
+ *      token: // value for 'token'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useVerifyInvitationMutation(baseOptions?: Apollo.MutationHookOptions<VerifyInvitationMutation, VerifyInvitationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<VerifyInvitationMutation, VerifyInvitationMutationVariables>(VerifyInvitationDocument, options);
+      }
+export type VerifyInvitationMutationHookResult = ReturnType<typeof useVerifyInvitationMutation>;
+export type VerifyInvitationMutationResult = Apollo.MutationResult<VerifyInvitationMutation>;
+export type VerifyInvitationMutationOptions = Apollo.BaseMutationOptions<VerifyInvitationMutation, VerifyInvitationMutationVariables>;
 export const GetResourceRequestsDocument = gql`
     query getResourceRequests {
   sharedResourceRequest {
@@ -467,6 +702,91 @@ export function useGetResourceRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetResourceRequestsQueryHookResult = ReturnType<typeof useGetResourceRequestsQuery>;
 export type GetResourceRequestsLazyQueryHookResult = ReturnType<typeof useGetResourceRequestsLazyQuery>;
 export type GetResourceRequestsQueryResult = Apollo.QueryResult<GetResourceRequestsQuery, GetResourceRequestsQueryVariables>;
+export const GetSkillsByRequestIdDocument = gql`
+    query getSkillsByRequestId($id: BigInteger!) {
+  getSkillsByRequestId(id: $id) {
+    id
+    proficiencyLevel
+    skill {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSkillsByRequestIdQuery__
+ *
+ * To run a query within a React component, call `useGetSkillsByRequestIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSkillsByRequestIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSkillsByRequestIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetSkillsByRequestIdQuery(baseOptions: Apollo.QueryHookOptions<GetSkillsByRequestIdQuery, GetSkillsByRequestIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSkillsByRequestIdQuery, GetSkillsByRequestIdQueryVariables>(GetSkillsByRequestIdDocument, options);
+      }
+export function useGetSkillsByRequestIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSkillsByRequestIdQuery, GetSkillsByRequestIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSkillsByRequestIdQuery, GetSkillsByRequestIdQueryVariables>(GetSkillsByRequestIdDocument, options);
+        }
+export type GetSkillsByRequestIdQueryHookResult = ReturnType<typeof useGetSkillsByRequestIdQuery>;
+export type GetSkillsByRequestIdLazyQueryHookResult = ReturnType<typeof useGetSkillsByRequestIdLazyQuery>;
+export type GetSkillsByRequestIdQueryResult = Apollo.QueryResult<GetSkillsByRequestIdQuery, GetSkillsByRequestIdQueryVariables>;
+export const GetResourceRequestByIdDocument = gql`
+    query getResourceRequestById($id: BigInteger!) {
+  sharedResourceRequestById(id: $id) {
+    requester {
+      firstName
+    }
+    createdAt
+    taskDetails
+    project
+    pillar
+    startDate
+    endDate
+    status
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetResourceRequestByIdQuery__
+ *
+ * To run a query within a React component, call `useGetResourceRequestByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetResourceRequestByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetResourceRequestByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetResourceRequestByIdQuery(baseOptions: Apollo.QueryHookOptions<GetResourceRequestByIdQuery, GetResourceRequestByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetResourceRequestByIdQuery, GetResourceRequestByIdQueryVariables>(GetResourceRequestByIdDocument, options);
+      }
+export function useGetResourceRequestByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetResourceRequestByIdQuery, GetResourceRequestByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetResourceRequestByIdQuery, GetResourceRequestByIdQueryVariables>(GetResourceRequestByIdDocument, options);
+        }
+export type GetResourceRequestByIdQueryHookResult = ReturnType<typeof useGetResourceRequestByIdQuery>;
+export type GetResourceRequestByIdLazyQueryHookResult = ReturnType<typeof useGetResourceRequestByIdLazyQuery>;
+export type GetResourceRequestByIdQueryResult = Apollo.QueryResult<GetResourceRequestByIdQuery, GetResourceRequestByIdQueryVariables>;
 export const CreateResourceRequestDocument = gql`
     mutation createResourceRequest($resourceRequest: ResourceRequestInput) {
   createOrUpdateResourceRequest(resourceRequest: $resourceRequest) {

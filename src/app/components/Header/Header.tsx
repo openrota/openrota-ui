@@ -17,6 +17,7 @@ import {
   Button,
   ButtonVariant,
 } from '@patternfly/react-core';
+import { OptionsMenu, OptionsMenuItem, OptionsMenuToggle } from '@patternfly/react-core';
 import logo from '@app/images/Logo-Red_Hat-Middleware-A-White-RGB.svg';
 import imgAvatar from '@app/images/avatarImg.svg';
 import HelpIcon from '@patternfly/react-icons/dist/js/icons/help-icon';
@@ -34,7 +35,9 @@ export const Header: React.FC<HeaderProps> = () => {
   const auth = useAuth();
   const { t } = useTranslation();
   const [isUserToolbarDropdownOpen, setIsUserToolbarDropdownOpen] = useState(false);
+  const [isRequestToolbarDropdownOpen, setisRequestToolbarDropdownOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
+  const [isOpen, setisOpen] = useState(false);
   const [userName, setUserName] = useState("");
   useEffect(() => {
     auth?.getUsername().then(userName => setUserName(userName));
@@ -42,8 +45,15 @@ export const Header: React.FC<HeaderProps> = () => {
   const toggleUserToolbarDropdown = (toggle: boolean) => {
     setIsUserToolbarDropdownOpen(toggle);
   };
+  const toggleRequestToolbarDropdown = (toggle: boolean) => {
+    setisRequestToolbarDropdownOpen(toggle);
+  };
 
-  const onPageDropdownSelect = () => {
+  const onUserDropdownSelect = () => {
+    setIsUserToolbarDropdownOpen(!isUserToolbarDropdownOpen);
+  };
+
+  const onRequestDropdownSelect = () => {
     setIsUserToolbarDropdownOpen(!isUserToolbarDropdownOpen);
   };
 
@@ -61,9 +71,30 @@ export const Header: React.FC<HeaderProps> = () => {
     </DropdownGroup>,
   ];
 
+  const requestDropDownItems = [
+    <DropdownGroup key="request">
+      <DropdownItem key="View all Requests" href="#/view-resource-requests">{t('view requests')}</DropdownItem>
+      <DropdownItem key="Create Request" href="#/create-resource-request">{t('Create Request')}</DropdownItem>
+      <DropdownItem key="Add candidates" href="#/add-candidates">{t('add candidates')}</DropdownItem>
+    </DropdownGroup>,
+  ];
+
+
   const HeaderTools = (
     <PageHeaderTools>
       <PageHeaderToolsGroup>
+        <PageHeaderToolsItem
+          visibility={{ default: 'hidden', md: 'visible' }} /** this user dropdown is hidden on mobile sizes */
+        >
+          <Dropdown
+            isPlain
+            position="right"
+            onSelect={onRequestDropdownSelect}
+            isOpen={isRequestToolbarDropdownOpen}
+            toggle={<DropdownToggle onToggle={toggleRequestToolbarDropdown}>My Requests</DropdownToggle>}
+            dropdownItems={requestDropDownItems}
+          />
+        </PageHeaderToolsItem>
         <PageHeaderToolsItem>
           <Button aria-label="Help actions" variant={ButtonVariant.plain}>
             <HelpIcon />
@@ -75,7 +106,7 @@ export const Header: React.FC<HeaderProps> = () => {
           <Dropdown
             isPlain
             position="right"
-            onSelect={onPageDropdownSelect}
+            onSelect={onUserDropdownSelect}
             isOpen={isUserToolbarDropdownOpen}
             toggle={<DropdownToggle onToggle={toggleUserToolbarDropdown}>{userName}</DropdownToggle>}
             dropdownItems={userDropdownItems}
@@ -86,6 +117,9 @@ export const Header: React.FC<HeaderProps> = () => {
     </PageHeaderTools>
   );
 
+  function onToggle() {
+    setisOpen(!isOpen);
+  };
   const PageNav = (
     <Nav onSelect={onNavSelect} aria-label="Nav" variant="horizontal">
       <NavList>
@@ -100,12 +134,6 @@ export const Header: React.FC<HeaderProps> = () => {
         </NavItem>
         <NavItem itemId={3} isActive={activeItem === 3} to="#/roaster-management">
           Calendar
-        </NavItem>
-        <NavItem itemId={4} isActive={activeItem === 4} to="#/create-resource-request">
-          Create Resource Request
-        </NavItem>
-        <NavItem itemId={5} isActive={activeItem === 5} to="#/view-resource-requests">
-          All resource requests
         </NavItem>
       </NavList>
     </Nav>

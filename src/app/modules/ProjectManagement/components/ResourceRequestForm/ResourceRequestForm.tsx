@@ -6,6 +6,12 @@ import { Alert, PageSection, PageSectionVariants } from '@patternfly/react-core'
 import React, { useEffect, useState } from 'react';
 const ResourceRequestForm: React.FC = () => {
     const auth = useAuth();
+    const [skillsMap, setskillsMap] = useState({});
+    const [addResourceRequest] = useCreateResourceRequestMutation({
+        onCompleted: (data) => {
+            setSaveAlertVisible(true);
+        },
+    });
     const [getSRByMail, { loading: SrbyMailLoading, data: srByMail }] = useGetSharedResourceByEmailIdLazyQuery();
     const [saveAlertVisible, setSaveAlertVisible] = useState(false);
     const [formData, setFormData] = useState({});
@@ -18,11 +24,7 @@ const ResourceRequestForm: React.FC = () => {
         });
     }, [])
 
-    const [addResourceRequest] = useCreateResourceRequestMutation({
-        onCompleted: (data) => {
-            setSaveAlertVisible(true);
-        },
-    });
+
 
     const skillOptions = skills?.skill?.map(s => ({ label: s.name, value: s.id }));
 
@@ -38,14 +40,21 @@ const ResourceRequestForm: React.FC = () => {
             requester: {
                 id: srByMail?.sharedResourceByEmailId?.id
             },
+            skillProficiencies: values.skill.map(s => {
+                return {
+                    id: (skillsMap[s] != null ? skillsMap[s] : null),
+                    skill: {
+                        id: s
+                    },
+                    proficiencyLevel: 'BEGINNER'
+                }
+            }),
             taskDetails: values.taskDetails,
             pillar: values.pillar,
             project: values.project,
             startDate: values.startDate,
             endDate: values.endDate
         };
-        console.log(body);
-        console.log(values);
         addResourceRequest({ variables: { resourceRequest: body } });
 
     };

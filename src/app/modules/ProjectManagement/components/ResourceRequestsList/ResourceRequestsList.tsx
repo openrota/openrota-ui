@@ -84,7 +84,6 @@ const ResourceRequestList: React.FC = () => {
         <>
             {/* <TableFilterToolbar /> */}
             <PageSection variant={PageSectionVariants.light}>
-                {/* <MyTable rows={} cells={} actions={actionResolver}/> */}
                 <Table aria-label="Sortable Table" sortBy={sortBy} onSort={onSort} cells={columns} rows={rows} actionResolver={actionResolver}>
                     <TableHeader />
                     <TableBody />

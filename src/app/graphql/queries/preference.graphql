@@ -1,0 +1,21 @@
+mutation verifyDesignation ($designation: String) {
+  verifyDesignation(designation: $designation) {
+    isgranted
+    designationName
+  }
+}
+
+mutation accessrequest ($accessRequest: AccessRequestInput) {
+  createAccessRequest( accessRequest: $accessRequest) {
+    id
+  }
+}
+
+query getAllAccessRequests {
+  accessRequest {
+    id
+    status
+    reason
+    emailId
+  }
+}

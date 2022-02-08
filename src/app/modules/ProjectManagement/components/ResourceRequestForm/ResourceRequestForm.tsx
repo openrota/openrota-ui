@@ -1,12 +1,25 @@
-import { DynamicFormRenderer } from '@app/components';
+import { DynamicFormRenderer, MessageDisplayerComponent } from '@app/components';
 import { useAuth } from '@app/context';
-import { useCreateResourceRequestMutation, useGetSharedResourceByEmailIdLazyQuery, useSkillsQuery } from '@app/models';
+import { useCreateResourceRequestMutation, useGetSharedResourceByEmailIdLazyQuery, useSkillsQuery, useVerifyDesignationMutation } from '@app/models';
 import resourceRequestSchema from '@app/modules/ProjectManagement/schema/resource-request-form.json';
 import { Alert, PageSection, PageSectionVariants } from '@patternfly/react-core';
+import { SearchIcon } from '@patternfly/react-icons';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 const ResourceRequestForm: React.FC = () => {
+    
+    const history = useHistory();
     const auth = useAuth();
     const [skillsMap, setskillsMap] = useState({});
+
+    const [verifyDesignation] = useVerifyDesignationMutation({
+        onCompleted: (data) => {
+            if (data?.verifyDesignation?.isgranted == false) {
+                history.push("/request-access")
+              }
+        },
+    });
+    
     const [addResourceRequest] = useCreateResourceRequestMutation({
         onCompleted: (data) => {
             setSaveAlertVisible(true);
@@ -20,6 +33,7 @@ const ResourceRequestForm: React.FC = () => {
     useEffect(() => {
         auth?.getUserInfo().then(obj => {
             getSRByMail({ variables: { emailId: obj['email'] } });
+            verifyDesignation({ variables: { designation : "Associate Manageraaa, Software Engineering" }});
             setFormData({ requesterName: obj['firstName'], emailId: obj['email'] });
         });
     }, [])

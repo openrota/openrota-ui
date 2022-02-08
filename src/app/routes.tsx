@@ -10,6 +10,8 @@ const Dashboard = lazy(() => import('@app/modules/Dashboard/Dashboard'));
 const ResourceManagement = lazy(() => import('@app/modules/ResourceManagement/ResourceManagement'));
 const ProjectManagement = lazy(() => import('@app/modules/ProjectManagement/ProjectManagement'));
 const NewResourceRequest = lazy(() => import('@app/modules/ProjectManagement/components/ResourceRequestForm/ResourceRequestForm'));
+const RequestAccessForm = lazy(() => import('@app/modules/ProjectManagement/components/RequestAccessForm/RequestAccessForm'));
+const AccessRequestList = lazy(() => import('@app/modules/ProjectManagement/components/AccessRequestList/AccessRequestList'));
 const ResourceRequestList = lazy(() => import('@app/modules/ProjectManagement/components/ResourceRequestsList/ResourceRequestsList'));
 const RoasterManagement = lazy(() => import('@app/modules/RoasterManagement/RoasterManagement'));
 const ProfileManagement = lazy(() => import('@app/modules/ProfileManagement/ProfileManagement'));
@@ -55,6 +57,8 @@ const AppRoutes: React.FC = () => {
         <Route path="/create-resource-request" component={NewResourceRequest} />
         <Route path="/view-resource-requests" component={ResourceRequestList} />
         <Route path="/add-candidates" component={CandidateInvitation} />
+        <Route path="/request-access" component={RequestAccessForm} />
+        <Route path="/view-access-requests" component={AccessRequestList} />
       </Switch>
     </React.Suspense>
   );

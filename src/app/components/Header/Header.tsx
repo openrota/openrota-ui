@@ -74,6 +74,7 @@ export const Header: React.FC<HeaderProps> = () => {
   const requestDropDownItems = [
     <DropdownGroup key="request">
       <DropdownItem key="View all Requests" href="#/view-resource-requests">{t('view requests')}</DropdownItem>
+      <DropdownItem key="Openrota access requests" href="#/view-access-requests">{t('view access requests')}</DropdownItem>
       <DropdownItem key="Create Request" href="#/create-resource-request">{t('Create Request')}</DropdownItem>
       <DropdownItem key="Add candidates" href="#/add-candidates">{t('add candidates')}</DropdownItem>
     </DropdownGroup>,

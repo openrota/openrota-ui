@@ -1,0 +1,41 @@
+{
+    "title": "Request access",
+    "fields": [
+      {
+        "component": "text-field",
+        "name": "requesterName",
+        "label": "Requester Name",
+        "helperText": "",
+        "isRequired": true,
+        "isDisabled" : true,
+        "validate": [
+          {
+            "type": "required"
+          }
+        ]
+      },
+      {
+        "component": "text-field",
+        "name": "emailId",
+        "label": "Email",
+        "helperText": "",
+        "isRequired": true,
+        "isDisabled" : true,
+        "validate": [
+          {
+            "type": "required"
+          },
+          {
+            "type": "pattern",
+            "pattern": "[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$",
+            "message": "Enter valid email id"
+          }
+        ]
+      },
+      {
+        "component": "text-field",
+        "name": "reason",
+        "label": "Reason"
+      }
+    ]
+  }

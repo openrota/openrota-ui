@@ -31,7 +31,8 @@ module.exports = env => {
             path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/fonts'),
             path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/pficon'),
             path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/fonts'),
-            path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/pficon')
+            path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/pficon'),
+            path.resolve(__dirname, 'node_modules/@mui/material/utils')
           ],
           use: {
             loader: 'file-loader',

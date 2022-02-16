@@ -6,6 +6,8 @@ import { Alert, PageSection, PageSectionVariants } from '@patternfly/react-core'
 import { SearchIcon } from '@patternfly/react-icons';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 const ResourceRequestForm: React.FC = () => {
     
     const history = useHistory();
@@ -82,7 +84,9 @@ const ResourceRequestForm: React.FC = () => {
                         title="Successfully saved"
                     />
                 )}
+                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DynamicFormRenderer schema={resourceRequestSchema} initialValues={formData} onSubmit={onSubmit} actionMapper={actionMapper} />
+                </LocalizationProvider>
             </div>
         </PageSection>);
 }

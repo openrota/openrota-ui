@@ -1,6 +1,5 @@
 import { ResourceRequestStatus, useGetResourceRequestByIdLazyQuery, useGetResourceRequestsLazyQuery, useGetResourceRequestsQuery, useGetSkillsByRequestIdLazyQuery, useGetSkillsByRequestIdQuery } from '@app/models';
-import { Button, Label, Modal, ModalVariant, PageSection, PageSectionVariants } from '@patternfly/react-core';
-import { sortable, SortByDirection, TableHeader, TableText } from '@patternfly/react-table';
+import Modal from '@mui/material/Modal';
 import React, { useState } from 'react';
 import ViewResourceRequest from './ViewProjectModal';
 import { ResourceRequestsTable } from './ResourceRequestsTable';
@@ -76,93 +75,85 @@ const ResourceRequestList: React.FC = () => {
             </div>
         )
     }];
-const [columns, setColumns] = useState(initColumns);
-const [filter, setFilter] = useState({ location: [], name: [], status: [] });
-const [rows, setRows] = useState<any>(initRows);
-const [sortBy, setSortBy] = useState({});
-const [showViewProfile, setShowViewProfile] = useState(false);
-const [showCandidateProfile, setShowCandidateProfile] = useState(false);
-const [selectedRequestId, setSelectedRequestId] = useState(null);
-const [getResourceRequestById, { data: resourceRequestById }] = useGetResourceRequestByIdLazyQuery();
-const { data: skillByRequestId } = useGetSkillsByRequestIdQuery({ skip: !resourceRequestById, variables: { id: resourceRequestById?.sharedResourceRequestById?.id } });
+    const [columns, setColumns] = useState(initColumns);
+    const [filter, setFilter] = useState({ location: [], name: [], status: [] });
+    const [rows, setRows] = useState<any>(initRows);
+    const [sortBy, setSortBy] = useState({});
+    const [showViewProfile, setShowViewProfile] = useState(false);
+    const [showCandidateProfile, setShowCandidateProfile] = useState(false);
+    const [selectedRequestId, setSelectedRequestId] = useState(null);
+    const [getResourceRequestById, { data: resourceRequestById }] = useGetResourceRequestByIdLazyQuery();
+    const { data: skillByRequestId } = useGetSkillsByRequestIdQuery({ skip: !resourceRequestById, variables: { id: resourceRequestById?.sharedResourceRequestById?.id } });
 
 
-const { loading: loadingSharedResourceList, data: sharedResourceList } = useGetResourceRequestsQuery({
-    fetchPolicy: 'network-only',
-    onCompleted: (data) => {
-        skillByRequestId
-        setRows(data?.sharedResourceRequest?.map(s => { return { rowId: s?.id, cells: [s?.project, <TableText><a onClick={handleViewCandidateProfileModal}>Rishi</a></TableText>, s?.requester?.firstName, s?.pillar, s?.startDate, s?.endDate, <TableText>{s?.status == ResourceRequestStatus.Completed && <Label color="green">{s?.status}</Label>}{s?.status == ResourceRequestStatus.Pending && <Label color="red">{s?.status}</Label>}</TableText>] } }));
-    },
-});
-function onSort(_event, index, direction) {
-    const sortedRows = rows.sort((a, b) => (a[index] < b[index] ? -1 : a[index] > b[index] ? 1 : 0));
-    setSortBy({
-        index,
-        direction
+    const { loading: loadingSharedResourceList, data: sharedResourceList } = useGetResourceRequestsQuery({
+        fetchPolicy: 'network-only',
+        onCompleted: (data) => {
+            skillByRequestId
+            setRows(data?.sharedResourceRequest?.map(s => { return { rowId: s?.id, cells: [s?.project, <a onClick={handleViewCandidateProfileModal}>Rishi</a>, s?.requester?.firstName, s?.pillar, s?.startDate, s?.endDate, <>{s?.status == ResourceRequestStatus.Completed && <Chip label={s?.status} color="success" />}{s?.status == ResourceRequestStatus.Pending && <Chip label={s?.status} color="error" />}</>] } }));
+        },
     });
-    setRows(direction === SortByDirection.asc ? sortedRows : sortedRows.reverse());
-}
+    // function onSort(_event, index, direction) {
+    //     const sortedRows = rows.sort((a, b) => (a[index] < b[index] ? -1 : a[index] > b[index] ? 1 : 0));
+    //     setSortBy({
+    //         index,
+    //         direction
+    //     });
+    //     setRows(direction === SortByDirection.asc ? sortedRows : sortedRows.reverse());
+    // }
 
-function actionResolver(rowData, { rowIndex }) {
+    // function actionResolver(rowData, { rowIndex }) {
 
-    let requestActions: any = [];
+    //     let requestActions: any = [];
 
-    if (rowData.status.title === "PENDING") {
-        requestActions = [{
-            title: 'Approve',
-            onClick: (event, rowId, rowData, extra) =>
-                console.log(`clicked on Some action, on row ${rowId} of type ${rowData.type}`)
-        },
-        {
-            title: 'Reject',
-            onClick: (event, rowId, rowData, extra) =>
-                console.log(`clicked on Some action, on row ${rowId} of type ${rowData.type}`)
-        }];
-    }
-    return [
-        {
-            title: 'View',
-            onClick: (event, rowId, rowData, extra) => {
-                getResourceRequestById({ variables: { id: rowData.rowId } })
-                handleModalToggle();
-                console.log(rowData);
-            }
-        },
-        ...requestActions
-    ];
-}
+    //     if (rowData.status.title === "PENDING") {
+    //         requestActions = [{
+    //             title: 'Approve',
+    //             onClick: (event, rowId, rowData, extra) =>
+    //                 console.log(`clicked on Some action, on row ${rowId} of type ${rowData.type}`)
+    //         },
+    //         {
+    //             title: 'Reject',
+    //             onClick: (event, rowId, rowData, extra) =>
+    //                 console.log(`clicked on Some action, on row ${rowId} of type ${rowData.type}`)
+    //         }];
+    //     }
+    //     return [
+    //         {
+    //             title: 'View',
+    //             onClick: (event, rowId, rowData, extra) => {
+    //                 getResourceRequestById({ variables: { id: rowData.rowId } })
+    //                 handleModalToggle();
+    //                 console.log(rowData);
+    //             }
+    //         },
+    //         ...requestActions
+    //     ];
+    // }
 
-const handleViewCandidateProfileModal = (): void => {
-    setShowCandidateProfile(!showCandidateProfile);
-};
+    const handleViewCandidateProfileModal = (): void => {
+        setShowCandidateProfile(!showCandidateProfile);
+    };
 
-const handleModalToggle = (): void => {
-    setShowViewProfile(!showViewProfile);
-};
+    const handleModalToggle = (): void => {
+        setShowViewProfile(!showViewProfile);
+    };
 
-return (
-    <>
-        <div style={{ height: 400, width: '100%' }}>
-            <ResourceRequestsTable rows={rows} />
-            <Modal
-                variant={ModalVariant.large}
-                title="Request Details"
-                isOpen={showViewProfile}
-                onClose={handleModalToggle}
-                actions={[
-                    <Button key="confirm" variant="primary" onClick={handleModalToggle}>
-                        Confirm
-                    </Button>,
-                    <Button key="cancel" variant="link" onClick={handleModalToggle}>
-                        Cancel
-                    </Button>
-                ]}
-            >
-                <ViewResourceRequest resourceRequestObject={resourceRequestById?.sharedResourceRequestById} skills={skillByRequestId?.getSkillsByRequestId} />
-            </Modal>
-        </div>
+    return (
+        <>
+            <div style={{ height: 400, width: '100%' }}>
+                <ResourceRequestsTable rows={rows} />
+                <Modal
+                    open={showViewProfile}
+                    onClose={handleModalToggle}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <ViewResourceRequest resourceRequestObject={resourceRequestById?.sharedResourceRequestById} skills={skillByRequestId?.getSkillsByRequestId} />
+                </Modal>
+            </div>
 
-    </>);
+        </>);
 };
 export default ResourceRequestList;
 

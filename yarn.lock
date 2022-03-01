@@ -1424,16 +1424,6 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@data-driven-forms/common@*":
-  version "3.11.4"
-  resolved "https://registry.yarnpkg.com/@data-driven-forms/common/-/common-3.11.4.tgz#bb307127b28ac32a11f0add8b599e2943d4acbee"
-  integrity sha512-se+4glU34bflG8dJTENZhMPJwbPKeGmN3c7cA/74x4wc0JHyEm4tfsBt7y3hc1VO6W3LuZTg46NQMeUsdQD9LQ==
-  dependencies:
-    clsx "^1.0.4"
-    lodash "^4.17.15"
-    prop-types "^15.7.2"
-    react-select "^3.0.8"
-
 "@data-driven-forms/common@^3.16.6":
   version "3.16.6"
   resolved "https://registry.yarnpkg.com/@data-driven-forms/common/-/common-3.16.6.tgz#ef11d8aae9fd81aae582a014224d578cc310cc30"
@@ -1470,16 +1460,6 @@
     clsx "^1.0.4"
     date-fns "^2.16.1"
     lodash "^4.17.21"
-
-"@data-driven-forms/pf4-component-mapper@^3.11.4":
-  version "3.11.4"
-  resolved "https://registry.yarnpkg.com/@data-driven-forms/pf4-component-mapper/-/pf4-component-mapper-3.11.4.tgz#e8a070c82e75c1fa7f392afb8f62758ea4cc7cd8"
-  integrity sha512-jeb5eqvd9buP6fZPzHE+fckYGEIsyMPAmY1LSzJ6G2oZIoV1XxpqhuAsCdMaZOjkqY6VsTU2gYwbpgQR1SboxQ==
-  dependencies:
-    "@data-driven-forms/common" "*"
-    downshift "^5.4.3"
-    lodash "^4.17.21"
-    prop-types "^15.7.2"
 
 "@data-driven-forms/react-form-renderer@^3.11.4":
   version "3.11.4"
@@ -6169,7 +6149,7 @@ compression@^1.7.4:
     safe-buffer "5.1.2"
     vary "~1.1.2"
 
-compute-scroll-into-view@^1.0.14, compute-scroll-into-view@^1.0.17:
+compute-scroll-into-view@^1.0.17:
   version "1.0.17"
   resolved "https://registry.yarnpkg.com/compute-scroll-into-view/-/compute-scroll-into-view-1.0.17.tgz#6a88f18acd9d42e9cf4baa6bec7e0522607ab7ab"
   integrity sha512-j4dx+Fb0URmzbwwMUrhqWM2BEWHdFGx+qZ9qqASHRPqvTYdqvWnHg0H1hIbcyLnvgnoNAVMlwkepyqM3DaIFUg==
@@ -7190,16 +7170,6 @@ dotenv@^8.0.0, dotenv@^8.2.0:
   version "8.6.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.6.0.tgz#061af664d19f7f4d8fc6e4ff9b584ce237adcb8b"
   integrity sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==
-
-downshift@^5.4.3:
-  version "5.4.7"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-5.4.7.tgz#2ab7b0512cad33011ee6f29630f9a7bb74dff2b5"
-  integrity sha512-xaH0RNqwJ5pAsyk9qBmR9XJWmg1OOWMfrhzYv0NH2NjJxn77S3zBcfClw341UfhGyKg5v+qVqg/CQzvAgBNCXQ==
-  dependencies:
-    "@babel/runtime" "^7.10.2"
-    compute-scroll-into-view "^1.0.14"
-    prop-types "^15.7.2"
-    react-is "^16.13.1"
 
 downshift@^6.0.15:
   version "6.1.3"

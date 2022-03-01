@@ -2,8 +2,8 @@ import { DynamicFormRenderer, MessageDisplayerComponent } from '@app/components'
 import { useAuth } from '@app/context';
 import { useCreateResourceRequestMutation, useGetSharedResourceByEmailIdLazyQuery, useSkillsQuery, useVerifyDesignationMutation } from '@app/models';
 import resourceRequestSchema from '@app/modules/ProjectManagement/schema/resource-request-form.json';
-import { Alert, PageSection, PageSectionVariants } from '@patternfly/react-core';
-import { SearchIcon } from '@patternfly/react-icons';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -76,19 +76,16 @@ const ResourceRequestForm: React.FC = () => {
     };
 
     return (
-        <PageSection variant={PageSectionVariants.light}>
+        <Box sx={{ display: 'flex' }}>
             <div style={{ marginLeft: '20%', marginRight: '20%' }}>
                 {saveAlertVisible && (
-                    <Alert
-                        variant="success"
-                        title="Successfully saved"
-                    />
+                    <Alert severity="success">Successfully saved</Alert>
                 )}
                  <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DynamicFormRenderer schema={resourceRequestSchema} initialValues={formData} onSubmit={onSubmit} actionMapper={actionMapper} />
                 </LocalizationProvider>
             </div>
-        </PageSection>);
+        </Box>);
 }
 
 export default ResourceRequestForm;

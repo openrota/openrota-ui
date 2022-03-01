@@ -27,11 +27,6 @@ module.exports = env => {
           // only process modules with this loader
           // if they live under a 'fonts' or 'pficon' directory
           include: [
-            path.resolve(__dirname, 'node_modules/patternfly/dist/fonts'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/fonts'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/pficon'),
-            path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/fonts'),
-            path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/pficon'),
             path.resolve(__dirname, 'node_modules/@mui/material/utils')
           ],
           use: {
@@ -101,13 +96,6 @@ module.exports = env => {
           test: /\.(jpg|jpeg|png|gif)$/i,
           include: [
             path.resolve(__dirname, 'src'),
-            path.resolve(__dirname, 'node_modules/patternfly'),
-            path.resolve(__dirname, 'node_modules/@patternfly/patternfly/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-styles/css/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-core/dist/styles/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-core/node_modules/@patternfly/react-styles/css/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-table/node_modules/@patternfly/react-styles/css/assets/images'),
-            path.resolve(__dirname, 'node_modules/@patternfly/react-inline-edit-extension/node_modules/@patternfly/react-styles/css/assets/images')
           ],
           use: [
             {

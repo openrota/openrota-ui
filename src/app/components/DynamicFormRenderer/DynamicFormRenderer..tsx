@@ -1,8 +1,8 @@
 import React from 'react';
-import { Grid, GridItem } from '@patternfly/react-core';
+import Grid from '@mui/material/Grid'
 import FormRenderer, { ActionMapper, FormRendererProps } from '@data-driven-forms/react-form-renderer/form-renderer';
-import FormTemplate from '@data-driven-forms/pf4-component-mapper/form-template';
 import muiComponentMapper from '@data-driven-forms/mui-component-mapper/component-mapper';
+import FormTemplate from '@data-driven-forms/mui-component-mapper/form-template';
 import { ComponentMapper, Field } from '@data-driven-forms/react-form-renderer/common-types';
 import useFormApi from '@data-driven-forms/react-form-renderer/use-form-api';
 
@@ -17,9 +17,9 @@ const ColumnLayout = ({ fields, ...props }) => {
   const columnSize: any = column && column <= 12 ? 12 / column : 12;
 
   return (
-    <Grid hasGutter xl={columnSize}>
+    <Grid container spacing={3}>
       {fields?.map((field: Field) => (
-        <GridItem key={field.name}>{renderForm([field])}</GridItem>
+        <Grid item xs key={field.name}>{renderForm([field])}</Grid>
       ))}
     </Grid>
   );

@@ -1,29 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Button,
-    ButtonVariant,
-    Bullseye,
-    DataToolbar,
-    DataToolbarItem,
-    DataToolbarContent,
-    DataToolbarFilter,
-    DataToolbarToggleGroup,
-    DataToolbarGroup,
-    Dropdown,
-    DropdownItem,
-    DropdownPosition,
-    DropdownToggle,
-    InputGroup,
-    Title,
-    Select,
-    SelectOption,
-    SelectVariant,
-    EmptyState,
-    EmptyStateIcon,
-    EmptyStateBody,
-    EmptyStateSecondaryActions
-} from '@patternfly/react-core';
-import { SearchIcon, FilterIcon } from '@patternfly/react-icons';
 
 const TableFilterToolbar: React.FunctionComponent = () => {
 
@@ -52,20 +27,20 @@ const TableFilterToolbar: React.FunctionComponent = () => {
 
     return (
         <React.Fragment>
-            <DataToolbar
+            {/* <DataToolbar
                 id="data-toolbar-with-chip-groups"
                 clearAllFilters={onDelete}
                 collapseListedFiltersBreakpoint="xl"
             >
                 <DataToolbarContent>
                     <DataToolbarToggleGroup toggleIcon={<FilterIcon />} breakpoint="xl">
-                        <DataToolbarGroup variant="filter-group">
+                        <DataToolbarGroup variant="filter-group"> */}
                             {/* {this.buildCategoryDropdown()}
                             {this.buildFilterDropdown()} */}
-                        </DataToolbarGroup>
+                        {/* </DataToolbarGroup>
                     </DataToolbarToggleGroup>
                 </DataToolbarContent>
-            </DataToolbar>
+            </DataToolbar> */}
         </React.Fragment>
 
     )

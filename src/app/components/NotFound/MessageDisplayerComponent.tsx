@@ -1,14 +1,8 @@
 import React, { ComponentType } from 'react';
-import {
-  Title,
-  Button,
-  EmptyState,
-  EmptyStateIcon,
-  EmptyStateBody,
-  EmptyStateSecondaryActions,
-  PageSection
-} from '@patternfly/react-core';
-import CubesIcon from '@patternfly/react-icons/dist/esm/icons/cubes-icon';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
 import { useHistory } from 'react-router-dom';
 import { Maybe } from '@app/models';
 
@@ -30,18 +24,20 @@ const MessageDisplayerComponent: React.FunctionComponent<MessageDisplayerCompone
   }
 
   return (
-    <PageSection>
-      <EmptyState>
-        <EmptyStateIcon icon={icon} />
-        <Title headingLevel="h4" size="lg">
-          {title}
-        </Title>
-        <EmptyStateBody>
-          {mainMessage}
-        </EmptyStateBody>
-        <Button variant="primary">Go to home</Button>
-      </EmptyState>
-    </PageSection>
+    <Box
+      sx={{
+        mx: 'auto',
+        p: 1,
+        m: 1,
+        textAlign: 'center',
+        fontSize: '0.875rem',
+        fontWeight: '700',
+      }}
+    >
+      <IconButton aria-label="delete" disabled color="primary" sx={{ fontSize: 80 }}>{icon}</IconButton>
+      <Typography variant="h4">{title}</Typography>
+      <Typography >{mainMessage}</Typography>
+    </Box>
   )
 };
 

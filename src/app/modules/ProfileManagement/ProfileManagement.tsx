@@ -1,13 +1,13 @@
 import React from 'react';
-import { PageSection, PageSectionVariants } from '@patternfly/react-core';
+import Box from '@mui/material/Box';
 import { CandidateProfile } from '@app/modules/ProfileManagement/components';
 
 const ProfileManagement: React.FC = () => (
-  <PageSection variant={PageSectionVariants.light}>
+  <Box sx={{ display: 'flex' }}>
     <div style={{ marginLeft: '20%', marginRight: '20%' }}>
       <CandidateProfile />
     </div>
-  </PageSection>
+  </Box>
 );
 
 export default ProfileManagement;

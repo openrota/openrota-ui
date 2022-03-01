@@ -1,10 +1,4 @@
 // import { InvitationStatus, useGetAllInvitationsQuery, useGetInvitationByIdLazyQuery } from '@app/models';
-// import {
-//     Button, Label, Modal, ModalVariant, DescriptionList,
-//     DescriptionListTerm,
-//     DescriptionListGroup,
-//     DescriptionListDescription
-// } from '@patternfly/react-core';
 
 import React, { useEffect, useState } from 'react';
 

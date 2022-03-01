@@ -3,7 +3,8 @@ import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 //import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Loading, MessageDisplayerComponent } from '@app/components';
 import { useVerifyInvitationMutation } from './models';
-import { SearchIcon, ThumbsUpIcon, TimesIcon } from '@patternfly/react-icons';
+import SearchIcon from '@mui/icons-material/Search';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useAuth } from './context';
 
 const Dashboard = lazy(() => import('@app/modules/Dashboard/Dashboard'));
@@ -42,7 +43,7 @@ const AppRoutes: React.FC = () => {
     return <MessageDisplayerComponent icon={SearchIcon} mainMessage={verifyInvitation?.verifyInvitation?.responseText} title="Not found" />
   }
   if (verifyInvitation?.verifyInvitation?.responseStatus == 400) {
-    return <MessageDisplayerComponent icon={TimesIcon} mainMessage={verifyInvitation?.verifyInvitation?.responseText} title="Invalid Invitation" />
+    return <MessageDisplayerComponent icon={AccessTimeIcon} mainMessage={verifyInvitation?.verifyInvitation?.responseText} title="Invalid Invitation" />
   }
 
   return (

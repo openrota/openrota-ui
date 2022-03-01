@@ -1,12 +1,10 @@
 import React from 'react';
-import { PageSection, Title } from '@patternfly/react-core';
+import Box from '@mui/material/Box';
 
 const RoasterManagement: React.FC = () => (
-  <PageSection>
-    <Title headingLevel="h1" size="lg">
+  <Box sx={{ display: 'flex' }}>
       Roaster Management
-    </Title>
-  </PageSection>
+  </Box>
 );
 
 export default RoasterManagement;

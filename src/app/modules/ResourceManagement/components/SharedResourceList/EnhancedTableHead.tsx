@@ -14,9 +14,9 @@ interface EnhancedTableProps {
   }
 
   interface Data {
-    project: string;
-    employee: string;
-    manager: string;
+    project: number;
+    employee: number;
+    manager: number;
     pillar: string;
     startDate: Date;
     endDate: Date;
@@ -40,52 +40,34 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
 
       const headCells: readonly HeadCell[] = [
         {
-          id: 'project',
+          id: 'name',
           numeric: false,
           disablePadding: true,
-          label: 'Project',
+          label: 'Name',
         },
         {
-          id: 'employee',
-          numeric: true,
+          id: 'emailId',
+          numeric: false,
           disablePadding: false,
-          label: 'Employee',
+          label: 'EmailId',
         },
         {
-          id: 'manager',
-          numeric: true,
+          id: 'designation',
+          numeric: false,
           disablePadding: false,
-          label: 'Manager',
+          label: 'Designation',
         },
         {
-          id: 'pillar',
-          numeric: true,
+          id: 'skills',
+          numeric: false,
           disablePadding: false,
-          label: 'Pillar',
-        },
-        {
-          id: 'startDate',
-          numeric: true,
-          disablePadding: false,
-          label: 'Start Date',
-        },
-        {
-          id: 'endDate',
-          numeric: true,
-          disablePadding: false,
-          label: 'End Date',
+          label: 'Skills',
         },
         {
           id: 'status',
           numeric: true,
           disablePadding: false,
           label: 'Status',
-        },
-        {
-          id: 'actions',
-          numeric: true,
-          disablePadding: false,
-          label: '',
         }
       ];
   

@@ -2,9 +2,11 @@ import { DynamicFormRenderer } from '@app/components';
 import { useAuth } from '@app/context';
 import { Invitation, Maybe, useCreateInvitationMutation, useGetAllInvitationsLazyQuery, useGetAllInvitationsQuery } from '@app/models';
 import resourceRequestSchema from '@app/modules/ResourceManagement/schema/invite-candidates-form.json';
-import { Alert, PageSection, PageSectionVariants } from '@patternfly/react-core';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
 import React, { useEffect, useState } from 'react';
 import CandidateInvitationList from './CandidateInvitationsList';
+
 const CandidateInvitation: React.FC = () => {
     // const auth = useAuth();
     const [invitations, setInvitations] = useState<any>(undefined);
@@ -45,26 +47,18 @@ const CandidateInvitation: React.FC = () => {
     };
 
     return (
-        <PageSection variant={PageSectionVariants.light}>
+        <Box sx={{ display: 'flex' }}>
             <div style={{ marginLeft: '20%', marginRight: '20%' }}>
                 {saveAlertVisible?.visible && saveAlertVisible?.responseStatus == 200 && (
-                    <Alert
-                        variant="success"
-                        timeout={2000}
-                        title="Successfully saved"
-                    />
+                    <Alert severity="success">Successfully saved</Alert>
                 )}
                 {saveAlertVisible?.visible && saveAlertVisible?.responseStatus == 409 && (
-                    <Alert
-                        variant="warning"
-                        timeout={2000}
-                        title="Candidate is already invited!"
-                    />
+                    <Alert severity="error">Candidate is already invited!</Alert>
                 )}
                 <DynamicFormRenderer schema={resourceRequestSchema} initialValues={formData} onSubmit={onSubmit} />
-                <CandidateInvitationList invitations={invitations} />
+                <CandidateInvitationList />
             </div>
-        </PageSection>);
+        </Box>);
 }
 
 export default CandidateInvitation;

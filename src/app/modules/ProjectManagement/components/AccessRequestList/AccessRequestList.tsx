@@ -2,6 +2,7 @@ import { InvitationStatus, ResourceRequestStatus, useGetAllAccessRequestsQuery, 
 import { Button, Label, Modal, ModalVariant, PageSection, PageSectionVariants } from '@patternfly/react-core';
 import { sortable, SortByDirection, Table, TableBody, TableHeader, TableText } from '@patternfly/react-table';
 import React, { useState } from 'react';
+import { AccessRequestsTable } from './AccessRequestsTable';
 
 const initColumns = [
     { title: 'Email Id', transforms: [sortable] },
@@ -62,13 +63,13 @@ const AccessRequestList: React.FC = () => {
     return (
         <>
             {/* <TableFilterToolbar /> */}
-            <PageSection variant={PageSectionVariants.light}>
+            {/* <PageSection variant={PageSectionVariants.light}>
                 <Table aria-label="Sortable Table" sortBy={sortBy} onSort={onSort} cells={columns} rows={rows} actionResolver={actionResolver}>
                     <TableHeader />
                     <TableBody />
                 </Table>
-            </PageSection>
-
+            </PageSection> */}
+            <AccessRequestsTable rows={rows}/>
         </>);
 };
 export default AccessRequestList;

@@ -1,3 +1,4 @@
+import React from 'react';
 import Table from '@mui/material/Table';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -8,10 +9,8 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import React from 'react';
 import { EnhancedTableHead } from './EnhancedTableHead';
 import Button from '@mui/material/Button';
 import Popper, { PopperPlacementType } from '@mui/material/Popper';
@@ -21,6 +20,7 @@ import Dialog from '@mui/material/Dialog';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import TableEmptyData from '../../../../components/TableEmptyData/TableEmptyData';
 
 interface Data {
     project: number;
@@ -30,11 +30,12 @@ interface Data {
     startDate: Date;
     endDate: Date;
     status: string;
-  }
+    actions: JSX.Element;
+}
 
 type Order = 'asc' | 'desc';
 
-export const TableDemo = ({ rows }) => {
+export const AccessRequestsTable = ({ rows }) => {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Data>('status');
     const [selected, setSelected] = React.useState<readonly string[]>([]);
@@ -47,7 +48,7 @@ export const TableDemo = ({ rows }) => {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>): void => {
         if (event.target.checked) {
             const newSelecteds = rows.map((n) => n.name);
             setSelected(newSelecteds);
@@ -55,11 +56,12 @@ export const TableDemo = ({ rows }) => {
         }
         setSelected([]);
     };
+    console.log('emptyRows', emptyRows)
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
         property: keyof Data,
-    ) => {
+    ): void => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -99,7 +101,7 @@ export const TableDemo = ({ rows }) => {
             : (a, b) => -descendingComparator(a, b, orderBy);
     }
 
-    const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+    const handleClick = (event: React.MouseEvent<unknown>, name: string): void => {
         const selectedIndex = selected.indexOf(name);
         let newSelected: readonly string[] = [];
 
@@ -115,18 +117,17 @@ export const TableDemo = ({ rows }) => {
                 selected.slice(selectedIndex + 1),
             );
         }
-
         setSelected(newSelected);
     };
 
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (event: unknown, newPage: number): void => {
         setPage(newPage);
-      };
-    
-      const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    };
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-      };
+    };
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -170,38 +171,28 @@ export const TableDemo = ({ rows }) => {
                                             scope="row"
                                             padding="none"
                                         >
-                                            {row.project}
+                                            {row.emailId}
                                         </TableCell>
-                                        <TableCell align="right">{row.employee}</TableCell>
-                                        <TableCell align="right">{row.manager}</TableCell>
-                                        <TableCell align="right">{row.pillar}</TableCell>
-                                        <TableCell align="right">{row.startDate}</TableCell>
-                                        <TableCell align="right">{row.endDate}</TableCell>
+                                        <TableCell align="right">{row.reason}</TableCell>
                                         <TableCell align="right">{row.status}</TableCell>
                                     </TableRow>
                                 );
                             })}
-                        {emptyRows > 0 && (
-                            <TableRow
-                                style={{
-                                    height: (dense ? 33 : 53) * emptyRows,
-                                }}
-                            >
-                                <TableCell colSpan={6} >test</TableCell>
-                            </TableRow>
+                        {rows.length === 0 && (
+                            <TableEmptyData />
                         )}
                     </TableBody>
                 </Table>
             </TableContainer>
             <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
         </Box>
     )
 }
@@ -230,7 +221,7 @@ const EnhancedTableToolbar = () => {
                 pl: { sm: 2 },
                 pr: { xs: 1, sm: 1 }
             }}
-            style={{ display: 'flex', flexDirection: 'row-reverse'}}
+            style={{ display: 'flex', flexDirection: 'row-reverse' }}
         >
             <Tooltip title="Filter list">
                 <Button variant="outlined" onClick={handleClick('bottom-start')} startIcon={<FilterListIcon />}>
@@ -264,11 +255,11 @@ const EnhancedTableToolbar = () => {
                                             <FormControlLabel control={<Checkbox defaultChecked />} label="Error" />
                                         </FormGroup>
                                     </FormControl>
-                                    
+
                                 </div>
                                 <div style={{ padding: '30px', width: '500px' }}>
                                     <Button variant="contained" onClick={handleClose}>Apply</Button>
-                                    <Button variant="outlined" style={{marginLeft: '10px'}} onClick={handleClose}>Cancel</Button>
+                                    <Button variant="outlined" style={{ marginLeft: '10px' }} onClick={handleClose}>Cancel</Button>
                                 </div>
                             </Paper>
                         </Fade>

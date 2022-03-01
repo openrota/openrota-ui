@@ -1,11 +1,11 @@
 import React from 'react';
-import { PageSection, Title, PageSectionVariants } from '@patternfly/react-core';
+import Box from '@mui/material/Box';
 import {SharedResourceList } from '@app/modules/ResourceManagement/components';
 
 const ResourceManagement: React.FC = () => (
-  <PageSection variant={PageSectionVariants.light}>
+  <Box sx={{ display: 'flex' }}>
     <SharedResourceList />
-  </PageSection>
+  </Box>
 );
 
 export default ResourceManagement;

@@ -1,5 +1,4 @@
 import React, { FunctionComponent, ReactNode, useState } from 'react';
-import { Page } from '@patternfly/react-core';
 import { Header } from '@app/components';
 import Box from '@mui/material/Box';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';

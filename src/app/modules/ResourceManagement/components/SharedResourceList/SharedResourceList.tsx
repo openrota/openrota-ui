@@ -10,7 +10,7 @@ const SharedResourceList: React.FC = () => {
 
     const { loading: loadingSharedResourceList, data: sharedResourceList } = useGetAllSharedResourceQuery({
         onCompleted: (data) => {
-            setRows(data?.sharedResource?.map(s => { return [s?.firstName, s?.emailId, s?.designation, "", s?.status] }));
+            setRows(data?.sharedResource?.map(s => { return {name:s?.firstName, emailId:s?.emailId, designation:s?.designation, skills:"", status:s?.status} }));
         },
     });
     // function onSort(_event, index, direction) {

@@ -1,26 +1,26 @@
+import PageTitle from '@app/components/PageTitle/PageTitle';
 import { InvitationStatus, ResourceRequestStatus, useGetAllAccessRequestsQuery, useGetResourceRequestByIdLazyQuery, useGetResourceRequestsLazyQuery, useGetResourceRequestsQuery, useGetSkillsByRequestIdLazyQuery, useGetSkillsByRequestIdQuery } from '@app/models';
 import Chip from '@mui/material/Chip';
 import React, { useState } from 'react';
 import { AccessRequestsTable } from './AccessRequestsTable';
 
-const initColumns = [
-    // { title: 'Email Id', transforms: [sortable] },
-    // { title: 'Reason' },
-    // { title: 'Status' }
-];
-
-const initRows = [];
 
 const AccessRequestList: React.FC = () => {
-    const [columns, setColumns] = useState(initColumns);
-    const [filter, setFilter] = useState({ location: [], name: [], status: [] });
-    const [rows, setRows] = useState<any>(initRows);
-    const [sortBy, setSortBy] = useState({});
-
+    const [rows, setRows] = useState<any>([]);
+    
     const { loading: loadingAccessRequestList, data: AccessRequestList } = useGetAllAccessRequestsQuery({
         fetchPolicy: 'network-only',
         onCompleted: (data) => {
-            setRows(data?.accessRequest?.map(s => { return { rowId: s?.id, cells: [<><a>{s?.emailId}</a></>, s?.reason, <>{s?.status == InvitationStatus.Completed && <Chip label={s?.status} color="success" />}{s?.status == InvitationStatus.Pending && <Chip label={s?.status} color="error" />}</>] } }));
+            setRows(data?.accessRequest?.map(s => { return { 
+                emailId: <><a>{s?.emailId}</a></>, 
+                reason: s?.reason, 
+                status: 
+                    <>
+                        {s?.status == InvitationStatus.Completed && <Chip label={s?.status} color="success" />}
+                        {s?.status == InvitationStatus.Pending && <Chip label={s?.status} color="warning" />}
+                    </> 
+                } 
+            }));
         },
     });
     // function onSort(_event, index, direction) {
@@ -61,15 +61,10 @@ const AccessRequestList: React.FC = () => {
     // }
     return (
         <>
-            {/* <TableFilterToolbar /> */}
-            {/* <PageSection variant={PageSectionVariants.light}>
-                <Table aria-label="Sortable Table" sortBy={sortBy} onSort={onSort} cells={columns} rows={rows} actionResolver={actionResolver}>
-                    <TableHeader />
-                    <TableBody />
-                </Table>
-            </PageSection> */}
+            <PageTitle title={'Access requests'} />
             <AccessRequestsTable rows={rows}/>
         </>);
 };
+
 export default AccessRequestList;
 

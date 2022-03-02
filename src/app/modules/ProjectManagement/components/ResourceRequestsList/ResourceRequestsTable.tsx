@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Table from '@mui/material/Table';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -21,11 +21,17 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import TableEmptyData from '../../../../components/TableEmptyData/TableEmptyData';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { ResourceRequestStatus } from '@app/models'
+import Chip from '@mui/material/Chip';
 
 interface Data {
     project: number;
-    employee: number;
-    manager: number;
+    employee: JSX.Element;
+    manager: string;
     pillar: string;
     startDate: Date;
     endDate: Date;
@@ -35,13 +41,16 @@ interface Data {
 
 type Order = 'asc' | 'desc';
 
-export const ResourceRequestsTable = ({ rows }) => {
+export const ResourceRequestsTable = ({ rows, getResourceRequestById, handleModalToggle }) => {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Data>('status');
     const [selected, setSelected] = React.useState<readonly string[]>([]);
     const [dense, setDense] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+    const [anchorEl, setAnchorEl] = useState<any>(null);
+    const open = Boolean(anchorEl);
 
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
@@ -56,7 +65,6 @@ export const ResourceRequestsTable = ({ rows }) => {
         }
         setSelected([]);
     };
-    console.log('emptyRows', emptyRows)
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -130,6 +138,37 @@ export const ResourceRequestsTable = ({ rows }) => {
         setPage(0);
     };
 
+    const handleActionsClick = (id, event: React.MouseEvent<HTMLButtonElement>): void => {
+        console.log('called')
+        setAnchorEl(event?.currentTarget)
+    };
+
+    const handleClose = (): void => {
+        setAnchorEl(null);
+    };
+
+    const viewAction = (rowData) => {
+        getResourceRequestById({ variables: { id: rowData.rowId } })
+        handleModalToggle();
+        handleClose();
+    }
+
+    const actionItems = (rowData): JSX.Element[] => {
+
+        let requestActions: JSX.Element[] | [] = [];
+
+        if (rowData.status === ResourceRequestStatus.Pending) {
+            requestActions = [
+                <MenuItem key={0} onClick={(e) => handleClose()}>Approve</MenuItem>,
+                <MenuItem key={1} onClick={(e) => handleClose()}>Reject</MenuItem>
+            ];
+        }
+        return [
+            ...requestActions,
+            <MenuItem key={2} onClick={(e) => viewAction(rowData)}>View</MenuItem>
+        ];
+    }
+
     return (
         <Box sx={{ width: '100%' }}>
             <EnhancedTableToolbar />
@@ -179,8 +218,36 @@ export const ResourceRequestsTable = ({ rows }) => {
                                         <TableCell align="right">{row.pillar}</TableCell>
                                         <TableCell align="right">{row.startDate}</TableCell>
                                         <TableCell align="right">{row.endDate}</TableCell>
-                                        <TableCell align="right">{row.status}</TableCell>
-                                        <TableCell align="right">{row.actions}</TableCell>
+                                        <TableCell align="right">
+                                            {row?.status == ResourceRequestStatus.Completed && <Chip label={row?.status} color="success" />}
+                                            {row?.status == ResourceRequestStatus.Pending && <Chip label={row?.status} color="warning" />}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <div>
+                                                <IconButton
+                                                    aria-label="more"
+                                                    id="long-button"
+                                                    aria-controls={open ? 'long-menu' : undefined}
+                                                    aria-expanded={open ? 'true' : undefined}
+                                                    aria-haspopup="true"
+                                                    onClick={(e) => handleActionsClick(index, e)}
+                                                >
+                                                    <MoreVertIcon />
+                                                </IconButton>
+                                                <Menu
+                                                    id="long-menu"
+                                                    MenuListProps={{
+                                                        'aria-labelledby': 'long-button',
+                                                    }}
+                                                    anchorEl={anchorEl}
+                                                    keepMounted
+                                                    open={open}
+                                                    onClose={(e) => handleClose()}
+                                                >
+                                                    {actionItems(row)}
+                                                </Menu>
+                                            </div>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}

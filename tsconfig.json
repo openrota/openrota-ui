@@ -21,7 +21,6 @@
     "paths": {
       "@app/*": ["src/app/*"],
       "@i18n/*": ["src/i18n/*"],
-      "@assets/*": []
     },
     "importHelpers": true,
     "skipLibCheck": true

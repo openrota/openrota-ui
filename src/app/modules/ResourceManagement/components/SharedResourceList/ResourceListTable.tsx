@@ -157,10 +157,10 @@ const ResourceListTable = ({ rows }) => {
                                         >
                                             {row.name}
                                         </TableCell>
-                                        <TableCell align="right">{row.emailId}</TableCell>
-                                        <TableCell align="right">{row.designation}</TableCell>
-                                        <TableCell align="right">{row.skills}</TableCell>
-                                        <TableCell align="right">{row.status}</TableCell>
+                                        <TableCell >{row.emailId}</TableCell>
+                                        <TableCell >{row.designation}</TableCell>
+                                        <TableCell >{row.skills}</TableCell>
+                                        <TableCell >{row.status}</TableCell>
                                     </TableRow>
                                 );
                             })}

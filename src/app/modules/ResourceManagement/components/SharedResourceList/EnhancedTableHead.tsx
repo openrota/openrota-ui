@@ -65,7 +65,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
         },
         {
           id: 'status',
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: 'Status',
         }

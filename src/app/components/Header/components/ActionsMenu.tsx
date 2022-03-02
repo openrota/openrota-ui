@@ -60,7 +60,7 @@ const ActionsMenu = () => {
                 <MenuItem onClick={handleViewRequest}>View requests</MenuItem>
                 <MenuItem onClick={handleViewAccessRequest}>View access requests</MenuItem>
                 <MenuItem onClick={handleCreateRequest}>Create Request</MenuItem>
-                <MenuItem onClick={handleAddCandidates}>Add candidates</MenuItem>
+                <MenuItem onClick={handleAddCandidates}>Add candidate</MenuItem>
             </Menu>
         </div>
     )

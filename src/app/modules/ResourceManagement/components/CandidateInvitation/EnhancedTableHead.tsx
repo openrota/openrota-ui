@@ -14,10 +14,7 @@ interface EnhancedTableProps {
   }
 
   interface Data {
-    name: string;
     emailId: string;
-    designation: string;
-    skills: string[];
     status: string;
     actions: string;
   }
@@ -38,28 +35,10 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
 
       const headCells: readonly HeadCell[] = [
         {
-          id: 'name',
-          numeric: false,
-          disablePadding: true,
-          label: 'Name',
-        },
-        {
           id: 'emailId',
           numeric: false,
           disablePadding: false,
           label: 'EmailId',
-        },
-        {
-          id: 'designation',
-          numeric: false,
-          disablePadding: false,
-          label: 'Designation',
-        },
-        {
-          id: 'skills',
-          numeric: false,
-          disablePadding: false,
-          label: 'Skills',
         },
         {
           id: 'status',

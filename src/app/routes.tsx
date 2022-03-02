@@ -57,7 +57,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/profile-management" component={ProfileManagement} />
         <Route path="/create-resource-request" component={NewResourceRequest} />
         <Route path="/view-resource-requests" component={ResourceRequestList} />
-        <Route path="/add-candidates" component={CandidateInvitation} />
+        <Route path="/add-candidate" component={CandidateInvitation} />
         <Route path="/request-access" component={RequestAccessForm} />
         <Route path="/view-access-requests" component={AccessRequestList} />
       </Switch>

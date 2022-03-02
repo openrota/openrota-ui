@@ -1,10 +1,10 @@
-import { useGetResourceRequestByIdLazyQuery, useGetResourceRequestsLazyQuery, useGetResourceRequestsQuery, useGetSkillsByRequestIdLazyQuery, useGetSkillsByRequestIdQuery } from '@app/models';
-import Modal from '@mui/material/Modal';
 import React, { useState } from 'react';
+import { useGetResourceRequestByIdLazyQuery, useGetResourceRequestsLazyQuery, useGetResourceRequestsQuery, useGetSkillsByRequestIdLazyQuery, useGetSkillsByRequestIdQuery } from '@app/models';
 import ViewResourceRequest from './ViewProjectModal';
 import { ResourceRequestsTable } from './ResourceRequestsTable';
 import Box from '@mui/material/Box';
 import PageTitle from '@app/components/PageTitle/PageTitle';
+import Modal from '@mui/material/Modal';
 
 
 const ResourceRequestList: React.FC = () => {

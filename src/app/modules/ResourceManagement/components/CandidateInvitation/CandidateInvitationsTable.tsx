@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Chip from '@mui/material/Chip';
+import { InvitationStatus} from '@app/models';
 
 interface Data {
     name: string;
@@ -25,11 +26,11 @@ interface Data {
 
 type Order = 'asc' | 'desc';
 
-const ResourceListTable = ({ rows }) => {
+const CandidateInvitationsTable = ({ rows, handleModalToggle }) => {
+    console.log('check',rows)
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Data>('status');
     const [selected, setSelected] = React.useState<readonly string[]>([]);
-    const [dense, setDense] = React.useState(false);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -131,30 +132,34 @@ const ResourceListTable = ({ rows }) => {
         setAnchorEl(null);
     };
 
-    const actionItems = (rowData): JSX.Element[] => {
-
-        const thirdAction =
-            rowData.status === "UNAVAILABLE"
-                ? [
-                    <MenuItem key={2} onClick={(e) => handleClose()}>Change Status</MenuItem>
-                ]
-                : [];
-
-        return [
-            <MenuItem key={0} onClick={(e) => handleClose()}>View Profile Details</MenuItem>,
-            <MenuItem key={1} onClick={(e) => handleClose()}>View Project Calender</MenuItem>,
-            ...thirdAction
-        ];
+    const handleViewDetails = (): void => {
+        handleClose();
+        handleModalToggle();
     }
 
+    const actionItems = (rowData): JSX.Element[] => {
+
+        let requestActions: any = [];
+
+        if (rowData.status === "PENDING") {
+            requestActions = [
+                    <MenuItem key={1} onClick={(e) => handleClose()}>Resend</MenuItem>
+                ];
+        }
+
+        return [
+            <MenuItem key={0} onClick={(e) => handleViewDetails()}>View details</MenuItem>,
+            ...requestActions
+        ];
+    }
+    console.log('rows-check', rows)
     return (
         <Box sx={{ width: '100%' }}>
-            {/* <EnhancedTableToolbar /> */}
             <TableContainer>
                 <Table
                     sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
-                    size={dense ? 'small' : 'medium'}
+                    size={'medium'}
                 >
                     <EnhancedTableHead
                         numSelected={selected.length}
@@ -162,7 +167,7 @@ const ResourceListTable = ({ rows }) => {
                         orderBy={orderBy}
                         onSelectAllClick={handleSelectAllClick}
                         onRequestSort={handleRequestSort}
-                        rowCount={rows.length}
+                        rowCount={0}
                     />
                     <TableBody>
                         {/* if you don't need to support IE11, you can replace the `stableSort` call with:
@@ -183,20 +188,10 @@ const ResourceListTable = ({ rows }) => {
                                         key={index}
                                         selected={isItemSelected}
                                     >
-                                        <TableCell
-                                            component="th"
-                                            id={labelId}
-                                            scope="row"
-                                            padding="none"
-                                        >
-                                            {row.name}
-                                        </TableCell>
                                         <TableCell >{row.emailId}</TableCell>
-                                        <TableCell >{row.designation}</TableCell>
-                                        <TableCell >{row.skills.length > 0 ? row.skills : 'NA'}</TableCell>
                                         <TableCell >
-                                            {row?.status == "AVAILABLE" && <Chip label={row?.status} color="primary" variant="outlined" />}
-                                            {row?.status == "UNAVAILABLE" && <Chip label={row?.status} color="warning" variant="outlined" />}    
+                                            {row?.status == InvitationStatus.Completed && <Chip label={row?.status} color="success" />}
+                                            {row?.status == InvitationStatus.Pending && <Chip label={row?.status} color="warning" />}    
                                         </TableCell>
                                         <TableCell align="right">
                                             <div>
@@ -246,4 +241,4 @@ const ResourceListTable = ({ rows }) => {
     )
 }
 
-export default ResourceListTable;
+export default CandidateInvitationsTable;

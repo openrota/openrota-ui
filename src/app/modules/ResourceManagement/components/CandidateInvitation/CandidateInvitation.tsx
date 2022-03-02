@@ -9,7 +9,9 @@ import CandidateInvitationList from './CandidateInvitationsList';
 
 const CandidateInvitation: React.FC = () => {
     // const auth = useAuth();
-    const [invitations, setInvitations] = useState<any>(undefined);
+    const [invitations, setInvitations] = useState<any>([]);
+    const [saveAlertVisible, setSaveAlertVisible] = useState<any>({ visible: false, responseStatus: null });
+    const [formData, setFormData] = useState({});
     const [getAllInvitations] = useGetAllInvitationsLazyQuery({
         fetchPolicy : 'network-only',
         onCompleted: (data) => {
@@ -31,14 +33,13 @@ const CandidateInvitation: React.FC = () => {
             });
         },
     });
-    const [saveAlertVisible, setSaveAlertVisible] = useState<any>({ visible: false, responseStatus: null });
-    const [formData, setFormData] = useState({});
+    
 
     useEffect(() => {
         getAllInvitations();
     }, [])
 
-    const onSubmit = (values) => {
+    const onSubmit = (values): void => {
         const body = {
             emailId: values.emailId,
         };
@@ -56,7 +57,7 @@ const CandidateInvitation: React.FC = () => {
                     <Alert severity="error">Candidate is already invited!</Alert>
                 )}
                 <DynamicFormRenderer schema={resourceRequestSchema} initialValues={formData} onSubmit={onSubmit} />
-                <CandidateInvitationList />
+                <CandidateInvitationList invitations={invitations}/>
             </div>
         </Box>);
 }

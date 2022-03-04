@@ -3,7 +3,8 @@ import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 //import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Loading, MessageDisplayerComponent } from '@app/components';
 import { useVerifyInvitationMutation } from './models';
-import { SearchIcon, ThumbsUpIcon, TimesIcon } from '@patternfly/react-icons';
+import SearchIcon from '@mui/icons-material/Search';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useAuth } from './context';
 
 const Dashboard = lazy(() => import('@app/modules/Dashboard/Dashboard'));
@@ -42,7 +43,7 @@ const AppRoutes: React.FC = () => {
     return <MessageDisplayerComponent icon={SearchIcon} mainMessage={verifyInvitation?.verifyInvitation?.responseText} title="Not found" />
   }
   if (verifyInvitation?.verifyInvitation?.responseStatus == 400) {
-    return <MessageDisplayerComponent icon={TimesIcon} mainMessage={verifyInvitation?.verifyInvitation?.responseText} title="Invalid Invitation" />
+    return <MessageDisplayerComponent icon={AccessTimeIcon} mainMessage={verifyInvitation?.verifyInvitation?.responseText} title="Invalid Invitation" />
   }
 
   return (
@@ -56,7 +57,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/profile-management" component={ProfileManagement} />
         <Route path="/create-resource-request" component={NewResourceRequest} />
         <Route path="/view-resource-requests" component={ResourceRequestList} />
-        <Route path="/add-candidates" component={CandidateInvitation} />
+        <Route path="/add-candidate" component={CandidateInvitation} />
         <Route path="/request-access" component={RequestAccessForm} />
         <Route path="/view-access-requests" component={AccessRequestList} />
       </Switch>

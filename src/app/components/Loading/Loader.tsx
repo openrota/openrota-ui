@@ -1,5 +1,6 @@
 import React from 'react';
-import { Bullseye, BullseyeProps, Spinner, SpinnerProps } from '@patternfly/react-core';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 export type LoadingProps = {
   bullseyeProps?: Omit<BullseyeProps, 'children'>;
@@ -7,7 +8,8 @@ export type LoadingProps = {
 };
 
 export const Loading: React.FunctionComponent<LoadingProps> = ({ bullseyeProps, spinnerProps }: LoadingProps) => (
-  <Bullseye {...bullseyeProps}>
-    <Spinner {...spinnerProps} />
-  </Bullseye>
+  <Box sx={{ display: 'flex', mx: 'auto',
+  width: 200, textAlign: 'center',}}>
+      <CircularProgress />
+    </Box>
 );

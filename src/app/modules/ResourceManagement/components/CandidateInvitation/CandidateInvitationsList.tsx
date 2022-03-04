@@ -1,106 +1,72 @@
-import { InvitationStatus, useGetAllInvitationsQuery, useGetInvitationByIdLazyQuery } from '@app/models';
-import {
-    Button, Label, Modal, ModalVariant, DescriptionList,
-    DescriptionListTerm,
-    DescriptionListGroup,
-    DescriptionListDescription
-} from '@patternfly/react-core';
-import { sortable, SortByDirection, Table, TableBody, TableHeader, TableText, TableComposable, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import React, { useEffect, useState } from 'react';
-import CandidateInvitation from './CandidateInvitation';
+import { InvitationStatus, useGetAllInvitationsQuery, useGetInvitationByIdLazyQuery } from '@app/models';
+import CandidateInvitationsTable from './CandidateInvitationsTable';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 interface InvitationListProps {
     invitations: Array<any> | undefined | null;
 }
 
-const initColumns = [
-    { title: 'Email Id', transforms: [sortable] },
-    { title: 'Status', transforms: [sortable] }
-];
-const columns = ['EmailId', 'Status'];
-
-const initRows = [];
 
 const CandidateInvitationList: React.FC<InvitationListProps> = ({ invitations }) => {
-    const [rows, setRows] = useState<any>(initRows);
-    const [sortBy, setSortBy] = useState({});
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+    
+    const [rows, setRows] = useState<any>([{ emailId: 'test', status: 'PENDING', rowId: 'us7982' }]);
     const [showViewProfile, setShowViewProfile] = useState(false);
     const [getInvitationById, { data: candidateInvitation }] = useGetInvitationByIdLazyQuery();
 
     useEffect(() => {
-        setRows(invitations?.map(s => { return { cells: [s?.emailId, <TableText>{s?.status == InvitationStatus.Completed && <Label color="green">{s?.status}</Label>}{s?.status == InvitationStatus.Pending && <Label color="red">{s?.status}</Label>}</TableText>], rowId: s?.id } }));
+        setRows(invitations?.map(s => { return { 
+            emailId: s?.emailId, 
+            status: s?.status,
+            rowId: s?.id 
+        } }));
     }, [invitations]);
 
-    function onSort(_event, index, direction) {
-        const sortedRows = rows.sort((a, b) => (a[index] < b[index] ? -1 : a[index] > b[index] ? 1 : 0));
-        setSortBy({
-            index,
-            direction
-        });
-        setRows(direction === SortByDirection.asc ? sortedRows : sortedRows.reverse());
-    }
-    function handleModalToggle() {
+    const handleModalToggle = (): void => {
         setShowViewProfile(!showViewProfile);
     };
 
-    function actionResolver(rowData, { rowIndex }) {
-        let requestActions: any = [];
-        console.log(rowData);
-
-        if (rowData.status.title === "PENDING") {
-            requestActions = [{
-                title: 'Resend',
-                onClick: (event, rowId, rowData, extra) =>
-                    console.log(`clicked on Some action, on row ${rowId} of type ${rowData.type}`)
-            }];
-        }
-        return [
-            {
-                title: 'View details',
-                onClick: (event, rowId, rowData, extra) => {
-                    console.log(rowData);
-                    getInvitationById({ variables: { id: rowData.rowId } })
-                    handleModalToggle();
-                }
-            },
-            ...requestActions
-        ];
-    }
     return (
         <>
-            <Table aria-label="Sortable Table" sortBy={sortBy} onSort={onSort} cells={initColumns} rows={rows} actionResolver={actionResolver}>
-                <TableHeader />
-                <TableBody />
-            </Table>
+            <CandidateInvitationsTable rows={rows} handleModalToggle={handleModalToggle} />
             <Modal
-                variant={ModalVariant.large}
-                title="Invitation Details"
-                isOpen={showViewProfile}
+                open={showViewProfile}
                 onClose={handleModalToggle}
-                actions={[
-                    <Button key="cancel" variant="link" onClick={handleModalToggle}>
-                        Cancel
-                    </Button>
-                ]}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
             >
-                <DescriptionList>
-                    <DescriptionListGroup>
-                        <DescriptionListTerm>Candidate Email</DescriptionListTerm>
-                        <DescriptionListDescription>{candidateInvitation?.getInvitationById?.emailId}</DescriptionListDescription>
-                    </DescriptionListGroup>
-                    <DescriptionListGroup>
-                        <DescriptionListTerm>Sent On</DescriptionListTerm>
-                        <DescriptionListDescription>{candidateInvitation?.getInvitationById?.createdAt}</DescriptionListDescription>
-                    </DescriptionListGroup>
-                    <DescriptionListGroup>
-                        <DescriptionListTerm>Token</DescriptionListTerm>
-                        <DescriptionListDescription>{candidateInvitation?.getInvitationById?.token}</DescriptionListDescription>
-                    </DescriptionListGroup>
-                    <DescriptionListGroup>
-                        <DescriptionListTerm>Status</DescriptionListTerm>
-                        <DescriptionListDescription>{candidateInvitation?.getInvitationById?.status}</DescriptionListDescription>
-                    </DescriptionListGroup>
-                </DescriptionList>
+                <Box sx={style}>
+                    <Stack
+                        direction="column"
+                        justifyContent="space-evenly"
+                        alignItems="flex-start"
+                        spacing={0.5}
+                    >
+                        <Typography variant="h6">Candidate Email</Typography>
+                        <Typography >{candidateInvitation?.getInvitationById?.emailId}</Typography>
+                        <Typography variant="h6">Sent On</Typography>
+                        <Typography >{candidateInvitation?.getInvitationById?.createdAt}</Typography>
+                        <Typography variant="h6">Token</Typography>
+                        <Typography >{candidateInvitation?.getInvitationById?.token}</Typography>
+                        <Typography variant="h6">Status</Typography>
+                        <Typography >{candidateInvitation?.getInvitationById?.status}</Typography>
+                    </Stack>
+                </Box>
             </Modal>
         </>);
 };

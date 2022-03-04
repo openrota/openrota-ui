@@ -1,26 +1,28 @@
-import { ResourceRequestStatus, useGetResourceRequestByIdLazyQuery, useGetResourceRequestsLazyQuery, useGetResourceRequestsQuery, useGetSkillsByRequestIdLazyQuery, useGetSkillsByRequestIdQuery } from '@app/models';
-import { Button, Label, Modal, ModalVariant, PageSection, PageSectionVariants } from '@patternfly/react-core';
-import { sortable, SortByDirection, Table, TableBody, TableHeader, TableText } from '@patternfly/react-table';
 import React, { useState } from 'react';
+import { useGetResourceRequestByIdLazyQuery, useGetResourceRequestsLazyQuery, useGetResourceRequestsQuery, useGetSkillsByRequestIdLazyQuery, useGetSkillsByRequestIdQuery } from '@app/models';
 import ViewResourceRequest from './ViewProjectModal';
+import { ResourceRequestsTable } from './ResourceRequestsTable';
+import Box from '@mui/material/Box';
+import PageTitle from '@app/components/PageTitle/PageTitle';
+import Modal from '@mui/material/Modal';
 
-const initColumns = [
-    { title: 'Project', transforms: [sortable] },
-    { title: 'Employee', transforms: [sortable] },
-    { title: 'Manager', transforms: [sortable] },
-    { title: 'Pillar', transforms: [sortable] },
-    'Start Date',
-    'End Date',
-    'Status',
-];
-
-const initRows = [];
 
 const ResourceRequestList: React.FC = () => {
-    const [columns, setColumns] = useState(initColumns);
-    const [filter, setFilter] = useState({ location: [], name: [], status: [] });
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+
+    const initRows = [];
+
     const [rows, setRows] = useState<any>(initRows);
-    const [sortBy, setSortBy] = useState({});
     const [showViewProfile, setShowViewProfile] = useState(false);
     const [showCandidateProfile, setShowCandidateProfile] = useState(false);
     const [selectedRequestId, setSelectedRequestId] = useState(null);
@@ -32,80 +34,42 @@ const ResourceRequestList: React.FC = () => {
         fetchPolicy: 'network-only',
         onCompleted: (data) => {
             skillByRequestId
-            setRows(data?.sharedResourceRequest?.map(s => { return { rowId: s?.id, cells: [s?.project, <TableText><a onClick={handleViewCandidateProfileModal}>Rishi</a></TableText>, s?.requester?.firstName, s?.pillar, s?.startDate, s?.endDate, <TableText>{s?.status == ResourceRequestStatus.Completed && <Label color="green">{s?.status}</Label>}{s?.status == ResourceRequestStatus.Pending && <Label color="red">{s?.status}</Label>}</TableText>] } }));
+            setRows(data?.sharedResourceRequest?.map((s, index) => {
+                return {
+                    project: s?.project,
+                    employee: <a onClick={handleViewCandidateProfileModal}>Rishi</a>,
+                    manager: s?.requester?.firstName,
+                    pillar: s?.pillar,
+                    startDate: s?.startDate,
+                    endDate: s?.endDate,
+                    status: s?.status
+                }
+            }));
         },
     });
-    function onSort(_event, index, direction) {
-        const sortedRows = rows.sort((a, b) => (a[index] < b[index] ? -1 : a[index] > b[index] ? 1 : 0));
-        setSortBy({
-            index,
-            direction
-        });
-        setRows(direction === SortByDirection.asc ? sortedRows : sortedRows.reverse());
-    }
 
-    function actionResolver(rowData, { rowIndex }) {
-
-        let requestActions: any = [];
-
-        if (rowData.status.title === "PENDING") {
-            requestActions = [{
-                title: 'Approve',
-                onClick: (event, rowId, rowData, extra) =>
-                    console.log(`clicked on Some action, on row ${rowId} of type ${rowData.type}`)
-            },
-            {
-                title: 'Reject',
-                onClick: (event, rowId, rowData, extra) =>
-                    console.log(`clicked on Some action, on row ${rowId} of type ${rowData.type}`)
-            }];
-        }
-        return [
-            {
-                title: 'View',
-                onClick: (event, rowId, rowData, extra) => {
-                    getResourceRequestById({ variables: { id: rowData.rowId } })
-                    handleModalToggle();
-                    console.log(rowData);
-                }
-            },
-            ...requestActions
-        ];
-    }
-
-    function handleViewCandidateProfileModal() {
+    const handleViewCandidateProfileModal = (): void => {
         setShowCandidateProfile(!showCandidateProfile);
     };
 
-    function handleModalToggle() {
+    const handleModalToggle = (): void => {
         setShowViewProfile(!showViewProfile);
     };
+
     return (
         <>
-            {/* <TableFilterToolbar /> */}
-            <PageSection variant={PageSectionVariants.light}>
-                <Table aria-label="Sortable Table" sortBy={sortBy} onSort={onSort} cells={columns} rows={rows} actionResolver={actionResolver}>
-                    <TableHeader />
-                    <TableBody />
-                </Table>
-                <Modal
-                    variant={ModalVariant.large}
-                    title="Request Details"
-                    isOpen={showViewProfile}
-                    onClose={handleModalToggle}
-                    actions={[
-                        <Button key="confirm" variant="primary" onClick={handleModalToggle}>
-                            Confirm
-                        </Button>,
-                        <Button key="cancel" variant="link" onClick={handleModalToggle}>
-                            Cancel
-                        </Button>
-                    ]}
-                >
+            <PageTitle title={"Resource request"} />
+            <ResourceRequestsTable rows={rows} getResourceRequestById={getResourceRequestById} handleModalToggle={handleModalToggle} />
+            <Modal
+                open={showViewProfile}
+                onClose={handleModalToggle}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
                     <ViewResourceRequest resourceRequestObject={resourceRequestById?.sharedResourceRequestById} skills={skillByRequestId?.getSkillsByRequestId} />
-                </Modal>
-            </PageSection>
-
+                </Box>
+            </Modal>
         </>);
 };
 export default ResourceRequestList;

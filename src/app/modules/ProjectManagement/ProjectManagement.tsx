@@ -1,12 +1,10 @@
 import React from 'react';
-import { PageSection, Title } from '@patternfly/react-core';
+import Box from '@mui/material/Box';
 
 const ProjectManagement: React.FC = () => (
-  <PageSection>
-    <Title headingLevel="h1" size="lg">
-      Project Management
-    </Title>
-  </PageSection>
+  <Box sx={{ display: 'flex' }}>
+    Project Management
+  </Box>
 );
 
 export default ProjectManagement;

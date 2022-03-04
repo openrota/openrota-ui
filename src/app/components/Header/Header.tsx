@@ -1,145 +1,203 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PersonPinOutlinedIcon from '@mui/icons-material/PersonPinOutlined';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
+
 import { useTranslation } from 'react-i18next';
-import {
-  PageHeader,
-  PageHeaderTools,
-  DropdownGroup,
-  DropdownItem,
-  PageHeaderToolsGroup,
-  PageHeaderToolsItem,
-  Dropdown,
-  Avatar,
-  DropdownToggle,
-  Nav,
-  NavList,
-  NavItem,
-  Button,
-  ButtonVariant,
-} from '@patternfly/react-core';
-import { OptionsMenu, OptionsMenuItem, OptionsMenuToggle } from '@patternfly/react-core';
 import logo from '@app/images/Logo-Red_Hat-Middleware-A-White-RGB.svg';
-import imgAvatar from '@app/images/avatarImg.svg';
-import HelpIcon from '@patternfly/react-icons/dist/js/icons/help-icon';
-import './Header.css';
 import { useAuth } from '@app/context';
+import ActionsMenu from './components/ActionsMenu';
+import AccountMenu from './components/AccountMenu';
 
-export type HeaderProps = {
-  isNavOpen: boolean;
-  isMobileView: boolean;
-  onNavToggleMobile: () => void;
-  onNavToggle: () => void;
-};
 
-export const Header: React.FC<HeaderProps> = () => {
+
+const drawerWidth = 240;
+
+const openedMixin = (theme: Theme): CSSObject => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme: Theme): CSSObject => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(9)} + 1px)`,
+  },
+});
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
+
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
+
+export const Header: React.FC<{}> = () => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const [isUserToolbarDropdownOpen, setIsUserToolbarDropdownOpen] = useState(false);
-  const [isRequestToolbarDropdownOpen, setisRequestToolbarDropdownOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState(0);
-  const [isOpen, setisOpen] = useState(false);
+  const theme = useTheme();
+  const history = useHistory();
+  const [open, setOpen] = React.useState(false);
   const [userName, setUserName] = useState("");
+
+  const [selected, setSelected] = React.useState('Home');
+
   useEffect(() => {
     auth?.getUsername().then(userName => setUserName(userName));
   }, []);
-  const toggleUserToolbarDropdown = (toggle: boolean) => {
-    setIsUserToolbarDropdownOpen(toggle);
-  };
-  const toggleRequestToolbarDropdown = (toggle: boolean) => {
-    setisRequestToolbarDropdownOpen(toggle);
-  };
 
-  const onUserDropdownSelect = () => {
-    setIsUserToolbarDropdownOpen(!isUserToolbarDropdownOpen);
-  };
-
-  const onRequestDropdownSelect = () => {
-    setIsUserToolbarDropdownOpen(!isUserToolbarDropdownOpen);
-  };
-
-  const onNavSelect = (result: any) => {
-    setActiveItem(result.itemId);
-  };
-
-  const userDropdownItems = [
-    <DropdownGroup key="user">
-      <DropdownItem key="my-profile" href="#/profile-management">{t('my_profile')}</DropdownItem>
-      <DropdownItem key="user-management" component="button">
-        {t('user_management')}
-      </DropdownItem>
-      <DropdownItem key="logout">{t('logout')}</DropdownItem>
-    </DropdownGroup>,
+  const menus = [
+    {
+      name: 'Home',
+      icon: <HomeOutlinedIcon style={{ color: '#000' }} />,
+      path: '/'
+    },
+    {
+      name: 'Candidate',
+      icon: <PersonPinOutlinedIcon style={{ color: '#000' }} />,
+      path: '/resource-management'
+    },
+    {
+      name: 'Projects',
+      icon: <AccountTreeOutlinedIcon style={{ color: '#000' }} />,
+      path: '/project-management'
+    },
+    {
+      name: 'Calendar',
+      icon: <TodayOutlinedIcon style={{ color: '#000' }} />,
+      path: '/roaster-management'
+    }
   ];
 
-  const requestDropDownItems = [
-    <DropdownGroup key="request">
-      <DropdownItem key="View all Requests" href="#/view-resource-requests">{t('view requests')}</DropdownItem>
-      <DropdownItem key="Openrota access requests" href="#/view-access-requests">{t('view access requests')}</DropdownItem>
-      <DropdownItem key="Create Request" href="#/create-resource-request">{t('Create Request')}</DropdownItem>
-      <DropdownItem key="Add candidates" href="#/add-candidates">{t('add candidates')}</DropdownItem>
-    </DropdownGroup>,
-  ];
-
-
-  const HeaderTools = (
-    <PageHeaderTools>
-      <PageHeaderToolsGroup>
-        <PageHeaderToolsItem
-          visibility={{ default: 'hidden', md: 'visible' }} /** this user dropdown is hidden on mobile sizes */
-        >
-          <Dropdown
-            isPlain
-            position="right"
-            onSelect={onRequestDropdownSelect}
-            isOpen={isRequestToolbarDropdownOpen}
-            toggle={<DropdownToggle onToggle={toggleRequestToolbarDropdown}>My Requests</DropdownToggle>}
-            dropdownItems={requestDropDownItems}
-          />
-        </PageHeaderToolsItem>
-        <PageHeaderToolsItem>
-          <Button aria-label="Help actions" variant={ButtonVariant.plain}>
-            <HelpIcon />
-          </Button>
-        </PageHeaderToolsItem>
-        <PageHeaderToolsItem
-          visibility={{ default: 'hidden', md: 'visible' }} /** this user dropdown is hidden on mobile sizes */
-        >
-          <Dropdown
-            isPlain
-            position="right"
-            onSelect={onUserDropdownSelect}
-            isOpen={isUserToolbarDropdownOpen}
-            toggle={<DropdownToggle onToggle={toggleUserToolbarDropdown}>{userName}</DropdownToggle>}
-            dropdownItems={userDropdownItems}
-          />
-        </PageHeaderToolsItem>
-      </PageHeaderToolsGroup>
-      <Avatar src={imgAvatar} alt="Avatar image" />
-    </PageHeaderTools>
-  );
-
-  function onToggle() {
-    setisOpen(!isOpen);
+  const handleDrawerOpen = () => {
+    setOpen(true);
   };
-  const PageNav = (
-    <Nav onSelect={onNavSelect} aria-label="Nav" variant="horizontal">
-      <NavList>
-        <NavItem itemId={0} isActive={activeItem === 0} to="#">
-          Home
-        </NavItem>
-        <NavItem itemId={1} isActive={activeItem === 1} to="#/resource-management">
-          Candidate
-        </NavItem>
-        <NavItem itemId={2} isActive={activeItem === 2} to="#/project-management">
-          Projects
-        </NavItem>
-        <NavItem itemId={3} isActive={activeItem === 3} to="#/roaster-management">
-          Calendar
-        </NavItem>
-      </NavList>
-    </Nav>
-  );
-  return <PageHeader logo={<LogoImg />} headerTools={HeaderTools} aria-label={'global_navigation'} topNav={PageNav} />;
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const handleSideBarClick = (menu) => {
+    setSelected(menu.name);
+    history.push(menu.path);
+  }
+
+  return (
+    <>
+      <AppBar
+        position="fixed"
+        open={open}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{
+              marginRight: '36px',
+              ...(open && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ flexGrow: 1 }} component="div">
+            <LogoImg />
+          </Typography>
+          <ActionsMenu />
+          <AccountMenu userName={userName}/>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        open={open}
+      >
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          {menus.map((menu, index) => (
+            <ListItem button key={index} onMouseOver={handleDrawerOpen} onMouseOut={handleDrawerClose} selected={selected === menu.name} onClick={() => handleSideBarClick(menu)}>
+              <ListItemIcon>{menu.icon}</ListItemIcon>
+              <ListItemText primary={menu.name} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    </>
+  )
 };
 
 function LogoImg() {

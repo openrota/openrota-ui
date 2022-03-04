@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import '@patternfly/react-core/dist/styles/base.css';
 import { AppLayout, Loading } from '@app/components';
 import { AppRoutes } from '@app/routes';
 import { initI18N } from '@i18n/i18n';

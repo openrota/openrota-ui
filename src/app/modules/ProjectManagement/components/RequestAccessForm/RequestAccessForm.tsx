@@ -2,9 +2,12 @@ import { DynamicFormRenderer, MessageDisplayerComponent } from '@app/components'
 import { useAuth } from '@app/context';
 import { useAccessrequestMutation, useCreateResourceRequestMutation, useGetSharedResourceByEmailIdLazyQuery, useSkillsQuery, useVerifyDesignationMutation } from '@app/models';
 import resourceRequestSchema from '@app/modules/ProjectManagement/schema/request-access-form.json';
-import { Alert, Button, Hint, HintBody, PageSection, PageSectionVariants } from '@patternfly/react-core';
-import { SearchIcon } from '@patternfly/react-icons';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 import React, { useEffect, useState } from 'react';
+
 const RequestAccessForm: React.FC = () => {
     const auth = useAuth();
     const [addAccessRequest] = useAccessrequestMutation({
@@ -34,26 +37,21 @@ const RequestAccessForm: React.FC = () => {
     };
 
     return (
-        <PageSection variant={PageSectionVariants.light}>
+        <Box sx={{ display: 'flex' }}>
             <div style={{ marginLeft: '20%', marginRight: '20%' }}>
                 {saveAlertVisible && (
-                    <Alert
-                        variant="success"
-                        title="Successfully saved"
-                    />
+                    <Alert severity="success">Successfully saved</Alert>
                 )}
-                <Hint>
-                    <HintBody>
-                        You dont have access to request resources from openrota. Please submit the form or send email to
-                        <Button variant="link" isInline>
-                            admin@openrota.con
-                        </Button>
-                    </HintBody>
-                </Hint>
+                <Paper variant="outlined" >
+                    You dont have access to request resources from openrota. Please submit the form or send email to
+                    <Button href="#text-buttons">
+                        admin@openrota.com
+                    </Button>
+                </Paper>
                 <br /><br />
                 <DynamicFormRenderer schema={resourceRequestSchema} initialValues={formData} onSubmit={onSubmit} />
             </div>
-        </PageSection>);
+        </Box>);
 }
 
 export default RequestAccessForm;

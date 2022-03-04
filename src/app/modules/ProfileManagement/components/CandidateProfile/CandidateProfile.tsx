@@ -2,7 +2,7 @@ import { DynamicFormRenderer, Loading } from '@app/components';
 import { useAuth } from '@app/context';
 import { useCreateOrUpdateSharedResourceMutation, useGetSharedResourceByEmailIdLazyQuery, useGetSrByIdQuery, useSkillsQuery } from '@app/models';
 import empSchema from '@app/modules/ProfileManagement/schema/emp-profile.json';
-import { Alert } from '@patternfly/react-core';
+import Alert from '@mui/material/Alert';
 import React, { useEffect, useState } from 'react';
 
 const CandidateProfile: React.FC = () => {
@@ -76,10 +76,7 @@ const CandidateProfile: React.FC = () => {
   return (
     <>
       {saveAlertVisible && (
-        <Alert
-          variant="success"
-          title="Successfully saved"
-        />
+        <Alert severity="success">Successfully saved</Alert>
       )}
       <DynamicFormRenderer schema={empSchema} initialValues={userData} onSubmit={onSubmit} actionMapper={actionMapper} />
     </>);

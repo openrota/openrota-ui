@@ -11,8 +11,24 @@ mutation accessrequest ($accessRequest: AccessRequestInput) {
   }
 }
 
+mutation handleAccessRequestActions ($actionName: String, $accessRequest: AccessRequestInput) {
+  handleAccessRequestActions(actionName: $actionName, accessRequest: $accessRequest) {
+    id
+    status
+  }
+}
+
 query getAllAccessRequests {
   accessRequest {
+    id
+    status
+    reason
+    emailId
+  }
+}
+
+query getAccessRequestById ($id: BigInteger){
+  accessRequestbyId(id: $id) {
     id
     status
     reason

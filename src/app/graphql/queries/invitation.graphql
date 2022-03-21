@@ -28,3 +28,11 @@ mutation verifyInvitation ($emailId: String, $token : String, $name : String) {
          responseText
   }
 }
+
+mutation resendInvitation ($id: BigInteger!){
+  resendInvitation( id: $id) {
+      emailId
+      status
+      id
+  }
+}

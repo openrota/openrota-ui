@@ -9,19 +9,20 @@ import { useHistory } from 'react-router-dom';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 const ResourceRequestForm: React.FC = () => {
-    
+
     const history = useHistory();
     const auth = useAuth();
     const [skillsMap, setskillsMap] = useState({});
 
     const [verifyDesignation] = useVerifyDesignationMutation({
         onCompleted: (data) => {
-            if (data?.verifyDesignation?.isgranted == false) {
-                history.push("/request-access")
-              }
+            // In prod it will help us to validate only the designated people to be able to request the resource
+            // if (data?.verifyDesignation?.isgranted == false) {
+            //     history.push("/request-access")
+            // }
         },
     });
-    
+
     const [addResourceRequest] = useCreateResourceRequestMutation({
         onCompleted: (data) => {
             setSaveAlertVisible(true);
@@ -35,7 +36,7 @@ const ResourceRequestForm: React.FC = () => {
     useEffect(() => {
         auth?.getUserInfo().then(obj => {
             getSRByMail({ variables: { emailId: obj['email'] } });
-            verifyDesignation({ variables: { designation : "Associate Manageraaa, Software Engineering" }});
+            verifyDesignation({ variables: { designation: "Associate Manageraaa, Software Engineering" } });
             setFormData({ requesterName: obj['firstName'], emailId: obj['email'] });
         });
     }, [])
@@ -81,8 +82,8 @@ const ResourceRequestForm: React.FC = () => {
                 {saveAlertVisible && (
                     <Alert severity="success">Successfully saved</Alert>
                 )}
-                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DynamicFormRenderer schema={resourceRequestSchema} initialValues={formData} onSubmit={onSubmit} actionMapper={actionMapper} />
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DynamicFormRenderer schema={resourceRequestSchema} initialValues={formData} onSubmit={onSubmit} actionMapper={actionMapper} />
                 </LocalizationProvider>
             </div>
         </Box>);

@@ -1,39 +1,29 @@
 import { DynamicFormRenderer } from '@app/components';
-import { useAuth } from '@app/context';
-import { Invitation, Maybe, useCreateInvitationMutation, useGetAllInvitationsLazyQuery, useGetAllInvitationsQuery } from '@app/models';
+import { useCreateInvitationMutation, useGetAllInvitationsLazyQuery } from '@app/models';
 import resourceRequestSchema from '@app/modules/ResourceManagement/schema/invite-candidates-form.json';
-import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import React, { useEffect, useState } from 'react';
 import CandidateInvitationList from './CandidateInvitationsList';
+import { useSnackbar } from 'notistack';
+import { CHIPTYPE } from '@app/constants';
 
 const CandidateInvitation: React.FC = () => {
-    // const auth = useAuth();
     const [invitations, setInvitations] = useState<any>([]);
-    const [saveAlertVisible, setSaveAlertVisible] = useState<any>({ visible: false, responseStatus: null });
-    const [formData, setFormData] = useState({});
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const [getAllInvitations] = useGetAllInvitationsLazyQuery({
-        fetchPolicy : 'network-only',
+        fetchPolicy: 'network-only',
         onCompleted: (data) => {
-            console.log('asa');
-
             setInvitations(data?.invitation);
         },
     });
-    const [createInvitation, { data: invitationCreated }] = useCreateInvitationMutation({
+    const [createInvitation] = useCreateInvitationMutation({
         onCompleted: (data) => {
-            console.log("inviains bna");
-
             getAllInvitations();
-            setSaveAlertVisible({
-                ...{
-                    visible: true,
-                    responseStatus: data?.createInvitationToken?.responseStatus
-                }
+            enqueueSnackbar("Candidate invitation sent successfully", {
+                variant: CHIPTYPE.SUCCESS
             });
         },
     });
-    
 
     useEffect(() => {
         getAllInvitations();
@@ -50,14 +40,8 @@ const CandidateInvitation: React.FC = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <div style={{ marginLeft: '20%', marginRight: '20%' }}>
-                {saveAlertVisible?.visible && saveAlertVisible?.responseStatus == 200 && (
-                    <Alert severity="success">Successfully saved</Alert>
-                )}
-                {saveAlertVisible?.visible && saveAlertVisible?.responseStatus == 409 && (
-                    <Alert severity="error">Candidate is already invited!</Alert>
-                )}
-                <DynamicFormRenderer schema={resourceRequestSchema} initialValues={formData} onSubmit={onSubmit} />
-                <CandidateInvitationList invitations={invitations}/>
+                <DynamicFormRenderer schema={resourceRequestSchema} onSubmit={onSubmit} />
+                {invitations && invitations.length > 0 && <CandidateInvitationList invitations={invitations} />}
             </div>
         </Box>);
 }

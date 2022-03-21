@@ -3,6 +3,10 @@ query getResourceRequests {
     requester{
       firstName
     }
+    resource {
+      id
+      firstName
+    }
     project
     pillar
     startDate
@@ -39,5 +43,13 @@ query getResourceRequestById ($id: BigInteger!){
 mutation createResourceRequest($resourceRequest : ResourceRequestInput){
   createOrUpdateResourceRequest( resourceRequest: $resourceRequest) {
     id
+  }
+}
+
+
+mutation handleResourceRequestActions ($action: RowAction, $resourceRequest: ResourceRequestInput) {
+  handleResourceRequestActions(action: $action, resourceRequest: $resourceRequest) {
+    id
+    status
   }
 }

@@ -1,42 +1,49 @@
-import { DynamicFormRenderer, MessageDisplayerComponent } from '@app/components';
+import { DynamicFormRenderer } from '@app/components';
+import { CHIPTYPE } from '@app/constants';
 import { useAuth } from '@app/context';
-import { useCreateResourceRequestMutation, useGetSharedResourceByEmailIdLazyQuery, useSkillsQuery, useVerifyDesignationMutation } from '@app/models';
+import { useCreateResourceRequestMutation, useGetSharedResourceByEmailIdLazyQuery, useIsResourceAccessAllowedLazyQuery, useSkillsQuery } from '@app/models';
 import resourceRequestSchema from '@app/modules/ProjectManagement/schema/resource-request-form.json';
-import Box from '@mui/material/Box';
-import Alert from '@mui/material/Alert';
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import Box from '@mui/material/Box';
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 const ResourceRequestForm: React.FC = () => {
 
     const history = useHistory();
     const auth = useAuth();
     const [skillsMap, setskillsMap] = useState({});
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-    const [verifyDesignation] = useVerifyDesignationMutation({
+    const [verifyAccess] = useIsResourceAccessAllowedLazyQuery({
+        fetchPolicy: 'network-only',
         onCompleted: (data) => {
             // In prod it will help us to validate only the designated people to be able to request the resource
-            // if (data?.verifyDesignation?.isgranted == false) {
-            //     history.push("/request-access")
-            // }
+            if (data?.isResourceAccessAllowed?.isgranted == false) {
+                history.push("/request-access")
+            }
         },
     });
 
     const [addResourceRequest] = useCreateResourceRequestMutation({
         onCompleted: (data) => {
-            setSaveAlertVisible(true);
+            if (data.createOrUpdateResourceRequest?.id != null) {
+                enqueueSnackbar('Resource request has been created', {
+                    variant: CHIPTYPE.SUCCESS
+                });
+                history.push("/view-resource-requests");
+            }
         },
     });
-    const [getSRByMail, { loading: SrbyMailLoading, data: srByMail }] = useGetSharedResourceByEmailIdLazyQuery();
-    const [saveAlertVisible, setSaveAlertVisible] = useState(false);
+    const [getSRByMail, { data: srByMail }] = useGetSharedResourceByEmailIdLazyQuery();
     const [formData, setFormData] = useState({});
     const { data: skills } = useSkillsQuery();
 
     useEffect(() => {
         auth?.getUserInfo().then(obj => {
             getSRByMail({ variables: { emailId: obj['email'] } });
-            verifyDesignation({ variables: { designation: "Associate Manageraaa, Software Engineering" } });
+            verifyAccess({ variables: { email: obj['email'] } });
             setFormData({ requesterName: obj['firstName'], emailId: obj['email'] });
         });
     }, [])
@@ -53,11 +60,13 @@ const ResourceRequestForm: React.FC = () => {
     };
 
     const onSubmit = (values) => {
+        console.log((new Date(values.startDate)).toLocaleDateString());
+        
         const body = {
             requester: {
                 id: srByMail?.sharedResourceByEmailId?.id
             },
-            skillProficiencies: values.skill.map(s => {
+            skillProficiencies: values.skill?.map(s => {
                 return {
                     id: (skillsMap[s] != null ? skillsMap[s] : null),
                     skill: {
@@ -69,8 +78,8 @@ const ResourceRequestForm: React.FC = () => {
             taskDetails: values.taskDetails,
             pillar: values.pillar,
             project: values.project,
-            startDate: values.startDate,
-            endDate: values.endDate
+            // startDate: values.startDate,
+            // endDate: values.endDate
         };
         addResourceRequest({ variables: { resourceRequest: body } });
 
@@ -79,9 +88,6 @@ const ResourceRequestForm: React.FC = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <div style={{ marginLeft: '20%', marginRight: '20%' }}>
-                {saveAlertVisible && (
-                    <Alert severity="success">Successfully saved</Alert>
-                )}
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DynamicFormRenderer schema={resourceRequestSchema} initialValues={formData} onSubmit={onSubmit} actionMapper={actionMapper} />
                 </LocalizationProvider>

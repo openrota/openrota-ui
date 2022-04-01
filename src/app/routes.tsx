@@ -32,6 +32,8 @@ const AppRoutes: React.FC = () => {
   })
 
   useEffect(() => {
+    console.log("search params", searchparams);
+
     if (searchparams.get('token') && searchparams.get('emailId')) {
       auth?.getUserInfo().then(obj => {
         verifyToken({ variables: { emailId: searchparams.get('emailId'), token: searchparams.get('token'), name: obj['firstName'] } });

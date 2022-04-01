@@ -8,6 +8,7 @@ import objectToListViewer from '@app/utils/objectToListViewer';
 import { Button, Link } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { CHIPTYPE } from '@app/constants';
+import { RejectModalView } from '../ResourceRequestsList/RejectRequest';
 export const AccessRequestsTable = ({ rows }) => {
     const { setModal, unSetModal } = useModal();
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -16,16 +17,25 @@ export const AccessRequestsTable = ({ rows }) => {
         onCompleted: (data) => {
             const modalObj = [
                 { key: "Requester's Email", value: data.accessRequestbyId?.emailId, render: () => <Link component="button" variant="body2">{data.accessRequestbyId?.emailId}</Link> },
-                { key: "Reason", value: data.accessRequestbyId?.status }
+                { key: "Reason", value: data.accessRequestbyId?.reason },
+                { key: "Status", value: data.accessRequestbyId?.status }
             ];
             setModal({ title: "Access Request", modalBody: objectToListViewer(modalObj, ["id"]), modalFooter: <><Button autoFocus onClick={unSetModal}>Close</Button></> });
         }
     });
     const [handleAccessRequestAction] = useHandleAccessRequestActionsMutation({
         onCompleted: (data) => {
-            enqueueSnackbar('The request has been approved', {
-                variant: CHIPTYPE.SUCCESS
-            });
+            if (data.handleAccessRequestActions?.status == InvitationStatus.Rejected) {
+                enqueueSnackbar('The request has been rejected', {
+                    variant: CHIPTYPE.SUCCESS
+                });
+            } else if (data.handleAccessRequestActions?.status == InvitationStatus.Completed) {
+                enqueueSnackbar('The request has been approved', {
+                    variant: CHIPTYPE.SUCCESS
+                });
+
+            }
+            unSetModal();
             const index = rows.findIndex((row) => row.id == data.handleAccessRequestActions?.id);
             if (index != -1) {
                 rows[index].status = data.handleAccessRequestActions?.status;
@@ -82,14 +92,16 @@ export const AccessRequestsTable = ({ rows }) => {
         filter: false,
         options: {
             customBodyRender: (value, tableMeta, updateValue) => {
-                const actions = [
+                let actions = [
                     {
                         name: "View",
                         onClick: () => {
                             getAccessRequestById({ variables: { id: tableMeta.rowData[0] } })
                         }
-                    },
-                    {
+                    }
+                ];
+                if (tableMeta.rowData[3] == InvitationStatus.Pending) {
+                    actions = [...actions, {
                         name: "Approve",
                         onClick: () => {
                             handleAccessRequestAction({ variables: { actionName: RowAction.Approve, accessRequest: { id: tableMeta.rowData[0] } } })
@@ -97,10 +109,20 @@ export const AccessRequestsTable = ({ rows }) => {
                     },
                     {
                         name: "Reject", onClick: () => {
-                            handleAccessRequestAction({ variables: { actionName: RowAction.Reject, accessRequest: { id: tableMeta.rowData[0] } } })
+                            setModal({
+                                composite: false,
+                                title: "Request Rejection",
+                                modalBody: <RejectModalView
+                                    resourceRequestId={tableMeta.rowData[0]}
+                                    onReject={(requestId, reason) => {
+                                        handleAccessRequestAction({ variables: { actionName: RowAction.Reject, accessRequest: { id: tableMeta.rowData[0] } } })
+                                    }} />
+                            });
+
                         }
-                    },
-                ];
+                    }];
+
+                }
                 return (
                     <ContextMenu actions={actions} />
                 );

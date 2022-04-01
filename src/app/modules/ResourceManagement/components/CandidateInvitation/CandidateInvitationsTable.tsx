@@ -9,7 +9,7 @@ import { Button, Link } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { CHIPTYPE } from '@app/constants';
 
-const CandidateInvitationsTable = ({ rows }) => {
+const CandidateInvitationsTable = ({ rows, updateRow }) => {
     const { setModal, unSetModal } = useModal();
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const [getInvitationById] = useGetInvitationByIdLazyQuery({
@@ -20,7 +20,7 @@ const CandidateInvitationsTable = ({ rows }) => {
                 { key: "Created At", value: data.getInvitationById?.createdAt },
                 { key: "Email", value: data.getInvitationById?.emailId },
                 { key: "Status", value: data.getInvitationById?.status },
-                { key: "Link", value: data.getInvitationById?.status, render: () => <Link component="button" variant="body2">{`https://prod.foo.redhat.com:1337/#/&token=${data.getInvitationById?.token}?emailId=${data.getInvitationById?.emailId}`}</Link> }
+                { key: "Link", value: data.getInvitationById?.status, render: () => <Link href={`https://prod.foo.redhat.com:1337/#/?token=${data.getInvitationById?.token}&emailId=${data.getInvitationById?.emailId}`}>{`https://prod.foo.redhat.com:1337/#/?token=${data.getInvitationById?.token}&emailId=${data.getInvitationById?.emailId}`}</Link> }
             ];
             setModal({ title: "Candidate Invitation", modalBody: objectToListViewer(modalObj, ["id"]), modalFooter: <><Button autoFocus onClick={unSetModal}>Close</Button></> });
         }
@@ -29,10 +29,10 @@ const CandidateInvitationsTable = ({ rows }) => {
     const [resendInvite] = useResendInvitationMutation({
         onCompleted: (data) => {
             if (data.resendInvitation?.id != null) {
-                enqueueSnackbar('Invitation resent to candidates', {
+                enqueueSnackbar('Invitation resent to candidate', {
                     variant: CHIPTYPE.SUCCESS
                 });
-
+                updateRow(data.resendInvitation?.id, data.resendInvitation);
             }
         }
     });

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import CandidateInvitationList from './CandidateInvitationsList';
 import { useSnackbar } from 'notistack';
 import { CHIPTYPE } from '@app/constants';
+import CandidateInvitationsTable from './CandidateInvitationsTable';
 
 const CandidateInvitation: React.FC = () => {
     const [invitations, setInvitations] = useState<any>([]);
@@ -37,11 +38,23 @@ const CandidateInvitation: React.FC = () => {
 
     };
 
+    const onUpdateRow = (rowId, rowObj): void => {
+        let rows = [...invitations];
+        const index = rows.findIndex((row) => row.id == rowId);
+        if (index != -1) {
+            rows[index] = rowObj
+        }
+
+       setInvitations([...rows]);
+
+    };
+
+    
     return (
         <Box sx={{ display: 'flex' }}>
             <div style={{ marginLeft: '20%', marginRight: '20%' }}>
                 <DynamicFormRenderer schema={resourceRequestSchema} onSubmit={onSubmit} />
-                {invitations && invitations.length > 0 && <CandidateInvitationList invitations={invitations} />}
+                {invitations && invitations.length > 0 && <CandidateInvitationsTable rows={invitations} updateRow={onUpdateRow} />}
             </div>
         </Box>);
 }

@@ -5,13 +5,20 @@ mutation verifyDesignation ($designation: String) {
   }
 }
 
+query isResourceAccessAllowed ($email: String) {
+  isResourceAccessAllowed(email: $email) {
+    designationName
+    isgranted
+  }
+}
+
 mutation accessrequest ($accessRequest: AccessRequestInput) {
   createAccessRequest( accessRequest: $accessRequest) {
     id
   }
 }
 
-mutation handleAccessRequestActions ($actionName: String, $accessRequest: AccessRequestInput) {
+mutation handleAccessRequestActions ($actionName: RowAction, $accessRequest: AccessRequestInput) {
   handleAccessRequestActions(actionName: $actionName, accessRequest: $accessRequest) {
     id
     status

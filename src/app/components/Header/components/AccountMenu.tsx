@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { keycloak } from '@app/auth/keycloak';
 
 
 const AccountMenu = ({userName}) => {
@@ -20,6 +21,7 @@ const AccountMenu = ({userName}) => {
 
     const handleClose = (): void => {
         setAnchorEl(null);
+        keycloak?.logout();
     };
 
     const handleMyProfile = (): void => {

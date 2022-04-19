@@ -21,6 +21,10 @@ const AccountMenu = ({userName}) => {
 
     const handleClose = (): void => {
         setAnchorEl(null);
+    };
+
+    const handleLogout = (): void => {
+        setAnchorEl(null);
         keycloak?.logout();
     };
 
@@ -61,7 +65,7 @@ const AccountMenu = ({userName}) => {
             >
                 <MenuItem onClick={handleMyProfile}>{t('my_profile')}</MenuItem>
                 <MenuItem onClick={handleClose}>{t('user_management')}</MenuItem>
-                <MenuItem onClick={handleClose}>{t('logout')}</MenuItem>
+                <MenuItem onClick={handleLogout}>{t('logout')}</MenuItem>
             </Menu>
         </div>
     )

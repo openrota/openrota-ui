@@ -38,12 +38,12 @@ const PageTitle: React.FC<IOwnProps> = ({ title }) => {
 
             </Box>
             <Box sx={{ display: 'flex', marginBottom: '30px', }}>
-                <Breadcrumbs
+                { title !== 'Dashboard' && <Breadcrumbs
                     separator={<NavigateNextIcon fontSize="small" />}
                     aria-label="breadcrumb"
                 >
                     {breadcrumbs}
-                </Breadcrumbs>
+                </Breadcrumbs>}
             </Box>
         </>
     )

@@ -78,8 +78,8 @@ const ResourceRequestForm: React.FC = () => {
             taskDetails: values.taskDetails,
             pillar: values.pillar,
             project: values.project,
-            // startDate: values.startDate,
-            // endDate: values.endDate
+            startDate: values.startDate,
+            endDate: values.endDate
         };
         addResourceRequest({ variables: { resourceRequest: body } });
 

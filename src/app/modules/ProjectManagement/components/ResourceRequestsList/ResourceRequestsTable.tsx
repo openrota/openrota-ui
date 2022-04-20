@@ -1,7 +1,7 @@
 import ContextMenu from '@app/components/ContextMenu/ContextMenu';
 import { CHIPTYPE } from '@app/constants';
 import { useModal } from '@app/context/modal-context';
-import { ResourceRequestStatus, RowAction, useGetResourceRequestByIdLazyQuery, useGetResourceRequestsQuery, useHandleResourceRequestActionsMutation } from '@app/models';
+import { InvitationStatus, ResourceRequestStatus, RowAction, useGetResourceRequestByIdLazyQuery, useGetResourceRequestsQuery, useHandleResourceRequestActionsMutation } from '@app/models';
 import objectToListViewer from '@app/utils/objectToListViewer';
 import { Button, Link } from '@mui/material';
 import Chip from '@mui/material/Chip';
@@ -28,8 +28,8 @@ export const ResourceRequestsTable = () => {
                     employee: s?.resource?.firstName,
                     manager: s?.requester?.firstName,
                     pillar: s?.pillar,
-                    startDate: s?.startDate,
-                    endDate: s?.endDate,
+                    startDate: (new Date(s?.startDate)).toLocaleDateString(),
+                    endDate: (new Date(s?.endDate)).toLocaleDateString(),
                     status: s?.status
                 }
             }));
@@ -43,8 +43,8 @@ export const ResourceRequestsTable = () => {
                 { key: "Project", value: data.sharedResourceRequestById?.project },
                 { key: "Manager", value: data.sharedResourceRequestById?.requester?.firstName, render: () => <Link component="button" variant="body2">{data.sharedResourceRequestById?.requester?.firstName}</Link> },
                 { key: "Pillar", value: data.sharedResourceRequestById?.pillar },
-                { key: "Project Start Date", value: data.sharedResourceRequestById?.startDate },
-                { key: "Project End Date", value: data.sharedResourceRequestById?.endDate },
+                { key: "Project Start Date", value: (new Date(data.sharedResourceRequestById?.startDate)).toLocaleDateString() },
+                { key: "Project End Date", value: (new Date(data.sharedResourceRequestById?.endDate)).toLocaleDateString() },
                 { key: "Status", value: data.sharedResourceRequestById?.status, }
             ];
             setModal({ title: "Resource Request", modalBody: objectToListViewer(modalObj, ["id"]), modalFooter: <><Button autoFocus onClick={unSetModal}>Close</Button></> });
@@ -60,6 +60,7 @@ export const ResourceRequestsTable = () => {
                 const index = rows.findIndex((row) => row.id == data.handleResourceRequestActions?.id);
                 if (index != -1) {
                     rows[index].status = data.handleResourceRequestActions.status;
+                    rows[index].employee = data.handleResourceRequestActions.resource?.firstName;
                 }
                 unSetModal();
             }
@@ -143,14 +144,17 @@ export const ResourceRequestsTable = () => {
         options: {
             sort: false,
             customBodyRender: (value, tableMeta, updateValue) => {
-                const actions = [
+                let actions = [
                     {
                         name: "View",
                         onClick: () => {
                             getResourceRequestById({ variables: { id: tableMeta.rowData[0] } })
                         }
-                    },
-                    {
+                    }
+                ];
+
+                if (tableMeta.rowData[7] == InvitationStatus.Pending) {
+                    actions = [...actions, {
                         name: "Approve",
                         onClick: () => {
                             setModal({
@@ -194,8 +198,9 @@ export const ResourceRequestsTable = () => {
                                     }} />
                             });
                         }
-                    },
-                ];
+                    },];
+
+                }
                 return (
                     <ContextMenu actions={actions} />
                 );

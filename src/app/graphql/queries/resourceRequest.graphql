@@ -51,5 +51,9 @@ mutation handleResourceRequestActions ($action: RowAction, $resourceRequest: Res
   handleResourceRequestActions(action: $action, resourceRequest: $resourceRequest) {
     id
     status
+    resource {
+        firstName
+    }
+    
   }
 }

@@ -35,6 +35,11 @@ const ResourceRequestForm: React.FC = () => {
                 history.push("/view-resource-requests");
             }
         },
+        onError: (data) => {
+            enqueueSnackbar('Error while performing action!', {
+                variant: CHIPTYPE.ERROR
+            });
+        }
     });
     const [getSRByMail, { data: srByMail }] = useGetSharedResourceByEmailIdLazyQuery();
     const [formData, setFormData] = useState({});
@@ -50,7 +55,7 @@ const ResourceRequestForm: React.FC = () => {
 
 
 
-    const skillOptions = skills?.skill?.map(s => ({ label: s.name, value: s.id }));
+    const skillOptions = skills?.skill?.map(s => ({ label: s?.name, value: s?.id }));
 
 
     const loadSkills = () => (_props, _field, formOptions) => ({ ..._props, options: skillOptions });
@@ -60,7 +65,6 @@ const ResourceRequestForm: React.FC = () => {
     };
 
     const onSubmit = (values) => {
-        console.log((new Date(values.startDate)).toLocaleDateString());
         
         const body = {
             requester: {

@@ -64,7 +64,7 @@ const CandidateProfile: React.FC = () => {
 
   };
 
-  const skillOptions = data?.skill?.map(s => ({ label: s.name, value: s.id }));
+  const skillOptions = data?.skill?.map(s => ({ label: s?.name, value: s?.id }));
 
 
   const loadSkills = () => (_props, _field, formOptions) => ({ ..._props, options: skillOptions });

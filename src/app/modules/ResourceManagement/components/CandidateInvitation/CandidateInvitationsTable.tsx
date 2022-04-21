@@ -15,7 +15,7 @@ const CandidateInvitationsTable = ({ rows, updateRow }) => {
   const [getInvitationById] = useGetInvitationByIdLazyQuery({
     fetchPolicy: 'network-only',
     onCompleted: (data) => {
-      const inviteUrl = `https://prod.foo.redhat.com:1337/#/&token=${data.getInvitationById?.token}?emailId=${data.getInvitationById?.emailId}`;
+      const inviteUrl = `https://prod.foo.redhat.com:1337/#/?token=${data.getInvitationById?.token}&emailId=${data.getInvitationById?.emailId}`;
       const modalObj = [
         { key: 'Token', value: data.getInvitationById?.token },
         { key: 'Created At', value: data.getInvitationById?.createdAt },

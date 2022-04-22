@@ -94,7 +94,7 @@ export const ResourceRequestsTable = () => {
             sort: false,
             customBodyRender: (value) => {
                 return (
-                    (value ? <Link component="button" variant="body2">{value}</Link> : "UNASSIGNED")
+                    (value ? value : "UNASSIGNED")
                 );
             }
         }

@@ -24,9 +24,7 @@ const SharedResourceList: React.FC = () => {
                 { key: "Email Id", value: data.sharedResourceById?.emailId },
                 { key: "Designation", value: data.sharedResourceById?.designation },
                 { key: "Status", value: data.sharedResourceById?.status },
-                { key: "Total Experience", value: data?.sharedResourceById?.totalExperience },
-                { key: "EmployeeId", value: data?.sharedResourceById?.employeeId },
-                { key: "Skill Proficiencies", value: data?.sharedResourceById?.skillProficiencies?.map(skillObj => skillObj?.skill?.name).toString() },
+                
             ];
 
             setModal({ title: "Candidate Profile", modalBody: objectToListViewer(modalObj, ["id"]), modalFooter: <><Button autoFocus onClick={unSetModal}>Close</Button></> });

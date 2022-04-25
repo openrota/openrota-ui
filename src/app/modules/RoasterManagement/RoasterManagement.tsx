@@ -10,19 +10,19 @@ const RoasterManagement: React.FC = () => {
       id: "1",
       rightTitle: "Stamm",
       title: "Saravana Srinivasan",
-      mail: 'saravanabalajis94@gmail.com'
+      mail: ''
     }, {
       bgColor: "#f4ed8d",
       id: "2",
       rightTitle: "Stamm",
       title: "John Snow",
-      mail: 'saravanabalajis49@gmail.com'
+      mail: ''
     }, {
       bgColor: "#f4ed8d",
       id: "3",
       rightTitle: "Stamm",
       title: "Harry Potter",
-      mail: 'saravanabalajis04@gmail.com'
+      mail: ''
     }
     ]);
     const props = {

@@ -1,11 +1,12 @@
-import React, { lazy, Suspense, useEffect } from 'react';
-import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
+import React, { lazy, useEffect } from 'react';
+import { Route, useLocation, useNavigate, Routes } from 'react-router-dom';
 //import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Loading, MessageDisplayerComponent } from '@app/components';
 import { useVerifyInvitationMutation } from './models';
 import SearchIcon from '@mui/icons-material/Search';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useAuth } from './context';
+import TableEmptyData from './components/TableEmptyData/TableEmptyData';
 
 const Dashboard = lazy(() => import('@app/modules/Dashboard/Dashboard'));
 const ResourceManagement = lazy(() => import('@app/modules/ResourceManagement/ResourceManagement'));
@@ -18,7 +19,7 @@ const RoasterManagement = lazy(() => import('@app/modules/RoasterManagement/Roas
 const ProfileManagement = lazy(() => import('@app/modules/ProfileManagement/ProfileManagement'));
 const CandidateInvitation = lazy(() => import('@app/modules/ResourceManagement/components/CandidateInvitation/CandidateInvitation'));
 const AppRoutes: React.FC = () => {
-  let history = useHistory();
+  let navigate = useNavigate();
   const { search } = useLocation();
   const auth = useAuth();
   const searchparams = new URLSearchParams(search);
@@ -26,7 +27,7 @@ const AppRoutes: React.FC = () => {
     onCompleted: (data) => {
       console.log(data.verifyInvitation);
       if (data?.verifyInvitation?.responseStatus == 200) {
-        history.push("/profile-management")
+        navigate('profile-management');
       }
     },
   })
@@ -50,19 +51,21 @@ const AppRoutes: React.FC = () => {
 
   return (
     <React.Suspense fallback={<Loading />}>
-      <Switch>
-        <Route path="/" component={Dashboard} exact />
-        <Route path="/dashboard" component={Dashboard} exact />
-        <Route path="/resource-management" component={ResourceManagement} exact />
-        <Route path="/project-management" component={ProjectManagement} exact />
-        <Route path="/roaster-management" component={RoasterManagement} />
-        <Route path="/profile-management" component={ProfileManagement} />
-        <Route path="/create-resource-request" component={NewResourceRequest} />
-        <Route path="/view-resource-requests" component={ResourceRequestList} />
-        <Route path="/add-candidate" component={CandidateInvitation} />
-        <Route path="/request-access" component={RequestAccessForm} />
-        <Route path="/view-access-requests" component={AccessRequestList} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="resource-management" element={<ResourceManagement />} />
+        <Route path="project-management" element={<ProjectManagement />} />
+        <Route path="roaster-management" element={<RoasterManagement />} />
+        <Route path="profile-management" element={<ProfileManagement />} />
+        <Route path="create-resource-request" element={<NewResourceRequest />} />
+        <Route path="view-resource-requests" element={<ResourceRequestList />} />
+        <Route path="add-candidate" element={<CandidateInvitation />} />
+        <Route path="request-access" element={<RequestAccessForm />} />
+        <Route path="view-access-requests" element={<AccessRequestList />} />
+        <Route path="*" element={<TableEmptyData />} />
+      </Routes>
+
     </React.Suspense>
   );
 };

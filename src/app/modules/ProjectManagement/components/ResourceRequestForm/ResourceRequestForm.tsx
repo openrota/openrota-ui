@@ -8,10 +8,10 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Box from '@mui/material/Box';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const ResourceRequestForm: React.FC = () => {
 
-    const history = useHistory();
+    const Navigate = useNavigate();
     const auth = useAuth();
     const [skillsMap, setskillsMap] = useState({});
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -21,7 +21,7 @@ const ResourceRequestForm: React.FC = () => {
         onCompleted: (data) => {
             // In prod it will help us to validate only the designated people to be able to request the resource
             if (data?.isResourceAccessAllowed?.isgranted == false) {
-                history.push("/request-access")
+                Navigate("request-access")
             }
         },
     });
@@ -32,7 +32,7 @@ const ResourceRequestForm: React.FC = () => {
                 enqueueSnackbar('Resource request has been created', {
                     variant: CHIPTYPE.SUCCESS
                 });
-                history.push("/view-resource-requests");
+                Navigate("view-resource-requests");
             }
         },
         onError: (data) => {

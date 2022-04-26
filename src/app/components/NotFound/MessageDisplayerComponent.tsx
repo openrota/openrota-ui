@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Maybe } from '@app/models';
 
 interface MessageDisplayerComponentProps {
@@ -14,9 +14,9 @@ interface MessageDisplayerComponentProps {
 
 const MessageDisplayerComponent: React.FunctionComponent<MessageDisplayerComponentProps> = ({ mainMessage, title, icon }) => {
   function GoHomeBtn() {
-    const history = useHistory();
+    const Navigate = useNavigate();
     function handleClick() {
-      history.push('/');
+      Navigate('/');
     }
     return (
       <Button onClick={handleClick}>Take me home</Button>

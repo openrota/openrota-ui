@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -11,10 +11,10 @@ interface IOwnProps {
 }
 
 const PageTitle: React.FC<IOwnProps> = ({ title }) => {
-    const history = useHistory();
+    const Navigate = useNavigate();
     function handleClick(event, path) {
         event.preventDefault();
-        history.push(path);
+        Navigate(path);
     }
     const breadcrumbs = [
         <Link underline="hover" key="1" color="inherit" href="/" onClick={(e) => handleClick(e, '/')}>

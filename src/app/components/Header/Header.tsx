@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 
 import MuiDrawer from '@mui/material/Drawer';
@@ -105,7 +105,7 @@ export const Header: React.FC<{}> = () => {
   const auth = useAuth();
   const { t } = useTranslation();
   const theme = useTheme();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [userName, setUserName] = useState("");
 
@@ -124,17 +124,17 @@ export const Header: React.FC<{}> = () => {
     {
       name: 'Candidate',
       icon: <PersonPinOutlinedIcon style={{ color: '#000' }} />,
-      path: '/resource-management'
+      path: 'resource-management'
     },
     {
       name: 'Projects',
       icon: <AccountTreeOutlinedIcon style={{ color: '#000' }} />,
-      path: '/project-management'
+      path: 'project-management'
     },
     {
       name: 'Calendar',
       icon: <TodayOutlinedIcon style={{ color: '#000' }} />,
-      path: '/roaster-management'
+      path: 'roaster-management'
     }
   ];
 
@@ -148,7 +148,7 @@ export const Header: React.FC<{}> = () => {
 
   const handleSideBarClick = (menu) => {
     setSelected(menu.name);
-    history.push(menu.path);
+    navigate(menu.path);
   }
 
   return (
@@ -174,7 +174,7 @@ export const Header: React.FC<{}> = () => {
             <LogoImg />
           </Typography>
           <ActionsMenu />
-          <AccountMenu userName={userName}/>
+          <AccountMenu userName={userName} />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -201,9 +201,9 @@ export const Header: React.FC<{}> = () => {
 };
 
 function LogoImg() {
-  const history = useHistory();
+  const navigate = useNavigate();
   function handleClick() {
-    history.push('/');
+    navigate('/');
   }
   return <img src={logo} onClick={handleClick} alt="Brand logo" />;
 }

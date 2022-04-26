@@ -5,13 +5,13 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { keycloak } from '@app/auth/keycloak';
 
 
 const AccountMenu = ({userName}) => {
     const { t } = useTranslation();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openAccount = Boolean(anchorEl);
 
@@ -30,7 +30,7 @@ const AccountMenu = ({userName}) => {
 
     const handleMyProfile = (): void => {
         handleClose();
-        history.push('/profile-management');
+        navigate('profile-management');
     };
 
 

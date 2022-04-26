@@ -1,0 +1,15 @@
+query getDashboardData {
+  dashboard {
+    requestDashboard {
+      totalRequests
+      pendingRequests
+      completedRequests
+      canceledRequests
+    }
+    sharedResourceDashboard{
+      totalSharedResources
+      availableSharedResources
+      unavailableSharedResources
+    }
+  }
+}

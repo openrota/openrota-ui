@@ -17,17 +17,28 @@ const CandidateInvitationsTable = ({ rows, updateRow }) => {
     onCompleted: (data) => {
       const inviteUrl = `https://prod.foo.redhat.com:1337/#/?token=${data.getInvitationById?.token}&emailId=${data.getInvitationById?.emailId}`;
       const modalObj = [
-        { key: 'Token', value: data.getInvitationById?.token },
-        { key: 'Created At', value: data.getInvitationById?.createdAt },
+        { key: 'Token Created At', value: data.getInvitationById?.createdAt },
         { key: 'Email', value: data.getInvitationById?.emailId },
         { key: 'Status', value: data.getInvitationById?.status },
         {
           key: 'Link',
           value: data.getInvitationById?.status,
           render: () => (
-            <Link component="button" variant="body2" onClick={() => navigator.clipboard.writeText(inviteUrl)}>
-              {inviteUrl}
-            </Link>
+            <div>
+              <Link component="button" variant="body2">
+                {inviteUrl}
+              </Link>
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={() => {
+                  navigator.clipboard.writeText(inviteUrl);
+                  enqueueSnackbar('Copied Successfully!', { variant: CHIPTYPE.SUCCESS });
+                }}
+              >
+                Copy
+              </Button>
+            </div>
           ),
         },
       ];

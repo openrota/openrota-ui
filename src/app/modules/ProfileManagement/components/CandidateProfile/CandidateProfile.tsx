@@ -59,6 +59,7 @@ const CandidateProfile: React.FC = () => {
         }
       })
     };
+  
     console.log(body);
     addSharedResource({ variables: { resource: body } });
 

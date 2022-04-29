@@ -21,7 +21,7 @@ const ResourceRequestForm: React.FC = () => {
         onCompleted: (data) => {
             // In prod it will help us to validate only the designated people to be able to request the resource
             if (data?.isResourceAccessAllowed?.isgranted == false) {
-                Navigate("request-access")
+                Navigate("/request-access", { replace: true });
             }
         },
     });
@@ -65,7 +65,7 @@ const ResourceRequestForm: React.FC = () => {
     };
 
     const onSubmit = (values) => {
-        
+
         const body = {
             requester: {
                 id: srByMail?.sharedResourceByEmailId?.id

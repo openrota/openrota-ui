@@ -20,33 +20,22 @@ const CandidateInvitationsTable = ({ rows, updateRow }) => {
         { key: 'Token Created At', value: data.getInvitationById?.createdAt },
         { key: 'Email', value: data.getInvitationById?.emailId },
         { key: 'Status', value: data.getInvitationById?.status },
-        {
-          key: 'Link',
-          value: data.getInvitationById?.status,
-          render: () => (
-            <div>
-              <Link component="button" variant="body2">
-                {inviteUrl}
-              </Link>
-              <Button
-                type="submit"
-                variant="contained"
-                onClick={() => {
-                  navigator.clipboard.writeText(inviteUrl);
-                  enqueueSnackbar('Copied Successfully!', { variant: CHIPTYPE.SUCCESS });
-                }}
-              >
-                Copy
-              </Button>
-            </div>
-          ),
-        },
       ];
       setModal({
         title: 'Candidate Invitation',
         modalBody: objectToListViewer(modalObj, ['id']),
         modalFooter: (
           <>
+            <Button
+              type="submit"
+              variant="contained"
+              onClick={() => {
+                navigator.clipboard.writeText(inviteUrl);
+                enqueueSnackbar('Copied Successfully!', { variant: CHIPTYPE.SUCCESS });
+              }}
+            >
+              Copy Verification Link
+            </Button>
             <Button autoFocus onClick={unSetModal}>
               Close
             </Button>

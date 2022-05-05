@@ -225,7 +225,7 @@ const TimelineComponent: React.FC<IOwnProps> = ({ calendarEvents, resources, set
                         <SidebarHeader>
                             {({ getRootProps }) => {
                                 return <div {...getRootProps()}>
-                                    <p style={{ color: 'white', paddingTop: '15px', textAlign: 'center' }}>Associates</p>
+                                    <p style={{ color: 'white', paddingTop: '15px', textAlign: 'center' }}>Shared resources</p>
                                 </div>;
                             }}
                         </SidebarHeader>

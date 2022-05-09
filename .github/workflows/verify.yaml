@@ -53,8 +53,8 @@ jobs:
     - name: Install build dependencies
       run: yarn install --frozen-lockfile
 
-    - name: Run the linter
-      run: yarn run lint    
+    #- name: Run the linter
+    #  run: yarn run lint    
 
     - name: Run the test suite
       run: yarn run test

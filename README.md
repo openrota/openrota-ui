@@ -72,6 +72,29 @@ yarn run storybook
 yarn run build:storybook
 ```
 
+
+# Build and Run Docker Image
+To run a production build using docker:
+
+```bash
+$ yarn install
+$ yarn run build
+$ docker build -t="openrota/openrota-ui" --rm .
+```
+
+## Run with authentication disabled
+
+<TODO> 
+
+## Run with authentication enabled
+
+You will need to configure your hosts file(described above). After configuring the hosts file, run the below docker command:
+
+```bash
+$ docker run --rm -p 1337:1337 openrota/openrota-ui
+```
+Then open your browser to https://prod.foo.redhat.com:1337 
+
 ## Configurations
 * [TypeScript Config](./tsconfig.json)
 * [Webpack Config](./webpack.common.js)

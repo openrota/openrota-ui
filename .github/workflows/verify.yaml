@@ -63,8 +63,8 @@ jobs:
       run: yarn run build
     
     - name: Login to DockerHub Registry
-        if: github.event_name == 'push'
-        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      if: github.event_name == 'push'
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
     - name: Build and Publish Multi-Arch Docker Images
       if: github.event_name == 'push'

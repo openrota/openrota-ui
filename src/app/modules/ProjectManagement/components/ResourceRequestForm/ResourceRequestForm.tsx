@@ -32,7 +32,7 @@ const ResourceRequestForm: React.FC = () => {
                 enqueueSnackbar('Resource request has been created', {
                     variant: CHIPTYPE.SUCCESS
                 });
-                Navigate("view-resource-requests");
+                Navigate("/view-resource-requests", { replace: true });
             }
         },
         onError: (data) => {

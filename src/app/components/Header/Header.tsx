@@ -16,19 +16,19 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Link from '@material-ui/core/Link';
 
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PersonPinOutlinedIcon from '@mui/icons-material/PersonPinOutlined';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
+import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 
 import { useTranslation } from 'react-i18next';
 import logo from '@app/images/Logo-Red_Hat-Middleware-A-White-RGB.svg';
 import { useAuth } from '@app/context';
 import ActionsMenu from './components/ActionsMenu';
 import AccountMenu from './components/AccountMenu';
-
-
 
 const drawerWidth = 240;
 
@@ -84,22 +84,20 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  ...(open && {
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
   }),
-);
+  ...(!open && {
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
+  }),
+}));
 
 export const Header: React.FC<{}> = () => {
   const auth = useAuth();
@@ -107,35 +105,35 @@ export const Header: React.FC<{}> = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState('');
 
   const [selected, setSelected] = React.useState('Home');
 
   useEffect(() => {
-    auth?.getUsername().then(userName => setUserName(userName));
+    auth?.getUsername().then((userName) => setUserName(userName));
   }, []);
 
   const menus = [
     {
       name: 'Home',
       icon: <HomeOutlinedIcon style={{ color: '#000' }} />,
-      path: '/'
+      path: '/',
     },
     {
       name: 'Candidate',
       icon: <PersonPinOutlinedIcon style={{ color: '#000' }} />,
-      path: 'resource-management'
+      path: 'resource-management',
     },
     {
       name: 'Projects',
       icon: <AccountTreeOutlinedIcon style={{ color: '#000' }} />,
-      path: 'project-management'
+      path: 'project-management',
     },
     {
       name: 'Calendar',
       icon: <TodayOutlinedIcon style={{ color: '#000' }} />,
-      path: 'roaster-management'
-    }
+      path: 'roaster-management',
+    },
   ];
 
   const handleDrawerOpen = () => {
@@ -149,14 +147,11 @@ export const Header: React.FC<{}> = () => {
   const handleSideBarClick = (menu) => {
     setSelected(menu.name);
     navigate(menu.path);
-  }
+  };
 
   return (
     <>
-      <AppBar
-        position="fixed"
-        open={open}
-      >
+      <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -177,10 +172,7 @@ export const Header: React.FC<{}> = () => {
           <AccountMenu userName={userName} />
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        open={open}
-      >
+      <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -189,15 +181,37 @@ export const Header: React.FC<{}> = () => {
         <Divider />
         <List>
           {menus.map((menu, index) => (
-            <ListItem button key={index} onMouseOver={handleDrawerOpen} onMouseOut={handleDrawerClose} selected={selected === menu.name} onClick={() => handleSideBarClick(menu)}>
+            <ListItem
+              button
+              key={index}
+              onMouseOver={handleDrawerOpen}
+              onMouseOut={handleDrawerClose}
+              selected={selected === menu.name}
+              onClick={() => handleSideBarClick(menu)}
+            >
               <ListItemIcon>{menu.icon}</ListItemIcon>
               <ListItemText primary={menu.name} />
             </ListItem>
           ))}
         </List>
+        <List style={{ marginTop: `auto` }}>
+          <Divider />
+          <ListItem
+            onMouseOver={handleDrawerOpen}
+            onMouseOut={handleDrawerClose}
+            button
+            component={Link}
+            href="https://source.redhat.com/departments/legal/globallegalcompliance/compliance_folder/employee_personal_information_privacy_statement_pdfpdf"
+          >
+            <ListItemIcon>
+              <SecurityOutlinedIcon style={{ color: '#000' }} />
+            </ListItemIcon>
+            <ListItemText>Privacy Statement</ListItemText>
+          </ListItem>
+        </List>
       </Drawer>
     </>
-  )
+  );
 };
 
 function LogoImg() {

@@ -201,6 +201,9 @@ export const Header: React.FC<{}> = () => {
             onMouseOut={handleDrawerClose}
             button
             component={Link}
+            target="_blank"
+            underline="hover"
+            rel="noreferrer"
             href="https://source.redhat.com/departments/legal/globallegalcompliance/compliance_folder/employee_personal_information_privacy_statement_pdfpdf"
           >
             <ListItemIcon>

@@ -3,11 +3,11 @@
 
 if [ "x$KEYCLOAK_REALM" = "x" ]
 then
-  KEYCLOAK_REALM="redhat-external"
+  KEYCLOAK_REALM="EmployeeIDP"
 fi
 if [ "x$KEYCLOAK_URL" = "x" ]
 then
-  KEYCLOAK_URL="https://sso.redhat.com/auth/"
+  KEYCLOAK_URL="https://auth.stage.redhat.com/auth/"
 fi
 if [ "x$KEYCLOAK_SSL_REQUIRED" = "x" ]
 then
@@ -15,7 +15,12 @@ then
 fi
 if [ "x$KEYCLOAK_RESOURCE" = "x" ]
 then
-  KEYCLOAK_RESOURCE="cloud-services"
+  KEYCLOAK_RESOURCE="openrota"
+fi
+if [ "x$SECRET" = "x" ]
+then
+  echo "Secret Not Set. Aborting the process..."
+  exit 1;
 fi
 
 echo "Generating keycloak.json"
@@ -24,7 +29,9 @@ echo "{
   \"auth-server-url\": \"$KEYCLOAK_URL\",
   \"ssl-required\": \"$KEYCLOAK_SSL_REQUIRED\",
   \"resource\": \"$KEYCLOAK_RESOURCE\",
-  \"public-client\": true,
+  \"credentials\": {
+    \"secret\": \"$SECRET\"
+  },
   \"confidential-port\": 0
 }" > /opt/app-root/src/keycloak.json
 

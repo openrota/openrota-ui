@@ -1,3 +1,4 @@
+import { Maybe, Role, RoleType } from "@app/models";
 import React, { useContext } from "react";
 
 export type Auth = {
@@ -7,6 +8,10 @@ export type Auth = {
     getUsername: () => Promise<string>;
     getUserInfo: () => Promise<Object>;
     getToken: () => Promise<string>;
+    getRoles: () => (Maybe<RoleType> | undefined)[] | undefined;
+    setRoles: (roles: (Maybe<RoleType> | undefined)[] | undefined) => void;
+    getEmployeeId: () => number;
+    setEmployeeId: (employeeId: number) => void;
 };
 
 /**

@@ -15,6 +15,23 @@ query getResourceRequests {
     id 
   }
 }
+query getResourceRequestsByRequestor ($id: BigInteger!){
+  sharedResourceRequestByRequestorId( id: $id) {
+    requester{
+      firstName
+    }
+    resource {
+      id
+      firstName
+    }
+    project
+    pillar
+    startDate
+    endDate
+    status
+    id 
+  }
+}
 query getSkillsByRequestId ($id: BigInteger!){
   getSkillsByRequestId( id: $id) {
       id

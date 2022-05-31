@@ -1,22 +1,45 @@
 {
-    "title": "Invite Candidate",
-    "fields": [
+  "title": "Invite Candidate",
+  "fields": [
+    {
+      "name": "layout",
+      "component": "column-layout",
+      "column": "2",
+      "fields": [
         {
-            "component": "text-field",
-            "name": "emailId",
-            "label": "Email",
-            "helperText": "",
-            "isRequired": true,
-            "validate": [
-              {
-                "type": "required"
-              },
-              {
-                "type": "pattern",
-                "pattern": "[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$",
-                "message": "Enter valid email id"
-              }
+          "component": "text-field",
+          "name": "emailId",
+          "label": "Email",
+          "isRequired": true,
+          "validate": [
+            {
+              "type": "required"
+            },
+            {
+              "type": "pattern",
+              "pattern": "[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$",
+              "message": "Enter valid email id"
+            }
+          ]
+        },
+        
+        {
+          "component": "select",
+          "name": "skill",
+          "label": "Role",
+          "isRequired": false,
+          "validate": [
+            {
+              "type": "required"
+            }
+          ],
+          "actions": {
+            "resolveProps": [
+              "loadRoles"
             ]
           }
-    ]
-  }
+        }
+      ]
+    }
+  ]
+}

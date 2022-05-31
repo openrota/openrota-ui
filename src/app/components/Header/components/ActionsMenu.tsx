@@ -1,9 +1,11 @@
-import React from 'react';
+import { useAuth } from '@app/context';
+import { topLevelMenuResolver } from '@app/utils/rolesHandler';
 import Button, { ButtonProps } from '@mui/material/Button';
+import Fade from '@mui/material/Fade';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Fade from '@mui/material/Fade';
 import { styled } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ButtonStyles = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -12,7 +14,9 @@ const ButtonStyles = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const ActionsMenu = () => {
+    const auth = useAuth();
     const Navigate = useNavigate();
+    const [allowedRoutes, setAllowedRoutes] = useState<any>([]);
     const [anchorActionEl, setAnchorActionEl] = React.useState(null);
     const openAction = Boolean(anchorActionEl);
 
@@ -24,25 +28,21 @@ const ActionsMenu = () => {
         setAnchorActionEl(null);
     };
 
-    const handleViewRequest = (): void => {
-        handleActionClose();
-        Navigate('view-resource-requests');
-    };
+    useEffect(() => {
+        const allowedItems: any = [];
+        auth?.getRoles()?.map(r => {
+            Object.entries(topLevelMenuResolver).forEach(item => {
+                const [key, value] = item;
+                const allowedRoles = value.rolesAllowed;
+                if (r != undefined && allowedRoles.includes(r)) {
+                    allowedItems.push(value);
+                }
 
-    const handleViewAccessRequest = (): void => {
-        handleActionClose();
-        Navigate('view-access-requests');
-    };
+            })
+        });
+        setAllowedRoutes(allowedItems)
+    }, [auth]);
 
-    const handleCreateRequest = (): void => {
-        handleActionClose();
-        Navigate('create-resource-request');
-    };
-
-    const handleAddCandidates = (): void => {
-        handleActionClose();
-        Navigate('add-candidate');
-    }
 
     return (
         <div>
@@ -57,10 +57,7 @@ const ActionsMenu = () => {
                 onClose={handleActionClose}
                 TransitionComponent={Fade}
             >
-                <MenuItem onClick={handleViewRequest}>View requests</MenuItem>
-                <MenuItem onClick={handleViewAccessRequest}>View access requests</MenuItem>
-                <MenuItem onClick={handleCreateRequest}>Create Request</MenuItem>
-                <MenuItem onClick={handleAddCandidates}>Candidate Invitations</MenuItem>
+                {allowedRoutes.map(item => <MenuItem key={item.label} onClick={() => { handleActionClose(); Navigate(item.path) }}>{item.label}</MenuItem>)}
             </Menu>
         </div>
     )

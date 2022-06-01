@@ -34,7 +34,8 @@ export const topLevelMenuResolver = {
         path: 'create-resource-request',
         label: 'Create Resource request',
         element: <NewResourceRequest />,
-        rolesAllowed: [RoleType.Requestor, RoleType.Admin]
+        rolesAllowed: [RoleType.Requestor, RoleType.Admin, RoleType.Manager],
+        public: true
     },
     createResourceInvitation: {
         path: 'add-candidate',

@@ -7,7 +7,7 @@ import PrivateRoute from './PrivateRoute';
 import { values } from 'cypress/types/lodash';
 const Dashboard = lazy(() => import('@app/modules/Dashboard/Dashboard'));
 const ResourceManagement = lazy(() => import('@app/modules/ResourceManagement/ResourceManagement'));
-const ProjectManagement = lazy(() => import('@app/modules/ProjectManagement/ProjectManagement'));
+const ProjectManagement = lazy(() => import('@app/modules/ProjectManagement/components/ProjectList/ProjectList'));
 const NewResourceRequest = lazy(() => import('@app/modules/ProjectManagement/components/ResourceRequestForm/ResourceRequestForm'));
 const RequestAccessForm = lazy(() => import('@app/modules/ProjectManagement/components/RequestAccessForm/RequestAccessForm'));
 const AccessRequestList = lazy(() => import('@app/modules/ProjectManagement/components/AccessRequestList/AccessRequestList'));

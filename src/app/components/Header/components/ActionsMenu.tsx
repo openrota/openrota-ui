@@ -5,6 +5,7 @@ import Fade from '@mui/material/Fade';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
+import id from 'date-fns/esm/locale/id/index.js';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,14 +31,30 @@ const ActionsMenu = () => {
 
     useEffect(() => {
         const allowedItems: any = [];
+
+        if (auth?.getRoles() == null || auth?.getRoles()?.length == 0) {
+            Object.entries(topLevelMenuResolver).forEach(item => {
+                const [key, value] = item;
+                if (value.public != undefined && value.public != null && value.public == true) {
+                    allowedItems.push(value);
+                }
+            })
+        }
+
+
         auth?.getRoles()?.map(r => {
             Object.entries(topLevelMenuResolver).forEach(item => {
                 const [key, value] = item;
-                const allowedRoles = value.rolesAllowed;
-                if (r != undefined && allowedRoles.includes(r)) {
-                    allowedItems.push(value);
+                if (value.rolesAllowed != undefined) {
+                    const allowedRoles = value.rolesAllowed;
+                    if (r != undefined && allowedRoles.includes(r)) {
+                        allowedItems.push(value);
+                    }
+                } else if (value.rolesDenied != undefined || value.rolesDenied != null) {
+                    if (r != undefined && value.rolesDenied.includes(r) == false) {
+                        allowedItems.push(value);
+                    }
                 }
-
             })
         });
         setAllowedRoutes(allowedItems)

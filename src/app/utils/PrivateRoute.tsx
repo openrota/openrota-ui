@@ -6,9 +6,9 @@ export default function PrivateRoute({ children, roles }: {
     children: JSX.Element;
     roles: Array<String>;
   }) {
-    let userHasRequiredRoles = false;
+    let userHasRequiredRoles = true;
     const auth = useAuth();
-    auth?.getRoles().map(r => {
+    auth?.getRoles()?.map(r => {
       for (const role of roles) {
         if (role == r) {
           userHasRequiredRoles = true;

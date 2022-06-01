@@ -11,6 +11,7 @@ query getInvitationById ($id: BigInteger!){
     createdAt
     emailId
     status
+    invitationLinkParams
     id
   }
 }

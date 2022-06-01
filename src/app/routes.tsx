@@ -1,24 +1,18 @@
 import React, { lazy, useEffect } from 'react';
 import { Route, useLocation, useNavigate, Routes } from 'react-router-dom';
-//import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Loading, MessageDisplayerComponent } from '@app/components';
-import { useVerifyInvitationMutation } from './models';
+import { useGetEmployeeByEmailIdLazyQuery, useVerifyInvitationMutation } from './models';
 import SearchIcon from '@mui/icons-material/Search';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useAuth } from './context';
 import TableEmptyData from './components/TableEmptyData/TableEmptyData';
+import { ResolvedRoutes } from './utils/rolesHandler';
 
 const Dashboard = lazy(() => import('@app/modules/Dashboard/Dashboard'));
-const ResourceManagement = lazy(() => import('@app/modules/ResourceManagement/ResourceManagement'));
-const ProjectManagement = lazy(() => import('@app/modules/ProjectManagement/components/ProjectList/ProjectList'));
 const ProjectPage = lazy(() => import('@app/modules/ProjectManagement/components/ProjectPage/ProjectPage'));
-const NewResourceRequest = lazy(() => import('@app/modules/ProjectManagement/components/ResourceRequestForm/ResourceRequestForm'));
-const RequestAccessForm = lazy(() => import('@app/modules/ProjectManagement/components/RequestAccessForm/RequestAccessForm'));
-const AccessRequestList = lazy(() => import('@app/modules/ProjectManagement/components/AccessRequestList/AccessRequestList'));
-const ResourceRequestList = lazy(() => import('@app/modules/ProjectManagement/components/ResourceRequestsList/ResourceRequestsList'));
-const RoasterManagement = lazy(() => import('@app/modules/RoasterManagement/RoasterManagement'));
 const ProfileManagement = lazy(() => import('@app/modules/ProfileManagement/ProfileManagement'));
-const CandidateInvitation = lazy(() => import('@app/modules/ResourceManagement/components/CandidateInvitation/CandidateInvitation'));
+const UserManagement = lazy(() => import('@app/modules/ProfileManagement/components/UserManagement/UserManagement'));
+
 const AppRoutes: React.FC = () => {
   let navigate = useNavigate();
   const { search } = useLocation();
@@ -33,15 +27,26 @@ const AppRoutes: React.FC = () => {
     },
   })
 
-  useEffect(() => {
-    console.log("search params", searchparams);
-
-    if (searchparams.get('token') && searchparams.get('emailId')) {
-      auth?.getUserInfo().then(obj => {
-        verifyToken({ variables: { emailId: searchparams.get('emailId'), token: searchparams.get('token'), name: obj['firstName'] } });
-      });
+  const [getCurrentEmployee, { data: loggedInEmployee }] = useGetEmployeeByEmailIdLazyQuery({
+    onCompleted: (data) => {
+      auth?.setEmployeeId(data.employeeByEmailId?.id);
     }
-  }, []);
+  });
+
+  useEffect(() => {
+    auth?.getUserInfo().then(obj => {
+      if (searchparams.get('token') && searchparams.get('emailId')) {
+        verifyToken({ variables: { emailId: searchparams.get('emailId'), token: searchparams.get('token'), name: obj['firstName'] } });
+      }
+      if (loggedInEmployee == null) {
+        getCurrentEmployee({ variables: { emailId: obj['email'] } })
+      } else {
+        const roles = loggedInEmployee?.employeeByEmailId?.roles.map(r => r?.roleName);
+        auth?.setRoles(roles);
+      }
+    });
+    // auth?.setRoles([RoleType.Admin]);
+  }, [loggedInEmployee]);
 
   if (verifyInvitation?.verifyInvitation?.responseStatus == 404) {
     return <MessageDisplayerComponent icon={SearchIcon} mainMessage={verifyInvitation?.verifyInvitation?.responseText} title="Not found" />
@@ -54,22 +59,16 @@ const AppRoutes: React.FC = () => {
     <React.Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="resource-management" element={<ResourceManagement />} />
-        <Route path="project-management" element={<ProjectManagement />} />
-        <Route path="roaster-management" element={<RoasterManagement />} />
         <Route path="profile-management" element={<ProfileManagement />} />
         <Route path="projects/:id" element={<ProjectPage />} />
-        <Route path="create-resource-request" element={<NewResourceRequest />} />
-        <Route path="view-resource-requests" element={<ResourceRequestList />} />
-        <Route path="add-candidate" element={<CandidateInvitation />} />
-        <Route path="request-access" element={<RequestAccessForm />} />
-        <Route path="view-access-requests" element={<AccessRequestList />} />
+        <Route path="user-management" element={<UserManagement />} />
+        {ResolvedRoutes()}
         <Route path="*" element={<TableEmptyData />} />
       </Routes>
-
     </React.Suspense>
   );
 };
+
+
 
 export { AppRoutes };

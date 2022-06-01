@@ -36,7 +36,10 @@ const App: React.FunctionComponent = () => {
         setInitialized(true);
       }
     };
-    init();
+
+    if (process.env.REACT_APP_BYPASS_SSO == 'false' || undefined || null) {
+      init();
+    }
   }, []);
 
   if (!initialized) return <Loading />;

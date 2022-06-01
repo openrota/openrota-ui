@@ -1,0 +1,56 @@
+query getEmployees {
+  employee {
+    id
+    emailId
+    lastName
+    firstName
+    roles{
+      roleName
+    }
+  }
+}
+
+
+query getEmployeeById ($id: BigInteger){
+  employeeById(id: $id) {
+    id
+    emailId
+    lastName
+    firstName
+    roles{
+      roleName
+    }
+  }
+}
+
+query getEmployeeByEmailId ($emailId: String){
+  employeeByEmailId(emailId: $emailId) {
+    id
+    emailId
+    lastName
+    firstName
+    roles {
+      roleName
+    }
+  }
+}
+
+query getRoleByEmployeeId ($employeeId: BigInteger){
+  roleByEmployeeId(employeeId: $employeeId) {
+    roleName
+    id
+  }
+}
+
+query getAllRoles {
+  roles {
+    roleName
+    id
+  }
+}
+
+mutation addRolesToEmployee($employeeId : BigInteger, $roles : [RoleInput]){
+  addRoleToEmployee( employeeId: $employeeId, roles: $roles) {
+    id
+  }
+}

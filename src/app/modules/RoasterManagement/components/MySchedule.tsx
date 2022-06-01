@@ -1,11 +1,11 @@
 import PageTitle from '@app/components/PageTitle/PageTitle';
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import TimelineComponent from './components/TimelineComponent';
-import { ResourceData } from './constants';
+import TimelineComponent from './TimelineComponent';
+import { ResourceData } from '../constants';
 import { useGetAllSharedResourceQuery } from '@app/models'
 
-const RoasterManagement: React.FC = () => {
+const MySchedule: React.FC = () => {
   const { data, loading, error } = useGetAllSharedResourceQuery();
   
   const [resources, setResources] = React.useState<ResourceData[]>([]);
@@ -46,7 +46,7 @@ const RoasterManagement: React.FC = () => {
 
   return (
     <>
-      <PageTitle title={"Calendars"} />
+      <PageTitle title={"My Schedule"} />
       <TimelineComponent
         calendarEvents={calendarEvents}
         resources={resources}
@@ -55,7 +55,7 @@ const RoasterManagement: React.FC = () => {
   )
 };
 
-export default RoasterManagement;
+export default MySchedule;
 
 
 

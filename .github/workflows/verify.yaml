@@ -18,6 +18,9 @@ on:
       - 'LICENSE'
       - 'README*'
     branches: [ main ]
+env:
+  PLATFORMS: linux/amd64,linux/arm64,linux/s390x,linux/ppc64le
+  IMAGE_TAG: latest-snapshot
 
 jobs:
   build:
@@ -36,15 +39,41 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    # Open-Source Machine emulator that allows you to emulate multiple CPU architectures on your machine
+    - name: Set up QEMU
+      if: github.event_name == 'push'
+      uses: docker/setup-qemu-action@v1
+
+    # Docker CLI plugin for extended build capabilities with BuildKit
+    - name: Set up Docker Buildx
+      if: github.event_name == 'push'
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+
     - name: Install build dependencies
       run: yarn install --frozen-lockfile
 
-    - name: Run the linter
-      run: yarn run lint    
+    #- name: Run the linter
+    #  run: yarn run lint    
 
     - name: Run the test suite
       run: yarn run test
 
     - name: Run Production build
       run: yarn run build
+    
+    - name: Login to DockerHub Registry
+      if: github.event_name == 'push'
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: Build and Publish Multi-Arch Docker Images
+      if: github.event_name == 'push'
+      uses: docker/build-push-action@v2
+      with:
+       context: ./
+       file: ./Dockerfile
+       platforms: ${{env.PLATFORMS}}
+       push: true
+       tags: |
+         docker.io/openrota/openrota-ui:${{env.IMAGE_TAG}}
       

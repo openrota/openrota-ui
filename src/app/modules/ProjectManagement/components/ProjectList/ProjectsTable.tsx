@@ -1,0 +1,131 @@
+import ContextMenu from '@app/components/ContextMenu/ContextMenu';
+import { CHIPTYPE } from '@app/constants';
+import { ProjectStatus, useGetProjectsQuery } from '@app/models';
+import Chip from '@mui/material/Chip';
+import MUIDataTable from 'mui-datatables';
+import { default as React, useState } from 'react';
+import { useNavigate } from 'react-router';
+
+export const ProjectsTable = () => {
+  const navigate = useNavigate();
+  const initRows = [];
+  const [rows, setRows] = useState<any>(initRows);
+  useGetProjectsQuery({
+    fetchPolicy: 'network-only',
+    onCompleted: (data) => {
+      setRows(
+        data?.project?.map((s, index) => {
+          return {
+            id: s?.id,
+            projectName: s?.projectName,
+            businessUnit: s?.businessUnit,
+            resource: s?.resourcerequest?.resource?.firstName,
+            projectManager: s?.projectManager?.firstName,
+            startDate: s?.slot?.startDate,
+            endDate: s?.slot?.endDate,
+            status: s?.status,
+          };
+        })
+      );
+    },
+  });
+
+  const tableOptions = { selectableRows: 'none' };
+  const columns = [
+    {
+      name: 'id',
+      options: {
+        display: 'excluded',
+        filter: false,
+        sort: false,
+      },
+    },
+    {
+      label: 'Project Name',
+      name: 'projectName',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      label: 'Business Unit',
+      name: 'businessUnit',
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      label: 'Project Manager',
+      name: 'projectManager',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      label: 'Project Start Date',
+      name: 'startDate',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      label: 'Project End Date',
+      name: 'endDate',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      label: 'Resource',
+      name: 'resource',
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      label: 'Status',
+      name: 'status',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => {
+          return (
+            <Chip
+              label={value}
+              color={value == ProjectStatus.Completed ? CHIPTYPE.SUCCESS : CHIPTYPE.WARNING}
+            />
+          );
+        },
+      },
+    },
+    {
+      name: 'Actions',
+      options: {
+        sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          let actions = [
+            {
+              name: 'View',
+              onClick: () => {
+                navigate('/projects/' + tableMeta.rowData[0], { replace: true });
+              },
+            },
+          ];
+
+          return <ContextMenu actions={actions} />;
+        },
+      },
+    },
+  ];
+  return (
+    <>
+      <MUIDataTable data={rows} columns={columns} options={tableOptions} />
+    </>
+  );
+};

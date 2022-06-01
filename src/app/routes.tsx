@@ -10,7 +10,8 @@ import TableEmptyData from './components/TableEmptyData/TableEmptyData';
 
 const Dashboard = lazy(() => import('@app/modules/Dashboard/Dashboard'));
 const ResourceManagement = lazy(() => import('@app/modules/ResourceManagement/ResourceManagement'));
-const ProjectManagement = lazy(() => import('@app/modules/ProjectManagement/ProjectManagement'));
+const ProjectManagement = lazy(() => import('@app/modules/ProjectManagement/components/ProjectList/ProjectList'));
+const ProjectPage = lazy(() => import('@app/modules/ProjectManagement/components/ProjectPage/ProjectPage'));
 const NewResourceRequest = lazy(() => import('@app/modules/ProjectManagement/components/ResourceRequestForm/ResourceRequestForm'));
 const RequestAccessForm = lazy(() => import('@app/modules/ProjectManagement/components/RequestAccessForm/RequestAccessForm'));
 const AccessRequestList = lazy(() => import('@app/modules/ProjectManagement/components/AccessRequestList/AccessRequestList'));
@@ -58,6 +59,7 @@ const AppRoutes: React.FC = () => {
         <Route path="project-management" element={<ProjectManagement />} />
         <Route path="roaster-management" element={<RoasterManagement />} />
         <Route path="profile-management" element={<ProfileManagement />} />
+        <Route path="projects/:id" element={<ProjectPage />} />
         <Route path="create-resource-request" element={<NewResourceRequest />} />
         <Route path="view-resource-requests" element={<ResourceRequestList />} />
         <Route path="add-candidate" element={<CandidateInvitation />} />

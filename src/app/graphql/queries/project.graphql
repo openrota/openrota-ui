@@ -1,0 +1,72 @@
+query getProjects {
+  project {
+    resourcerequest {
+      resource {
+        firstName
+      }
+    }
+    slot {
+      startDate
+      endDate
+    }
+    projectName
+    businessUnit
+    projectManager {
+      firstName
+    }
+    status
+    createdAt
+    id
+  }
+}
+
+query getSkillsByProjectId($id: BigInteger!) {
+  getSkillsByProjectId(id: $id) {
+    id
+    proficiencyLevel
+    skill {
+      id
+      name
+    }
+  }
+}
+
+query getProjectById($id: BigInteger!) {
+  getProjectById(id: $id) {
+    createdAt
+    resourcerequest {
+      resource {
+        firstName
+      }
+    }
+    slot {
+      startDate
+      endDate
+    }
+    projectName
+    projectManager {
+      firstName
+    }
+    businessUnit
+    status
+    id
+    skillsProficiencies {
+      skill {
+        name
+      }
+    }
+  }
+}
+
+mutation createProject($project: ProjectInput!) {
+  createOrUpdateProject(project: $project) {
+    id
+  }
+}
+
+mutation completeProject ($projectId: BigInteger!, $comments: String!) {
+  completeProject(projectId: $projectId, comments: $comments) {
+    id
+    status    
+  }
+}

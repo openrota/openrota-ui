@@ -34,8 +34,8 @@
     },
     {
       "component": "text-field",
-      "name": "pillar",
-      "label": "Pillar"
+      "name": "businessUnit",
+      "label": "Business Unit"
     },
     {
       "component": "text-field",

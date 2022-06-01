@@ -8,7 +8,7 @@ query getResourceRequests {
       firstName
     }
     project
-    pillar
+    businessUnit
     startDate
     endDate
     status
@@ -33,7 +33,7 @@ query getResourceRequestById ($id: BigInteger!){
     createdAt
     taskDetails
     project
-    pillar
+    businessUnit
     startDate
     endDate
     status

@@ -101,6 +101,7 @@ export type Invitation = {
   /** ISO-8601 */
   createdAt?: Maybe<Scalars['DateTime']>;
   emailId?: Maybe<Scalars['String']>;
+  invitationLinkParams?: Maybe<Scalars['String']>;
   role?: Maybe<Role>;
   status?: Maybe<InvitationStatus>;
   token?: Maybe<Scalars['String']>;
@@ -111,6 +112,7 @@ export type InvitationInput = {
   /** ISO-8601 */
   createdAt?: Maybe<Scalars['DateTime']>;
   emailId?: Maybe<Scalars['String']>;
+  invitationLinkParams?: Maybe<Scalars['String']>;
   role?: Maybe<RoleInput>;
   status?: Maybe<InvitationStatus>;
   token?: Maybe<Scalars['String']>;
@@ -132,63 +134,122 @@ export enum InvitationStatus {
 
 /** Mutation root */
 export type Mutation = {
-  /** Create a new resource request */
-  createOrUpdateResourceRequest?: Maybe<ResourceRequest>;
-  /** process handler */
-  processActionHandler?: Maybe<Process>;
-  /** Check whether designation is whitelisted */
-  verifyDesignation?: Maybe<AllowedDesignationResponse>;
-  /** resource request actions */
-  handleResourceRequestActions?: Maybe<ResourceRequest>;
+  /** Verify Invitation */
+  verifyInvitation?: Maybe<InvitationResponse>;
+  /** Delete skills of SR */
+  deleteSkillForSR?: Maybe<EmployeeSkillProficiency>;
+  /** Add a new skill */
+  createSkill?: Maybe<Skill>;
+  /** handle access request actions */
+  handleAccessRequestActions?: Maybe<AccessRequest>;
   /** Create a new token */
   createInvitationToken?: Maybe<InvitationResponse>;
+  /** Delete SR */
+  deleteSharedResource?: Maybe<SharedResource>;
+  /** Create a new Employee */
+  createProject?: Maybe<Project>;
+  /** Add a new process */
+  createProcess?: Maybe<Process>;
+  /** Update skill of SR */
+  updateSkillOfSR?: Maybe<EmployeeSkillProficiency>;
+  /** Create a new access request */
+  createAccessRequest?: Maybe<AccessRequest>;
+  /** Add roles to Employee */
+  addRoleToEmployee?: Maybe<Employee>;
+  /** Create a new resource request */
+  createOrUpdateResourceRequest?: Maybe<ResourceRequest>;
+  /** resource request actions */
+  handleResourceRequestActions?: Maybe<ResourceRequest>;
+  /** Check whether designation is whitelisted */
+  verifyDesignation?: Maybe<AllowedDesignationResponse>;
+  /** Create a new Employee */
+  createEmployee?: Maybe<Employee>;
+  /** process handler */
+  processActionHandler?: Maybe<Process>;
+  /** Create a new SR */
+  createOrUpdateSharedResource?: Maybe<SharedResource>;
   /** Refresh token */
   resendInvitation?: Maybe<Invitation>;
   /** Add skills to SR */
   addSkillsToSR?: Maybe<SharedResource>;
-  /** Delete skills of SR */
-  deleteSkillForSR?: Maybe<EmployeeSkillProficiency>;
-  /** Create a new SR */
-  createOrUpdateSharedResource?: Maybe<SharedResource>;
-  /** Verify Invitation */
-  verifyInvitation?: Maybe<InvitationResponse>;
-  /** Add a new process */
-  createProcess?: Maybe<Process>;
-  /** Delete SR */
-  deleteSharedResource?: Maybe<SharedResource>;
-  /** Add roles to Employee */
-  addRoleToEmployee?: Maybe<Employee>;
-  /** Create a new Employee */
-  createProject?: Maybe<Project>;
-  /** Add a new skill */
-  createSkill?: Maybe<Skill>;
-  /** Create a new Employee */
-  createEmployee?: Maybe<Employee>;
-  /** Update skill of SR */
-  updateSkillOfSR?: Maybe<EmployeeSkillProficiency>;
-  /** handle access request actions */
-  handleAccessRequestActions?: Maybe<AccessRequest>;
-  /** Create a new access request */
-  createAccessRequest?: Maybe<AccessRequest>;
+};
+
+
+/** Mutation root */
+export type MutationVerifyInvitationArgs = {
+  emailId?: Maybe<Scalars['String']>;
+  token?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+
+/** Mutation root */
+export type MutationDeleteSkillForSrArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
+  employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateSkillArgs = {
+  skill?: Maybe<SkillInput>;
+};
+
+
+/** Mutation root */
+export type MutationHandleAccessRequestActionsArgs = {
+  actionName?: Maybe<RowAction>;
+  accessRequest?: Maybe<AccessRequestInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateInvitationTokenArgs = {
+  invitation?: Maybe<InvitationInput>;
+};
+
+
+/** Mutation root */
+export type MutationDeleteSharedResourceArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Mutation root */
+export type MutationCreateProjectArgs = {
+  project?: Maybe<ProjectInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateProcessArgs = {
+  process?: Maybe<ProcessInput>;
+};
+
+
+/** Mutation root */
+export type MutationUpdateSkillOfSrArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
+  employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateAccessRequestArgs = {
+  accessRequest?: Maybe<AccessRequestInput>;
+};
+
+
+/** Mutation root */
+export type MutationAddRoleToEmployeeArgs = {
+  employeeId?: Maybe<Scalars['BigInteger']>;
+  roles?: Maybe<Array<Maybe<RoleInput>>>;
 };
 
 
 /** Mutation root */
 export type MutationCreateOrUpdateResourceRequestArgs = {
   resourceRequest?: Maybe<ResourceRequestInput>;
-};
-
-
-/** Mutation root */
-export type MutationProcessActionHandlerArgs = {
-  processActionId?: Maybe<Scalars['BigInteger']>;
-  recordId?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Mutation root */
-export type MutationVerifyDesignationArgs = {
-  designation?: Maybe<Scalars['String']>;
 };
 
 
@@ -200,8 +261,27 @@ export type MutationHandleResourceRequestActionsArgs = {
 
 
 /** Mutation root */
-export type MutationCreateInvitationTokenArgs = {
-  invitation?: Maybe<InvitationInput>;
+export type MutationVerifyDesignationArgs = {
+  designation?: Maybe<Scalars['String']>;
+};
+
+
+/** Mutation root */
+export type MutationCreateEmployeeArgs = {
+  employee?: Maybe<EmployeeInput>;
+};
+
+
+/** Mutation root */
+export type MutationProcessActionHandlerArgs = {
+  processActionId?: Maybe<Scalars['BigInteger']>;
+  recordId?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Mutation root */
+export type MutationCreateOrUpdateSharedResourceArgs = {
+  resource?: Maybe<SharedResourceInput>;
 };
 
 
@@ -215,84 +295,6 @@ export type MutationResendInvitationArgs = {
 export type MutationAddSkillsToSrArgs = {
   id?: Maybe<Scalars['BigInteger']>;
   employeeSkillProficiencies?: Maybe<Array<Maybe<EmployeeSkillProficiencyInput>>>;
-};
-
-
-/** Mutation root */
-export type MutationDeleteSkillForSrArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-  employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateOrUpdateSharedResourceArgs = {
-  resource?: Maybe<SharedResourceInput>;
-};
-
-
-/** Mutation root */
-export type MutationVerifyInvitationArgs = {
-  emailId?: Maybe<Scalars['String']>;
-  token?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-};
-
-
-/** Mutation root */
-export type MutationCreateProcessArgs = {
-  process?: Maybe<ProcessInput>;
-};
-
-
-/** Mutation root */
-export type MutationDeleteSharedResourceArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Mutation root */
-export type MutationAddRoleToEmployeeArgs = {
-  employeeId?: Maybe<Scalars['BigInteger']>;
-  roles?: Maybe<Array<Maybe<RoleInput>>>;
-};
-
-
-/** Mutation root */
-export type MutationCreateProjectArgs = {
-  project?: Maybe<ProjectInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateSkillArgs = {
-  skill?: Maybe<SkillInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateEmployeeArgs = {
-  employee?: Maybe<EmployeeInput>;
-};
-
-
-/** Mutation root */
-export type MutationUpdateSkillOfSrArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-  employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
-};
-
-
-/** Mutation root */
-export type MutationHandleAccessRequestActionsArgs = {
-  actionName?: Maybe<RowAction>;
-  accessRequest?: Maybe<AccessRequestInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateAccessRequestArgs = {
-  accessRequest?: Maybe<AccessRequestInput>;
 };
 
 export type Process = {
@@ -357,54 +359,72 @@ export type ProjectInput = {
 
 /** Query root */
 export type Query = {
-  /** Get all roles */
-  roles?: Maybe<Array<Maybe<Role>>>;
-  /** Get an employee by id */
-  employeeById?: Maybe<Employee>;
-  /** Get an employee by emailId */
-  employeeByEmailId?: Maybe<Employee>;
-  /** Get required skills of request Id */
-  getSkillsByRequestId?: Maybe<Array<Maybe<ResourceRequestSkillsProficiency>>>;
   /** Get invitations by Id */
   getInvitationById?: Maybe<Invitation>;
+  /** Get required skills of request Id */
+  getSkillsByRequestId?: Maybe<Array<Maybe<ResourceRequestSkillsProficiency>>>;
+  /** Get all resources request by requestor */
+  sharedResourceRequestByRequestorId?: Maybe<Array<Maybe<ResourceRequest>>>;
+  /** Get all projects */
+  project?: Maybe<Array<Maybe<Project>>>;
   /** Get all resources request */
   sharedResourceRequest?: Maybe<Array<Maybe<ResourceRequest>>>;
+  /** Get an employee by id */
+  employeeById?: Maybe<Employee>;
+  /** Get all resources */
+  sharedResource?: Maybe<Array<Maybe<SharedResource>>>;
+  /** Get all access requests */
+  accessRequest?: Maybe<Array<Maybe<AccessRequest>>>;
+  /** Get an employee by emailId */
+  employeeByEmailId?: Maybe<Employee>;
   /** isResourceAccessAllowed */
   isResourceAccessAllowed?: Maybe<AllowedDesignationResponse>;
   /** Get all skills */
   skill?: Maybe<Array<Maybe<Skill>>>;
-  /** Get an SR by id */
-  sharedResourceById?: Maybe<SharedResource>;
-  /** Get all projects */
-  project?: Maybe<Array<Maybe<Project>>>;
-  /** Get all processes action */
-  processAction?: Maybe<Array<Maybe<ProcessAction>>>;
-  /** Get all resources */
-  sharedResource?: Maybe<Array<Maybe<SharedResource>>>;
-  /** Get resources request by id */
-  sharedResourceRequestById?: Maybe<ResourceRequest>;
-  /** Get access request by Id */
-  accessRequestbyId?: Maybe<AccessRequest>;
-  /** Get all Employees using the filters eq, lt,le,gt,ge */
-  employeesWithFilter?: Maybe<Array<Maybe<Employee>>>;
-  /** Get an SR by emailId */
-  sharedResourceByEmailId?: Maybe<SharedResource>;
-  /** Get roles by employee */
-  roleByEmployeeId?: Maybe<Array<Maybe<Role>>>;
-  /** Get all resources using the filters eq, lt,le,gt,ge */
-  sharedResourceWithFilters?: Maybe<Array<Maybe<Employee>>>;
-  /** Get all resources request by requestor */
-  sharedResourceRequestByRequestorId?: Maybe<Array<Maybe<ResourceRequest>>>;
-  /** Get all Employees */
-  employee?: Maybe<Array<Maybe<Employee>>>;
-  /** Get all invitations */
-  invitation?: Maybe<Array<Maybe<Invitation>>>;
-  /** Get all access requests */
-  accessRequest?: Maybe<Array<Maybe<AccessRequest>>>;
-  /** Get dashboard data */
-  dashboard?: Maybe<DashboardDto>;
   /** Get all processes */
   process?: Maybe<Array<Maybe<Process>>>;
+  /** Get all roles */
+  roles?: Maybe<Array<Maybe<Role>>>;
+  /** Get access request by Id */
+  accessRequestbyId?: Maybe<AccessRequest>;
+  /** Get all Employees */
+  employee?: Maybe<Array<Maybe<Employee>>>;
+  /** Get dashboard data */
+  dashboard?: Maybe<DashboardDto>;
+  /** Get an SR by emailId */
+  sharedResourceByEmailId?: Maybe<SharedResource>;
+  /** Get resources request by id */
+  sharedResourceRequestById?: Maybe<ResourceRequest>;
+  /** Get an SR by id */
+  sharedResourceById?: Maybe<SharedResource>;
+  /** Get all resources using the filters eq, lt,le,gt,ge */
+  sharedResourceWithFilters?: Maybe<Array<Maybe<Employee>>>;
+  /** Get all invitations */
+  invitation?: Maybe<Array<Maybe<Invitation>>>;
+  /** Get all Employees using the filters eq, lt,le,gt,ge */
+  employeesWithFilter?: Maybe<Array<Maybe<Employee>>>;
+  /** Get all processes action */
+  processAction?: Maybe<Array<Maybe<ProcessAction>>>;
+  /** Get roles by employee */
+  roleByEmployeeId?: Maybe<Array<Maybe<Role>>>;
+};
+
+
+/** Query root */
+export type QueryGetInvitationByIdArgs = {
+  id: Scalars['BigInteger'];
+};
+
+
+/** Query root */
+export type QueryGetSkillsByRequestIdArgs = {
+  id: Scalars['BigInteger'];
+};
+
+
+/** Query root */
+export type QuerySharedResourceRequestByRequestorIdArgs = {
+  id: Scalars['BigInteger'];
 };
 
 
@@ -421,38 +441,8 @@ export type QueryEmployeeByEmailIdArgs = {
 
 
 /** Query root */
-export type QueryGetSkillsByRequestIdArgs = {
-  id: Scalars['BigInteger'];
-};
-
-
-/** Query root */
-export type QueryGetInvitationByIdArgs = {
-  id: Scalars['BigInteger'];
-};
-
-
-/** Query root */
 export type QueryIsResourceAccessAllowedArgs = {
   email?: Maybe<Scalars['String']>;
-};
-
-
-/** Query root */
-export type QuerySharedResourceByIdArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Query root */
-export type QueryProcessActionArgs = {
-  processId?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Query root */
-export type QuerySharedResourceRequestByIdArgs = {
-  id: Scalars['BigInteger'];
 };
 
 
@@ -463,20 +453,20 @@ export type QueryAccessRequestbyIdArgs = {
 
 
 /** Query root */
-export type QueryEmployeesWithFilterArgs = {
-  filter?: Maybe<EmployeeFilterInput>;
-};
-
-
-/** Query root */
 export type QuerySharedResourceByEmailIdArgs = {
   emailId?: Maybe<Scalars['String']>;
 };
 
 
 /** Query root */
-export type QueryRoleByEmployeeIdArgs = {
-  employeeId?: Maybe<Scalars['BigInteger']>;
+export type QuerySharedResourceRequestByIdArgs = {
+  id: Scalars['BigInteger'];
+};
+
+
+/** Query root */
+export type QuerySharedResourceByIdArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
 };
 
 
@@ -487,8 +477,20 @@ export type QuerySharedResourceWithFiltersArgs = {
 
 
 /** Query root */
-export type QuerySharedResourceRequestByRequestorIdArgs = {
-  id: Scalars['BigInteger'];
+export type QueryEmployeesWithFilterArgs = {
+  filter?: Maybe<EmployeeFilterInput>;
+};
+
+
+/** Query root */
+export type QueryProcessActionArgs = {
+  processId?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Query root */
+export type QueryRoleByEmployeeIdArgs = {
+  employeeId?: Maybe<Scalars['BigInteger']>;
 };
 
 export enum ResourceAvailabilityStatus {
@@ -719,7 +721,7 @@ export type GetInvitationByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetInvitationByIdQuery = { getInvitationById?: Maybe<Pick<Invitation, 'token' | 'createdAt' | 'emailId' | 'status' | 'id'>> };
+export type GetInvitationByIdQuery = { getInvitationById?: Maybe<Pick<Invitation, 'token' | 'createdAt' | 'emailId' | 'status' | 'invitationLinkParams' | 'id'>> };
 
 export type CreateInvitationMutationVariables = Exact<{
   invitation?: Maybe<InvitationInput>;
@@ -1193,6 +1195,7 @@ export const GetInvitationByIdDocument = gql`
     createdAt
     emailId
     status
+    invitationLinkParams
     id
   }
 }

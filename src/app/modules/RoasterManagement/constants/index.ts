@@ -12,9 +12,18 @@ export const TimelineKeys = {
   };
 
 export interface ResourceData {
-  bgColor: string,
+  bgColor?: string,
   id: string,
-  rightTitle: string,
+  rightTitle?: string,
   title: string,
-  mail: string
+  mail?: string
+}
+
+export interface EventData {
+  title: string,
+  start_time: string,
+  end_time: string,
+  group: number,
+  id: number,
+  description: string | ''
 }

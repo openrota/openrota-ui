@@ -38,7 +38,7 @@ const CardComponent = ({title, count, innerStyle}) => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', }}>
                         <Typography variant="h4" gutterBottom component="div" style={{ margin: '0px 15px 0px 0px', fontSize: '48px', fontWeight: '700', color: '#fff' }}>
-                            {count}
+                            {count || 0}
                         </Typography>
                     </div>
                 </Item>

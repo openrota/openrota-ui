@@ -36,7 +36,7 @@ const ResourceRequestForm: React.FC = () => {
         enqueueSnackbar('Resource request has been created', {
           variant: CHIPTYPE.SUCCESS,
         });
-        Navigate('/view-resource-requests', { replace: true });
+        Navigate('/view-my-resource-requests', { replace: true });
       }
     },
     onError: (data) => {
@@ -57,7 +57,7 @@ const ResourceRequestForm: React.FC = () => {
     });
   }, []);
 
-  const skillOptions = skills?.skill?.map((s) => ({ label: s?.name, value: s?.id }));
+  const skillOptions = skills?.skill?.map((s) => ({ label: s?.name, value: s?.name}));
 
   const loadSkills = () => (_props, _field, formOptions) => ({ ..._props, options: skillOptions });
 
@@ -70,15 +70,7 @@ const ResourceRequestForm: React.FC = () => {
       requester: {
         id: auth?.getEmployeeId()
       },
-      skillProficiencies: values.skill?.map((s) => {
-        return {
-          id: skillsMap[s] != null ? skillsMap[s] : null,
-          skill: {
-            id: s,
-          },
-          proficiencyLevel: 'BEGINNER',
-        };
-      }),
+      skillSet: values.skillSet,
       taskDetails: values.taskDetails,
       businessUnit: values.businessUnit,
       project: values.project,

@@ -59,7 +59,7 @@
     },
     {
       "component": "select",
-      "name": "skill",
+      "name": "skillSet",
       "label": "Skills",
       "isMulti": true,
       "actions": {

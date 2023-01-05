@@ -7,6 +7,7 @@ import { CHIPTYPE } from '@app/constants';
 import { CompleteProjectView } from './CompleteProjectView';
 import { useModal } from '@app/context/modal-context';
 import { useSnackbar } from 'notistack';
+import objectToListViewer from '@app/utils/objectToListViewer';
 
 const columns: GridColDef[] = [
   { field: 'key', headerName: 'Keys', width: 150 },
@@ -63,12 +64,13 @@ export const ProjectDetails = () => {
     {
       id: 8,
       key: 'Skills',
-      value: data?.getProjectById?.skillsProficiencies?.map((s) => s?.skill?.name),
+      value: data?.getProjectById?.resourcerequest?.skillSet,
     },
   ];
   return (
     <div style={{ height: '60vh', width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} />
+      {/* <DataGrid rows={rows} columns={columns} /> */}
+      {objectToListViewer(rows, ['id'])}
       <Button
         variant="contained"
         onClick={() => {

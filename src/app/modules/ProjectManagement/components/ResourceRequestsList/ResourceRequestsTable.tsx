@@ -36,8 +36,8 @@ export const ResourceRequestsTable = () => {
             employee: s?.resource?.firstName,
             manager: s?.requester?.firstName,
             businessUnit: s?.businessUnit,
-            startDate: s?.startDate,
-            endDate: s?.endDate,
+            startDate: (new Date(s?.startDate)).toLocaleDateString(),
+            endDate: (new Date(s?.endDate)).toLocaleDateString(),
             status: s?.status,
           };
         })
@@ -54,6 +54,7 @@ export const ResourceRequestsTable = () => {
         { key: 'Business Unit', value: data.sharedResourceRequestById?.businessUnit },
         { key: 'Project Start Date', value: new Date(data.sharedResourceRequestById?.startDate).toLocaleDateString() },
         { key: 'Project End Date', value: new Date(data.sharedResourceRequestById?.endDate).toLocaleDateString() },
+        { key: 'Skills Required', value: data.sharedResourceRequestById?.skillSet },
         { key: 'Status', value: data.sharedResourceRequestById?.status },
       ];
       setModal({

@@ -14,19 +14,13 @@ query getAllSharedResource {
 query getSRById ($id: BigInteger){
   sharedResourceById(id: $id) {
     status
+    skillSet
     designation
     firstName
     emailId
     totalExperience
     designation
     employeeId
-    skillProficiencies {
-      id
-      skill {
-        id
-        name
-      }
-    }
     id
   }
 }

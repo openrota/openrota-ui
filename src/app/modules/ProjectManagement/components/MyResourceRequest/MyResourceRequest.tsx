@@ -32,7 +32,7 @@ export const MyResourceRequests = () => {
                     project: s?.project,
                     employee: s?.resource?.firstName,
                     manager: s?.requester?.firstName,
-                    pillar: s?.pillar,
+                    businessUnit: s?.businessUnit,
                     startDate: (new Date(s?.startDate)).toLocaleDateString(),
                     endDate: (new Date(s?.endDate)).toLocaleDateString(),
                     status: s?.status
@@ -47,13 +47,14 @@ export const MyResourceRequests = () => {
             const modalObj = [
                 { key: "Project", value: data.sharedResourceRequestById?.project },
                 { key: "Manager", value: data.sharedResourceRequestById?.requester?.firstName, render: () => <Link component="button" variant="body2">{data.sharedResourceRequestById?.requester?.firstName}</Link> },
-                { key: "Pillar", value: data.sharedResourceRequestById?.pillar },
+                { key: "Business unit", value: data.sharedResourceRequestById?.businessUnit },
                 { key: "Project Start Date", value: (new Date(data.sharedResourceRequestById?.startDate)).toLocaleDateString() },
                 { key: "Project End Date", value: (new Date(data.sharedResourceRequestById?.endDate)).toLocaleDateString() },
+                { key: "Skill Required", value: data.sharedResourceRequestById?.skillSet },
                 { key: "Status", value: data.sharedResourceRequestById?.status, }
             ];
             setModal({ title: "Resource Request", modalBody: objectToListViewer(modalObj, ["id"]), modalFooter: <><Button autoFocus onClick={unSetModal}>Close</Button></> });
-        }
+        } 
     });
 
     const tableOptions = { selectableRows: "none", };
@@ -90,7 +91,7 @@ export const MyResourceRequests = () => {
         }
     },
     {
-        label: "Pillar", name: "pillar",
+        label: "Business unit", name: "businessUnit",
         options: {
             filter: true,
             sort: true

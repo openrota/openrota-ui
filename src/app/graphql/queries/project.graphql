@@ -20,16 +20,6 @@ query getProjects {
   }
 }
 
-query getSkillsByProjectId($id: BigInteger!) {
-  getSkillsByProjectId(id: $id) {
-    id
-    proficiencyLevel
-    skill {
-      id
-      name
-    }
-  }
-}
 
 query getProjectById($id: BigInteger!) {
   getProjectById(id: $id) {
@@ -38,6 +28,7 @@ query getProjectById($id: BigInteger!) {
       resource {
         firstName
       }
+      skillSet
     }
     slot {
       startDate
@@ -50,11 +41,6 @@ query getProjectById($id: BigInteger!) {
     businessUnit
     status
     id
-    skillsProficiencies {
-      skill {
-        name
-      }
-    }
   }
 }
 

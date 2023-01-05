@@ -7,6 +7,10 @@ query getResourceRequests {
       id
       firstName
     }
+    suggestedResource{
+      id
+      firstName
+    }
     project
     businessUnit
     startDate
@@ -24,6 +28,7 @@ query getResourceRequestsByRequestor ($id: BigInteger!){
       id
       firstName
     }
+    skillSet
     project
     businessUnit
     startDate
@@ -32,21 +37,17 @@ query getResourceRequestsByRequestor ($id: BigInteger!){
     id 
   }
 }
-query getSkillsByRequestId ($id: BigInteger!){
-  getSkillsByRequestId( id: $id) {
-      id
-      proficiencyLevel
-      skill {
-        id
-        name
-      }
-  }
-}
+
 query getResourceRequestById ($id: BigInteger!){
   sharedResourceRequestById( id: $id) {
-  requester {
+    requester {
       firstName
     }
+    suggestedResource {
+      id
+      firstName
+    }
+    skillSet
     createdAt
     taskDetails
     project

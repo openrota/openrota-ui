@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react';
 const CandidateProfile: React.FC = () => {
   const auth = useAuth();
   const [userData, setUserData] = useState({});
-  const [skillsMap, setskillsMap] = useState({});
   const [saveAlertVisible, setSaveAlertVisible] = useState(false);
   const { loading, data } = useSkillsQuery();
   const [getSRByMail, { loading: SrbyMailLoading, data: srByMail }] = useGetSharedResourceByEmailIdLazyQuery();
@@ -16,10 +15,7 @@ const CandidateProfile: React.FC = () => {
     skip: !srByMail,
     variables: { id: srByMail?.sharedResourceByEmailId?.id },
     onCompleted: (data) => {
-      const map = {};
-      const skills = data?.sharedResourceById?.skillProficiencies?.map(s => { map[s?.skill?.id] = s?.id; return s?.skill?.id });
-      setskillsMap(map);
-      setUserData({ ...userData, ...data?.sharedResourceById, skill: skills })
+      setUserData({ ...userData, ...data?.sharedResourceById  })
     }
   });
 
@@ -49,23 +45,14 @@ const CandidateProfile: React.FC = () => {
       employeeId: values.employeeId,
       firstName: values.firstName,
       lastName: values.lastName,
-      skillProficiencies: values.skill.map(s => {
-        return {
-          id: (skillsMap[s] != null ? skillsMap[s] : null),
-          skill: {
-            id: s
-          },
-          proficiencyLevel: 'BEGINNER'
-        }
-      })
+      skillSet: values.skillSet
     };
   
-    console.log(body);
+    console.log("le beta", values);
     addSharedResource({ variables: { resource: body } });
-
   };
 
-  const skillOptions = data?.skill?.map(s => ({ label: s?.name, value: s?.id }));
+  const skillOptions = data?.skill?.map(s => ({ label: s?.name, value: s?.name }));
 
 
   const loadSkills = () => (_props, _field, formOptions) => ({ ..._props, options: skillOptions });

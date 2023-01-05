@@ -1,6 +1,7 @@
 import ContextMenu from '@app/components/ContextMenu/ContextMenu';
 import { CHIPTYPE } from '@app/constants';
-import { ProjectStatus, useGetProjectsQuery } from '@app/models';
+import { useAuth } from '@app/context';
+import { ProjectStatus, RoleType, useGetProjectsQuery, useProjectsByRequestorQuery, useProjectsByResourceQuery } from '@app/models';
 import Chip from '@mui/material/Chip';
 import MUIDataTable from 'mui-datatables';
 import { default as React, useState } from 'react';
@@ -8,10 +9,13 @@ import { useNavigate } from 'react-router';
 
 export const ProjectsTable = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
   const initRows = [];
   const [rows, setRows] = useState<any>(initRows);
+  
   useGetProjectsQuery({
     fetchPolicy: 'network-only',
+    skip: !auth?.getRoles()?.includes(RoleType.Manager),
     onCompleted: (data) => {
       setRows(
         data?.project?.map((s, index) => {
@@ -29,7 +33,58 @@ export const ProjectsTable = () => {
       );
     },
   });
+  useProjectsByRequestorQuery({
+    fetchPolicy: 'network-only',
+    skip: !auth?.getRoles()?.includes(RoleType.Requestor),
+    variables: {id : auth?.getEmployeeId()},
+    onCompleted: (data) => {
+      setRows(
+        data?.projectsByRequestor?.map((s, index) => {
+          return {
+            id: s?.id,
+            projectName: s?.projectName,
+            businessUnit: s?.businessUnit,
+            resource: s?.resourcerequest?.resource?.firstName,
+            projectManager: s?.projectManager?.firstName,
+            startDate: s?.slot?.startDate,
+            endDate: s?.slot?.endDate,
+            status: s?.status,
+          };
+        })
+      );
+    },
+  });
 
+  useProjectsByResourceQuery({
+    fetchPolicy: 'network-only',
+    skip: !auth?.getRoles()?.includes(RoleType.Resource),
+    variables: {id : auth?.getEmployeeId()},
+    onCompleted: (data) => {
+      setRows(
+        data?.projectsByResource?.map((s, index) => {
+          return {
+            id: s?.id,
+            projectName: s?.projectName,
+            businessUnit: s?.businessUnit,
+            resource: s?.resourcerequest?.resource?.firstName,
+            projectManager: s?.projectManager?.firstName,
+            startDate: s?.slot?.startDate,
+            endDate: s?.slot?.endDate,
+            status: s?.status,
+          };
+        })
+      );
+    },
+  });
+  function resolveChipColor(text) {
+    if (text == ProjectStatus.Completed) {
+      return CHIPTYPE.SUCCESS;
+    } else if (text == ProjectStatus.Pending) {
+      return CHIPTYPE.WARNING;
+    } else if (text == ProjectStatus.YetToStart) {
+      return CHIPTYPE.INFO;
+    }
+  }
   const tableOptions = { selectableRows: 'none' };
   const columns = [
     {
@@ -98,7 +153,7 @@ export const ProjectsTable = () => {
           return (
             <Chip
               label={value}
-              color={value == ProjectStatus.Completed ? CHIPTYPE.SUCCESS : CHIPTYPE.WARNING}
+              color={resolveChipColor(value)}
             />
           );
         },

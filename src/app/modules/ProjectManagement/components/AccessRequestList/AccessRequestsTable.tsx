@@ -47,7 +47,15 @@ export const AccessRequestsTable = ({ rows }) => {
             });
         }
     });
-
+    function resolveChipColor(text) {
+        if (text == InvitationStatus.Completed) {
+          return CHIPTYPE.SUCCESS;
+        } else if (text == InvitationStatus.Pending) {
+          return CHIPTYPE.WARNING;
+        } else if (text == InvitationStatus.Rejected) {
+          return CHIPTYPE.ERROR;
+        }
+      }
     const tableOptions = { selectableRows: "none", };
     const columns = [{
         name: "id",
@@ -81,7 +89,7 @@ export const AccessRequestsTable = ({ rows }) => {
             sort: true,
             customBodyRender: (value) => {
                 return (
-                    <Chip label={value} color={(value == InvitationStatus.Completed ? CHIPTYPE.SUCCESS : CHIPTYPE.WARNING)} />
+                    <Chip label={value} color={resolveChipColor(value)} />
                 );
             }
         }

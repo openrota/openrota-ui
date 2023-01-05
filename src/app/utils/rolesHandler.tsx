@@ -76,7 +76,7 @@ export const sideMenuResolver = {
     myProjects: {
         path: 'my-projects',
         element: <ProjectManagement />,
-        rolesAllowed: [RoleType.Requestor],
+        rolesAllowed: [RoleType.Requestor, RoleType.Resource],
     },
     resourceSchedule: {
         path: 'resource-schedule',

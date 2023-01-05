@@ -20,9 +20,53 @@ query getProjects {
   }
 }
 
-
 query getProjectById($id: BigInteger!) {
   getProjectById(id: $id) {
+    createdAt
+    resourcerequest {
+      resource {
+        firstName
+      }
+      skillSet
+    }
+    slot {
+      startDate
+      endDate
+    }
+    projectName
+    projectManager {
+      firstName
+    }
+    businessUnit
+    status
+    id
+  }
+}
+query projectsByRequestor($id: BigInteger!) {
+  projectsByRequestor(id: $id) {
+    createdAt
+    resourcerequest {
+      resource {
+        firstName
+      }
+      skillSet
+    }
+    slot {
+      startDate
+      endDate
+    }
+    projectName
+    projectManager {
+      firstName
+    }
+    businessUnit
+    status
+    id
+  }
+}
+
+query projectsByResource($id: BigInteger!) {
+  projectsByResource(id: $id) {
     createdAt
     resourcerequest {
       resource {

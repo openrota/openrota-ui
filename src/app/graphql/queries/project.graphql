@@ -3,6 +3,7 @@ query getProjects {
     resourcerequest {
       resource {
         firstName
+        employeeId
       }
     }
     slot {
@@ -42,7 +43,7 @@ query getProjectById($id: BigInteger!) {
     id
   }
 }
-query projectsByRequestor($id: BigInteger!) {
+query getProjectsByRequestor($id: BigInteger!) {
   projectsByRequestor(id: $id) {
     createdAt
     resourcerequest {
@@ -71,6 +72,7 @@ query projectsByResource($id: BigInteger!) {
     resourcerequest {
       resource {
         firstName
+        employeeId
       }
       skillSet
     }

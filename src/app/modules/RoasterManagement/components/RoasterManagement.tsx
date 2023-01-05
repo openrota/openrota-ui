@@ -1,52 +1,63 @@
 import PageTitle from '@app/components/PageTitle/PageTitle';
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import TimelineComponent from './components/TimelineComponent';
-import { ResourceData, EventData } from './constants';
-import { ResourceRequest, useGetAllSharedResourceQuery, useGetResourceRequestsQuery } from '@app/models'
-
-type Maybe<T> = NonNullable<T> | undefined;
+import TimelineComponent from './TimelineComponent';
+import { ResourceData, EventData } from '../constants';
+import { useGetAllSharedResourceQuery, useGetProjectsQuery } from '@app/models'
 
 const RoasterManagement: React.FC = () => {
   const { data, loading, error } = useGetAllSharedResourceQuery();
-  
+
   const [resources, setResources] = React.useState<ResourceData[]>([]);
-  const [resourceRequest, setResourceRequest] = React.useState <any>([]);
+  const [resourceSchedule, setResourceSchedule] = React.useState <any>([]);
   const [calendarEvents, setCalendarEvents] = React.useState<EventData[]>([]);
 
-  useGetResourceRequestsQuery({
+  // useGetResourceRequestsQuery({
+  //   fetchPolicy: 'network-only',
+  //   onCompleted: (data) => {
+  //     console.log('SR', data.sharedResourceRequest)
+  //     // setResourceRequest(data?.sharedResourceRequest);
+
+  //   }
+  // });
+  
+  useGetProjectsQuery({
     fetchPolicy: 'network-only',
     onCompleted: (data) => {
-      setResourceRequest(data?.sharedResourceRequest);
-    }
+      console.log('projects',data)
+      setResourceSchedule(data?.project);
+    },
   });
-  
   
 
   useEffect(() => {
-    const tempResource: ResourceData[] = [];
+    const tempResource: any[] = [];
     const tempEvents: EventData[] = [];
     
-    resourceRequest?.map((reqData, index) => {
+    resourceSchedule?.map((scheduleData, index) => {
+      console.log('index', scheduleData)
       tempEvents.push({
-        title: reqData.project || '',
-        start_time: moment(reqData?.startDate).format('x'),
-        end_time: moment(reqData?.endDate).format('x'),
-        group: (index + 1),
+        title: scheduleData.projectName + ' - ' + scheduleData.businessUnit || '',
+        start_time: moment(scheduleData?.slot.startDate).format('x'),
+        end_time: moment(scheduleData?.slot.endDate).format('x'),
+        group: scheduleData.resourcerequest.resource.employeeId,
         id: (index + 1),
-        description: reqData.businessUnit??'',
+        description: scheduleData.businessUnit??'',
+        className: 'assign',
       })
     })
     
     setCalendarEvents(tempEvents);
     data?.sharedResource!.map((resource, index) => {
       tempResource.push({
-        id: (index + 1).toString(),
+        id: resource?.employeeId,
         title: resource?.firstName + ' ' + resource?.lastName,
+        rightTitle: resource?.skillSet?.join(', '),
+        employeeId: resource?.employeeId
       })
     })
     setResources(tempResource)
-  }, [data, resourceRequest])
+  }, [data, resourceSchedule])
   
   return (
     <>

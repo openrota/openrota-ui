@@ -16,7 +16,8 @@ export interface ResourceData {
   id: string,
   rightTitle?: string,
   title: string,
-  mail?: string
+  mail?: string,
+  employeeId?: string | ''
 }
 
 export interface EventData {
@@ -25,5 +26,6 @@ export interface EventData {
   end_time: string,
   group: number,
   id: number,
-  description: string | ''
+  description: string | '',
+  className: string
 }

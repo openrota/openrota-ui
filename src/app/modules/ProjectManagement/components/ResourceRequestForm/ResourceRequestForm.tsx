@@ -37,6 +37,9 @@ const ResourceRequestForm: React.FC = () => {
           variant: CHIPTYPE.SUCCESS,
         });
         Navigate('/view-my-resource-requests', { replace: true });
+
+        // Running optaplanner algorithm in parellel 
+        fetch(process.env.OPENROTA_BACKEND_URL + '/rest/roster/solve');
       }
     },
     onError: (data) => {
@@ -57,7 +60,7 @@ const ResourceRequestForm: React.FC = () => {
     });
   }, []);
 
-  const skillOptions = skills?.skill?.map((s) => ({ label: s?.name, value: s?.name}));
+  const skillOptions = skills?.skill?.map((s) => ({ label: s?.name, value: s?.name }));
 
   const loadSkills = () => (_props, _field, formOptions) => ({ ..._props, options: skillOptions });
 

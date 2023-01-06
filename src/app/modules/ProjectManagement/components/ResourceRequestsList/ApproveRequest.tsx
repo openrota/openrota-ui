@@ -20,7 +20,7 @@ export const ApproveModalView = ({ resourceRequestId, onApprove }) => {
 
     const { data: sharedResourcesList, loading: loadingSharedResourceList } = useGetAllSharedResourceQuery();
 
-    const { data: resourceRequestById } = useGetResourceRequestByIdQuery({ variables: { id: resourceRequestId } });
+    const { data: resourceRequestById } = useGetResourceRequestByIdQuery({ fetchPolicy: 'network-only', variables: { id: resourceRequestId } });
 
 
     const onCandidateSelect = (event: SelectChangeEvent) => {

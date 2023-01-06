@@ -1,7 +1,7 @@
 import ContextMenu from '@app/components/ContextMenu/ContextMenu';
 import { CHIPTYPE } from '@app/constants';
 import { useAuth } from '@app/context';
-import { ProjectStatus, RoleType, useGetProjectsQuery, useProjectsByRequestorQuery, useProjectsByResourceQuery } from '@app/models';
+import { ProjectStatus, RoleType, useGetProjectsQuery, useGetProjectsByRequestorQuery, useProjectsByResourceQuery } from '@app/models';
 import Chip from '@mui/material/Chip';
 import MUIDataTable from 'mui-datatables';
 import { default as React, useState } from 'react';
@@ -12,7 +12,7 @@ export const ProjectsTable = () => {
   const auth = useAuth();
   const initRows = [];
   const [rows, setRows] = useState<any>(initRows);
-  
+
   useGetProjectsQuery({
     fetchPolicy: 'network-only',
     skip: !auth?.getRoles()?.includes(RoleType.Manager),
@@ -33,10 +33,10 @@ export const ProjectsTable = () => {
       );
     },
   });
-  useProjectsByRequestorQuery({
+  useGetProjectsByRequestorQuery({
     fetchPolicy: 'network-only',
     skip: !auth?.getRoles()?.includes(RoleType.Requestor),
-    variables: {id : auth?.getEmployeeId()},
+    variables: { id: auth?.getEmployeeId() },
     onCompleted: (data) => {
       setRows(
         data?.projectsByRequestor?.map((s, index) => {
@@ -58,7 +58,7 @@ export const ProjectsTable = () => {
   useProjectsByResourceQuery({
     fetchPolicy: 'network-only',
     skip: !auth?.getRoles()?.includes(RoleType.Resource),
-    variables: {id : auth?.getEmployeeId()},
+    variables: { id: auth?.getEmployeeId() },
     onCompleted: (data) => {
       setRows(
         data?.projectsByResource?.map((s, index) => {

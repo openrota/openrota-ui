@@ -8,6 +8,7 @@ query getAllSharedResource {
     emailId
     employeeId
     id
+    skillSet
   }
 }
 
@@ -17,6 +18,7 @@ query getSRById ($id: BigInteger){
     skillSet
     designation
     firstName
+    lastName
     emailId
     totalExperience
     designation

@@ -12,7 +12,7 @@ const NewResourceRequest = lazy(() => import('@app/modules/ProjectManagement/com
 const RequestAccessForm = lazy(() => import('@app/modules/ProjectManagement/components/RequestAccessForm/RequestAccessForm'));
 const AccessRequestList = lazy(() => import('@app/modules/ProjectManagement/components/AccessRequestList/AccessRequestList'));
 const ResourceRequestList = lazy(() => import('@app/modules/ProjectManagement/components/ResourceRequestsList/ResourceRequestsList'));
-const RoasterManagement = lazy(() => import('@app/modules/RoasterManagement/RoasterManagement'));
+const RoasterManagement = lazy(() => import('@app/modules/RoasterManagement/components/RoasterManagement'));
 const ProfileManagement = lazy(() => import('@app/modules/ProfileManagement/ProfileManagement'));
 const UserManagement = lazy(() => import('@app/modules/ProfileManagement/components/UserManagement/UserManagement'));
 const CandidateInvitation = lazy(() => import('@app/modules/ResourceManagement/components/CandidateInvitation/CandidateInvitation'));

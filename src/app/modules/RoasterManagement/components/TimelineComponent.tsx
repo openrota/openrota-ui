@@ -116,6 +116,8 @@ const TimelineComponent: React.FC<IOwnProps> = ({ calendarEvents, resources }) =
                             itemHeightRatio={0.75}
                             showCursorLine
                             canMove={false}
+                            rightSidebarWidth={200}
+                            rightSidebarContent="Skills"
                             //  canResize={"both"}
                             // onItemDoubleClick={handleSelect}
                             // onCanvasDoubleClick={handleCanvas}

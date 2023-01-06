@@ -3,46 +3,66 @@ import moment from 'moment';
 import React, { useEffect } from 'react';
 import TimelineComponent from './TimelineComponent';
 import { ResourceData } from '../constants';
-import { useGetAllSharedResourceQuery } from '@app/models'
+import { useGetAllSharedResourceQuery, useGetSharedResourceByEmailIdLazyQuery, useGetSrByIdQuery, useProjectsByResourceQuery } from '@app/models'
+import { useAuth } from '@app/context';
 
 const MySchedule: React.FC = () => {
-  const { data, loading, error } = useGetAllSharedResourceQuery();
-  
-  const [resources, setResources] = React.useState<ResourceData[]>([]);
-  const props = {
-    style: {
-      background: 'red'
+  const auth = useAuth();
+  const [resources, setResources] = React.useState<any[]>([]);
+  const [resourceSchedule, setResourceSchedule] = React.useState <any>([]);
+  const [calendarEvents, setCalendarEvents] = React.useState<any[]>([]);
+  const [srById, setSrById] = React.useState<any>([])
+
+  const [getSRByMail, { loading: SrbyMailLoading, data: srByMail }] = useGetSharedResourceByEmailIdLazyQuery();
+  useGetSrByIdQuery({
+    skip: !srByMail,
+    variables: { id: srByMail?.sharedResourceByEmailId?.id },
+    onCompleted: (data) => {
+      setSrById(data.sharedResourceById?? [] as any)
     }
-  }
-  const [calendarEvents, setCalendarEvents] = React.useState([{
-    className: "item-weekend",
-    title: 'Random summary',
-    start: moment(),
-    end: moment().add(1, 'hour'),
-    group: '1',
-    id: '1',
-    itemProps: props,
-    tip: 'test',
-    selectedBgColor: 'rgb(122, 184, 235)',
-    mail: 'xyz@gmail.com',
-    description: 'Coffee at the cafetarie',
-    bgColor: 'rgb(53, 124, 210)',
-    color: '#FFF'
-  }]);
+  });
+ 
+  useEffect(() => {
+    auth?.getUserInfo().then(obj => {
+      getSRByMail({ 
+        variables: { emailId: obj['email'] }
+      });
+    });
+  },[]);
+
+  useProjectsByResourceQuery({
+    fetchPolicy: 'network-only',
+    variables: {id: srById.id},
+    onCompleted: (data) => {
+      setResourceSchedule(data?.projectsByResource);
+    },
+  });
 
   useEffect(() => {
-    const tempResource: ResourceData[] = [];
-    data?.sharedResource!.map((resource) => {
-      tempResource.push({
-        bgColor: "#f4ed8d",
-        id: resource?.id,
-        rightTitle: "Stamm",
-        title: resource?.firstName + ' ' + resource?.lastName,
-        mail: resource?.emailId || ''
+    const tempResource: any[] = [];
+    const tempEvents: any[] = [];
+    
+    resourceSchedule?.map((scheduleData, index) => {
+      tempEvents.push({
+        title: scheduleData.projectName + ' - ' + scheduleData.businessUnit || '',
+        start_time: moment(scheduleData?.slot.startDate).format('x'),
+        end_time: moment(scheduleData?.slot.endDate).format('x'),
+        group: scheduleData.resourcerequest.resource.employeeId,
+        id: (index + 1),
+        description: scheduleData.businessUnit??'',
+        className: 'assign',
       })
     })
+    
+    setCalendarEvents(tempEvents);
+    tempResource.push({
+      id: srById?.employeeId,
+      title: srById?.firstName + ' ' + srById?.lastName,
+      rightTitle: srById?.skillSet?.join(', '),
+      employeeId: srById?.employeeId
+    })
     setResources(tempResource)
-  }, [data])
+  }, [ srById, resourceSchedule])
 
   return (
     <>
@@ -50,7 +70,7 @@ const MySchedule: React.FC = () => {
       <TimelineComponent
         calendarEvents={calendarEvents}
         resources={resources}
-        setResources={setResources} />
+      />
     </>
   )
 };
@@ -59,6 +79,9 @@ export default MySchedule;
 
 
 
+function getSRByMail(arg0: { variables: { emailId: any; }; }) {
+  throw new Error('Function not implemented.');
+}
 // {
 //   bgColor: "#f4ed8d",
 //   id: "1",

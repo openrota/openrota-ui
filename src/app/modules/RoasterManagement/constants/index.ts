@@ -27,5 +27,9 @@ export interface EventData {
   group: number,
   id: number,
   description: string | '',
-  className: string
+  color: any,
+  bgColor: string,
+  type: string,
+  eventId: number,
+  resourceId: number
 }

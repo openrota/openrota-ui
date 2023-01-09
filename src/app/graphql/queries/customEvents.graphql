@@ -1,0 +1,31 @@
+query getCustomEvent {
+  event {
+    id
+    eventName
+    description
+    startDate
+    endDate
+    customEventType
+    employee {
+      id
+      employeeId
+    }
+  }
+}
+
+mutation createCustomEvent($customEvent: CustomEventInput) {
+  createOrUpdateEvent(
+    customEvent: $customEvent
+  ) {
+    id
+    eventName
+  }
+}
+
+mutation deletEvent($id: BigInteger!) {
+  deleteEvent(id:$id)
+}
+
+query getCustomEventType {
+  eventTypes
+}

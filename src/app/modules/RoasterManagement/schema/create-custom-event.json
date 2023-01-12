@@ -1,0 +1,63 @@
+{
+    "fields": [
+      {
+        "component": "text-field",
+        "name": "eventName",
+        "label": "Event Name",
+        "helperText": "",
+        "isRequired": true,
+        "isDisabled" : false,
+        "validate": [
+          {
+            "type": "required"
+          }
+        ]
+      },
+      {
+        "component": "text-field",
+        "name": "description",
+        "label": "Description",
+        "helperText": "",
+        "isRequired": true,
+        "isDisabled" : false,
+        "validate": [
+          {
+            "type": "required"
+          }
+        ]
+      },
+      {
+        "component": "date-picker",
+        "label": "Start Date",
+        "name": "startDate"
+      },
+      {
+        "component": "date-picker",
+        "label": "End Date",
+        "name": "endDate"
+      },
+      {
+        "component": "select",
+        "name": "customEventType",
+        "label": "Type",
+        "actions": {
+          "resolveProps": [
+            "loadTypes"
+          ]
+        }
+      },
+      {
+        "component": "text-field",
+        "name": "employee",
+        "label": "Employee",
+        "helperText": "",
+        "isRequired": true,
+        "isDisabled" : true,
+        "validate": [
+          {
+            "type": "required"
+          }
+        ]
+      }
+    ]
+  }

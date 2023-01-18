@@ -33,3 +33,8 @@ export interface EventData {
   eventId: number,
   resourceId: number
 }
+
+export enum CalendarType {
+  ManagerView = 'ManagerView',
+  ResourceView = 'ResourceView'
+}

@@ -2,9 +2,8 @@ import PageTitle from '@app/components/PageTitle/PageTitle';
 import moment from 'moment';
 import React, { useEffect } from 'react';
 import TimelineComponent from './TimelineComponent';
-import { ResourceData, EventData } from '../constants';
-import { useGetAllSharedResourceQuery, useGetCustomEventLazyQuery, useGetCustomEventQuery, useGetProjectsQuery } from '@app/models'
-import { random } from 'cypress/types/lodash';
+import { ResourceData, EventData, CalendarType } from '../constants';
+import { useGetAllSharedResourceQuery, useGetCustomEventLazyQuery, useGetCustomEventQuery, useGetProjectsQuery } from '@app/models';
 
 const RoasterManagement: React.FC = () => {
   const { data, loading, error } = useGetAllSharedResourceQuery();
@@ -90,6 +89,7 @@ const RoasterManagement: React.FC = () => {
         calendarEvents={calendarEvents}
         resources={resources}
         getCustomEventQuery={getCustomEventQuery}
+        calendarType={CalendarType.ManagerView}
       />
     </>
   )

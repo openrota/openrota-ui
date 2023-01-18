@@ -2,8 +2,8 @@ import PageTitle from '@app/components/PageTitle/PageTitle';
 import moment from 'moment';
 import React, { useEffect } from 'react';
 import TimelineComponent from './TimelineComponent';
-import { ResourceData } from '../constants';
-import { useGetAllSharedResourceQuery, useGetSharedResourceByEmailIdLazyQuery, useGetSrByIdQuery, useProjectsByResourceQuery } from '@app/models'
+import { CalendarType, EventData, ResourceData } from '../constants';
+import { useGetAllSharedResourceQuery, useGetEventsbyResourceQuery, useGetSharedResourceByEmailIdLazyQuery, useGetSrByIdQuery, useProjectsByResourceQuery } from '@app/models'
 import { useAuth } from '@app/context';
 
 const MySchedule: React.FC = () => {
@@ -11,24 +11,28 @@ const MySchedule: React.FC = () => {
   const [resources, setResources] = React.useState<any[]>([]);
   const [resourceSchedule, setResourceSchedule] = React.useState <any>([]);
   const [calendarEvents, setCalendarEvents] = React.useState<any[]>([]);
+  const [resourceCustomEvents, setResourceCustomEvents] = React.useState<any>([]);
   const [srById, setSrById] = React.useState<any>([])
 
   const [getSRByMail, { loading: SrbyMailLoading, data: srByMail }] = useGetSharedResourceByEmailIdLazyQuery();
+
+  useEffect(() => {
+    auth?.getUserInfo().then(obj => {
+      getSRByMail({ 
+        variables: { emailId: obj['email'] },
+      });
+    });
+  },[]);
+
   useGetSrByIdQuery({
+    fetchPolicy: 'network-only',
     skip: !srByMail,
     variables: { id: srByMail?.sharedResourceByEmailId?.id },
     onCompleted: (data) => {
       setSrById(data.sharedResourceById?? [] as any)
     }
   });
- 
-  useEffect(() => {
-    auth?.getUserInfo().then(obj => {
-      getSRByMail({ 
-        variables: { emailId: obj['email'] }
-      });
-    });
-  },[]);
+  console.log('srByMail', srByMail)
 
   useProjectsByResourceQuery({
     fetchPolicy: 'network-only',
@@ -38,9 +42,19 @@ const MySchedule: React.FC = () => {
     },
   });
 
+  useGetEventsbyResourceQuery({
+    fetchPolicy: 'network-only',
+    skip: !srById,
+    variables: {id: srById.id},
+    onCompleted: (data) => {
+      setResourceCustomEvents(data.eventsByResource);
+    }
+  })
+
   useEffect(() => {
     const tempResource: any[] = [];
-    const tempEvents: any[] = [];
+    const tempEvents: EventData[] = [];
+    const tempCustomEvents: EventData[] = [];
     
     resourceSchedule?.map((scheduleData, index) => {
       tempEvents.push({
@@ -50,11 +64,32 @@ const MySchedule: React.FC = () => {
         group: scheduleData.resourcerequest.resource.employeeId,
         id: (index + 1),
         description: scheduleData.businessUnit??'',
-        className: 'assign',
+        color: 'white',
+        bgColor: '#4897D8',
+        type: 'scheduledEvent',
+        eventId: scheduleData.id,
+        resourceId: 0
       })
     })
+
+    resourceCustomEvents?.map((customEvent, index) => {
+      tempCustomEvents.push({
+        title: customEvent.eventName + ' - ' + customEvent.customEventType,
+        start_time: moment(customEvent.startDate).format('x'),
+        end_time: moment(customEvent.endDate).format('x'),
+        group: customEvent.employee.employeeId,
+        id: Math.random(),
+        description: customEvent.description,
+        color: 'white',
+        bgColor: '#FA6E59',
+        type: 'customEvent',
+        eventId: customEvent.id,
+        resourceId: customEvent.employee.id
+      })
+
+    })
     
-    setCalendarEvents(tempEvents);
+    setCalendarEvents([...tempEvents, ...tempCustomEvents]);
     tempResource.push({
       id: srById?.employeeId,
       title: srById?.firstName + ' ' + srById?.lastName,
@@ -62,7 +97,7 @@ const MySchedule: React.FC = () => {
       employeeId: srById?.employeeId
     })
     setResources(tempResource)
-  }, [ srById, resourceSchedule])
+  }, [ srById, resourceSchedule, resourceCustomEvents])
 
   return (
     <>
@@ -70,6 +105,7 @@ const MySchedule: React.FC = () => {
       <TimelineComponent
         calendarEvents={calendarEvents}
         resources={resources}
+        calendarType={CalendarType.ResourceView}
       />
     </>
   )

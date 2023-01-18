@@ -3,7 +3,7 @@ import moment from "moment";
 import Timeline, { TimelineHeaders, DateHeader, SidebarHeader } from "react-calendar-timeline";
 import 'react-calendar-timeline/lib/Timeline.css';
 import Popover from '@mui/material/Popover';
-import { ResourceData, EventData } from '../constants';
+import { ResourceData, EventData, CalendarType } from '../constants';
 import CalendarToolbar from './CalendarToolbar';
 import CreateEventModal from './CreateEventModal';
 import { Button, Dialog, DialogTitle, Divider, IconButton, List, ListItem, ListItemText, Stack, styled, Typography } from '@mui/material';
@@ -16,7 +16,8 @@ import EditEventModal from './EditEventModal';
 interface IOwnProps {
     calendarEvents: EventData[];
     resources: ResourceData[];
-    getCustomEventQuery: any;
+    getCustomEventQuery?: any;
+    calendarType: CalendarType;
 }
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -34,7 +35,7 @@ export interface DialogTitleProps {
     onClose: () => void;
 }
 
-const TimelineComponent: React.FC<IOwnProps> = ({ calendarEvents, resources, getCustomEventQuery}) => {
+const TimelineComponent: React.FC<IOwnProps> = ({ calendarEvents, resources, calendarType, getCustomEventQuery}) => {
 
     const [visibleTimeStart, setVisibleTimeStart] = React.useState<number>(
         moment()
@@ -194,7 +195,7 @@ const TimelineComponent: React.FC<IOwnProps> = ({ calendarEvents, resources, get
                                 <DateHeader />
                             </TimelineHeaders>
                         </Timeline>
-                        {openCreateModal && formData &&(<CreateEventModal openCreateModal={openCreateModal} setOpenCreateModal={setOpenCreateModal} formData={formData} getCustomEventQuery={getCustomEventQuery} />)}
+                        {calendarType === CalendarType.ManagerView && openCreateModal && formData &&(<CreateEventModal openCreateModal={openCreateModal} setOpenCreateModal={setOpenCreateModal} formData={formData} getCustomEventQuery={getCustomEventQuery} />)}
                         {openEditModal && formData &&(<EditEventModal openEditModal={openEditModal} setOpenEditModal={setOpenEditModal} formData={formData} selectedEvent={selectedEvent} getCustomEventQuery={getCustomEventQuery} />)}
                         {selectedEvent && <DeleteEventModal openDeleteModal={openDeleteModal} handleCloseDeleteModal={handleCloseDeleteModal} selectedEvent={selectedEvent} getCustomEventQuery={getCustomEventQuery} />}
                     </div>
@@ -214,6 +215,16 @@ const TimelineComponent: React.FC<IOwnProps> = ({ calendarEvents, resources, get
                 <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                     <ListItem alignItems="flex-start">
                         <ListItemText
+                            primary="Description"
+                            secondary={
+                                <React.Fragment>
+                                    {selectedEvent?.description}
+                                </React.Fragment>
+                            }
+                        />
+                    </ListItem>
+                    <ListItem alignItems="flex-start">
+                        <ListItemText
                             primary="Duration"
                             secondary={
                                 <React.Fragment>
@@ -231,16 +242,8 @@ const TimelineComponent: React.FC<IOwnProps> = ({ calendarEvents, resources, get
                                 </React.Fragment>
                             }
                         />
-                        <ListItemText
-                            primary="Event ID"
-                            secondary={
-                                <React.Fragment>
-                                    {selectedEvent?.eventId}
-                                </React.Fragment>
-                            }
-                        />
                     </ListItem>
-                    {selectedEvent?.type === 'customEvent' && (<Stack direction="row-reverse"  >
+                    {calendarType === CalendarType.ManagerView && selectedEvent?.type === 'customEvent' && (<Stack direction="row-reverse"  >
                         <IconButton color="error" aria-label="delete" onClick={handleDeleteEvent}>
                             <DeleteIcon />
                         </IconButton>
@@ -255,35 +258,3 @@ const TimelineComponent: React.FC<IOwnProps> = ({ calendarEvents, resources, get
     )
 }
 export default TimelineComponent;
-
-
-{/* <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
-        </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-            magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-            ullamcorper nulla non metus auctor fringilla.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
-      </BootstrapDialog> */}

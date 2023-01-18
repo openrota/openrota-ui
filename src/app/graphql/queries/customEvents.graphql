@@ -13,6 +13,22 @@ query getCustomEvent {
   }
 }
 
+query getEventsbyResource($id: BigInteger!) {
+  eventsByResource(id: $id) {
+    id
+    employee{
+      id
+      emailId
+      employeeId
+    }
+    eventName
+    description
+    startDate
+    endDate
+    customEventType
+  }
+}
+
 mutation createCustomEvent($customEvent: CustomEventInput) {
   createOrUpdateEvent(
     customEvent: $customEvent

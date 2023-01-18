@@ -3,15 +3,11 @@ import { Button, DialogActions, DialogContent } from '@mui/material';
 import Box from '@mui/material/Box';
 import DialogContentText from '@mui/material/DialogContentText';
 import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import React from 'react';
 import TextField from '@mui/material/TextField';
 
 export const CompleteProjectView = ({ projectId, onApprove }) => {
   const [comments, setcomments] = React.useState<string | null>();
-
-  const { data: sharedResourcesList, loading: loadingSharedResourceList } = useGetAllSharedResourceQuery();
 
   const onAddComments = (event) => {
     setcomments(event.target.value);

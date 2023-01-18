@@ -160,81 +160,54 @@ export enum InvitationStatus {
 
 /** Mutation root */
 export type Mutation = {
-  /** Delete skills of SR */
-  deleteSkillForSR?: Maybe<EmployeeSkillProficiency>;
-  /** Create or Update Project */
-  createOrUpdateProject?: Maybe<Project>;
-  /** Check whether designation is whitelisted */
-  verifyDesignation?: Maybe<AllowedDesignationResponse>;
-  /** Add a new process */
-  createProcess?: Maybe<Process>;
-  /** Create or Update Events */
-  createOrUpdateEvent?: Maybe<CustomEvent>;
   /** Add skills to SR */
   addSkillsToSR?: Maybe<SharedResource>;
-  /** Create a new SR */
-  createOrUpdateSharedResource?: Maybe<SharedResource>;
-  /** Create a new resource request */
-  createOrUpdateResourceRequest?: Maybe<ResourceRequest>;
-  /** process handler */
-  processActionHandler?: Maybe<Process>;
-  /** Refresh token */
-  resendInvitation?: Maybe<Invitation>;
-  /** handle access request actions */
-  handleAccessRequestActions?: Maybe<AccessRequest>;
-  /** resource request actions */
-  handleResourceRequestActions?: Maybe<ResourceRequest>;
-  /** complete project */
-  completeProject?: Maybe<Project>;
-  /** Create a new access request */
-  createAccessRequest?: Maybe<AccessRequest>;
-  /** Delete SR */
-  deleteSharedResource?: Maybe<SharedResource>;
   /** Create a new token */
   createInvitationToken?: Maybe<InvitationResponse>;
+  /** Create a new Employee */
+  createEmployee?: Maybe<Employee>;
   /** Update skill of SR */
   updateSkillOfSR?: Maybe<EmployeeSkillProficiency>;
   /** Add a new skill */
   createSkill?: Maybe<Skill>;
+  /** complete project */
+  completeProject?: Maybe<Project>;
+  /** Create or Update Events */
+  createOrUpdateEvent?: Maybe<CustomEvent>;
+  /** Create a new access request */
+  createAccessRequest?: Maybe<AccessRequest>;
+  /** Add a new process */
+  createProcess?: Maybe<Process>;
+  /** Delete skills of SR */
+  deleteSkillForSR?: Maybe<EmployeeSkillProficiency>;
   /** Add roles to Employee */
   addRoleToEmployee?: Maybe<Employee>;
+  /** Create Project extension request */
+  extendProject?: Maybe<Project>;
+  /** Delete SR */
+  deleteSharedResource?: Maybe<SharedResource>;
+  /** Update Project extension request */
+  updateProjectExtension?: Maybe<Project>;
+  /** Create a new resource request */
+  createOrUpdateResourceRequest?: Maybe<ResourceRequest>;
+  /** resource request actions */
+  handleResourceRequestActions?: Maybe<ResourceRequest>;
+  /** Refresh token */
+  resendInvitation?: Maybe<Invitation>;
+  /** Create a new SR */
+  createOrUpdateSharedResource?: Maybe<SharedResource>;
+  /** Check whether designation is whitelisted */
+  verifyDesignation?: Maybe<AllowedDesignationResponse>;
   /** Verify Invitation */
   verifyInvitation?: Maybe<InvitationResponse>;
+  /** Create or Update Project */
+  createOrUpdateProject?: Maybe<Project>;
   /** Delete Events */
   deleteEvent: Scalars['Boolean'];
-  /** Create a new Employee */
-  createEmployee?: Maybe<Employee>;
-};
-
-
-/** Mutation root */
-export type MutationDeleteSkillForSrArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-  employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateOrUpdateProjectArgs = {
-  project?: Maybe<ProjectInput>;
-};
-
-
-/** Mutation root */
-export type MutationVerifyDesignationArgs = {
-  designation?: Maybe<Scalars['String']>;
-};
-
-
-/** Mutation root */
-export type MutationCreateProcessArgs = {
-  process?: Maybe<ProcessInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateOrUpdateEventArgs = {
-  customEvent?: Maybe<CustomEventInput>;
+  /** process handler */
+  processActionHandler?: Maybe<Process>;
+  /** handle access request actions */
+  handleAccessRequestActions?: Maybe<AccessRequest>;
 };
 
 
@@ -246,66 +219,14 @@ export type MutationAddSkillsToSrArgs = {
 
 
 /** Mutation root */
-export type MutationCreateOrUpdateSharedResourceArgs = {
-  resource?: Maybe<SharedResourceInput>;
-};
-
-
-/** Mutation root */
-export type MutationCreateOrUpdateResourceRequestArgs = {
-  resourceRequest?: Maybe<ResourceRequestInput>;
-};
-
-
-/** Mutation root */
-export type MutationProcessActionHandlerArgs = {
-  processActionId?: Maybe<Scalars['BigInteger']>;
-  recordId?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Mutation root */
-export type MutationResendInvitationArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Mutation root */
-export type MutationHandleAccessRequestActionsArgs = {
-  actionName?: Maybe<RowAction>;
-  accessRequest?: Maybe<AccessRequestInput>;
-};
-
-
-/** Mutation root */
-export type MutationHandleResourceRequestActionsArgs = {
-  action?: Maybe<RowAction>;
-  resourceRequest?: Maybe<ResourceRequestInput>;
-};
-
-
-/** Mutation root */
-export type MutationCompleteProjectArgs = {
-  projectId: Scalars['BigInteger'];
-  comments?: Maybe<Scalars['String']>;
-};
-
-
-/** Mutation root */
-export type MutationCreateAccessRequestArgs = {
-  accessRequest?: Maybe<AccessRequestInput>;
-};
-
-
-/** Mutation root */
-export type MutationDeleteSharedResourceArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Mutation root */
 export type MutationCreateInvitationTokenArgs = {
   invitation?: Maybe<InvitationInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateEmployeeArgs = {
+  employee?: Maybe<EmployeeInput>;
 };
 
 
@@ -323,9 +244,90 @@ export type MutationCreateSkillArgs = {
 
 
 /** Mutation root */
+export type MutationCompleteProjectArgs = {
+  projectId: Scalars['BigInteger'];
+  comments?: Maybe<Scalars['String']>;
+};
+
+
+/** Mutation root */
+export type MutationCreateOrUpdateEventArgs = {
+  customEvent?: Maybe<CustomEventInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateAccessRequestArgs = {
+  accessRequest?: Maybe<AccessRequestInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateProcessArgs = {
+  process?: Maybe<ProcessInput>;
+};
+
+
+/** Mutation root */
+export type MutationDeleteSkillForSrArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
+  employeeSkillProficiency?: Maybe<EmployeeSkillProficiencyInput>;
+};
+
+
+/** Mutation root */
 export type MutationAddRoleToEmployeeArgs = {
   employeeId?: Maybe<Scalars['BigInteger']>;
   roles?: Maybe<Array<Maybe<RoleInput>>>;
+};
+
+
+/** Mutation root */
+export type MutationExtendProjectArgs = {
+  projectExtension?: Maybe<ProjectExtensionInput>;
+};
+
+
+/** Mutation root */
+export type MutationDeleteSharedResourceArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Mutation root */
+export type MutationUpdateProjectExtensionArgs = {
+  projectExtension?: Maybe<ProjectExtensionInput>;
+};
+
+
+/** Mutation root */
+export type MutationCreateOrUpdateResourceRequestArgs = {
+  resourceRequest?: Maybe<ResourceRequestInput>;
+};
+
+
+/** Mutation root */
+export type MutationHandleResourceRequestActionsArgs = {
+  action?: Maybe<RowAction>;
+  resourceRequest?: Maybe<ResourceRequestInput>;
+};
+
+
+/** Mutation root */
+export type MutationResendInvitationArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Mutation root */
+export type MutationCreateOrUpdateSharedResourceArgs = {
+  resource?: Maybe<SharedResourceInput>;
+};
+
+
+/** Mutation root */
+export type MutationVerifyDesignationArgs = {
+  designation?: Maybe<Scalars['String']>;
 };
 
 
@@ -338,14 +340,28 @@ export type MutationVerifyInvitationArgs = {
 
 
 /** Mutation root */
+export type MutationCreateOrUpdateProjectArgs = {
+  project?: Maybe<ProjectInput>;
+};
+
+
+/** Mutation root */
 export type MutationDeleteEventArgs = {
   id: Scalars['BigInteger'];
 };
 
 
 /** Mutation root */
-export type MutationCreateEmployeeArgs = {
-  employee?: Maybe<EmployeeInput>;
+export type MutationProcessActionHandlerArgs = {
+  processActionId?: Maybe<Scalars['BigInteger']>;
+  recordId?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Mutation root */
+export type MutationHandleAccessRequestActionsArgs = {
+  actionName?: Maybe<RowAction>;
+  accessRequest?: Maybe<AccessRequestInput>;
 };
 
 export type Process = {
@@ -389,12 +405,12 @@ export type ProcessInput = {
 };
 
 export type Project = {
-  businessUnit: Scalars['String'];
+  businessUnit?: Maybe<Scalars['String']>;
   /** ISO-8601 */
   createdAt?: Maybe<Scalars['DateTime']>;
   employee?: Maybe<SharedResource>;
   projectManager?: Maybe<Employee>;
-  projectName: Scalars['String'];
+  projectName?: Maybe<Scalars['String']>;
   resourcerequest?: Maybe<ResourceRequest>;
   skillSet?: Maybe<Array<Maybe<Scalars['String']>>>;
   slot?: Maybe<Slot>;
@@ -402,13 +418,29 @@ export type Project = {
   id?: Maybe<Scalars['BigInteger']>;
 };
 
+export type ProjectExtension = {
+  extendedDate?: Maybe<Scalars['String']>;
+  project?: Maybe<Project>;
+  reasonForExtension?: Maybe<Scalars['String']>;
+  status?: Maybe<ProjectStatus>;
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
+export type ProjectExtensionInput = {
+  extendedDate?: Maybe<Scalars['String']>;
+  project?: Maybe<ProjectInput>;
+  reasonForExtension?: Maybe<Scalars['String']>;
+  status?: Maybe<ProjectStatus>;
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
 export type ProjectInput = {
-  businessUnit: Scalars['String'];
+  businessUnit?: Maybe<Scalars['String']>;
   /** ISO-8601 */
   createdAt?: Maybe<Scalars['DateTime']>;
   employee?: Maybe<SharedResourceInput>;
   projectManager?: Maybe<EmployeeInput>;
-  projectName: Scalars['String'];
+  projectName?: Maybe<Scalars['String']>;
   resourcerequest?: Maybe<ResourceRequestInput>;
   skillSet?: Maybe<Array<Maybe<Scalars['String']>>>;
   slot?: Maybe<SlotInput>;
@@ -430,70 +462,120 @@ export enum ProjectStatus {
 
 /** Query root */
 export type Query = {
-  /** Get an employee by emailId */
-  employeeByEmailId?: Maybe<Employee>;
-  /** Get project by id */
-  getProjectById?: Maybe<Project>;
-  /** Get all events */
-  event?: Maybe<Array<Maybe<CustomEvent>>>;
-  /** Get all skills */
-  skill?: Maybe<Array<Maybe<Skill>>>;
-  /** Get an SR by id */
-  sharedResourceById?: Maybe<SharedResource>;
-  /** Get invitations by Id */
-  getInvitationById?: Maybe<Invitation>;
-  /** Get access request by Id */
-  accessRequestbyId?: Maybe<AccessRequest>;
-  /** Get resources request by id */
-  sharedResourceRequestById?: Maybe<ResourceRequest>;
-  /** Get all access requests */
-  accessRequest?: Maybe<Array<Maybe<AccessRequest>>>;
-  /** Get projects by resource */
-  projectsByResource?: Maybe<Array<Maybe<Project>>>;
-  /** Get all Employees */
-  employee?: Maybe<Array<Maybe<Employee>>>;
-  /** Get all resources request */
-  sharedResourceRequest?: Maybe<Array<Maybe<ResourceRequest>>>;
-  /** Get all resources using the filters eq, lt,le,gt,ge */
-  sharedResourceWithFilters?: Maybe<Array<Maybe<Employee>>>;
-  /** Get all invitations */
-  invitation?: Maybe<Array<Maybe<Invitation>>>;
-  /** isResourceAccessAllowed */
-  isResourceAccessAllowed?: Maybe<AllowedDesignationResponse>;
-  /** Get all resources request by requestor */
-  sharedResourceRequestByRequestorId?: Maybe<Array<Maybe<ResourceRequest>>>;
-  /** Get all roles */
-  roles?: Maybe<Array<Maybe<Role>>>;
-  /** Get events by resource */
-  eventsByResource?: Maybe<Array<Maybe<CustomEvent>>>;
-  /** Get all processes */
-  process?: Maybe<Array<Maybe<Process>>>;
-  /** Get all projects */
-  project?: Maybe<Array<Maybe<Project>>>;
-  /** Get all Employees using the filters eq, lt,le,gt,ge */
-  employeesWithFilter?: Maybe<Array<Maybe<Employee>>>;
   /** Get all resources */
   sharedResource?: Maybe<Array<Maybe<SharedResource>>>;
-  /** Get projects by requestor */
-  projectsByRequestor?: Maybe<Array<Maybe<Project>>>;
+  /** Get an employee by emailId */
+  employeeByEmailId?: Maybe<Employee>;
+  /** Get all skills */
+  skill?: Maybe<Array<Maybe<Skill>>>;
+  /** Get all access requests */
+  accessRequest?: Maybe<Array<Maybe<AccessRequest>>>;
+  /** Get access request by Id */
+  accessRequestbyId?: Maybe<AccessRequest>;
   /** Get all processes action */
   processAction?: Maybe<Array<Maybe<ProcessAction>>>;
-  /** Get all events */
-  eventTypes?: Maybe<Array<Maybe<CustomEventType>>>;
+  /** Get projects by requestor */
+  projectsByRequestor?: Maybe<Array<Maybe<Project>>>;
+  /** Get all projects */
+  project?: Maybe<Array<Maybe<Project>>>;
+  /** Get ProjectExtension by Project id */
+  getProjectExtensionByProjectId?: Maybe<Array<Maybe<ProjectExtension>>>;
+  /** Get all resources request by requestor */
+  sharedResourceRequestByRequestorId?: Maybe<Array<Maybe<ResourceRequest>>>;
   /** Get an SR by emailId */
   sharedResourceByEmailId?: Maybe<SharedResource>;
+  /** Get all roles */
+  roles?: Maybe<Array<Maybe<Role>>>;
+  /** Get resources request by id */
+  sharedResourceRequestById?: Maybe<ResourceRequest>;
+  /** Get all processes */
+  process?: Maybe<Array<Maybe<Process>>>;
   /** Get roles by employee */
   roleByEmployeeId?: Maybe<Array<Maybe<Role>>>;
+  /** Get project by id */
+  getProjectById?: Maybe<Project>;
+  /** Get an SR by id */
+  sharedResourceById?: Maybe<SharedResource>;
+  /** Get all resources using the filters eq, lt,le,gt,ge */
+  sharedResourceWithFilters?: Maybe<Array<Maybe<Employee>>>;
   /** Get dashboard data */
   dashboard?: Maybe<DashboardDto>;
+  /** isResourceAccessAllowed */
+  isResourceAccessAllowed?: Maybe<AllowedDesignationResponse>;
+  /** Get all events */
+  eventTypes?: Maybe<Array<Maybe<CustomEventType>>>;
+  /** Get projects by resource */
+  projectsByResource?: Maybe<Array<Maybe<Project>>>;
   /** Get an employee by id */
   employeeById?: Maybe<Employee>;
+  /** Get all Employees */
+  employee?: Maybe<Array<Maybe<Employee>>>;
+  /** Get events by resource */
+  eventsByResource?: Maybe<Array<Maybe<CustomEvent>>>;
+  /** Get invitations by Id */
+  getInvitationById?: Maybe<Invitation>;
+  /** Get all resources request */
+  sharedResourceRequest?: Maybe<Array<Maybe<ResourceRequest>>>;
+  /** Get all Employees using the filters eq, lt,le,gt,ge */
+  employeesWithFilter?: Maybe<Array<Maybe<Employee>>>;
+  /** Get all invitations */
+  invitation?: Maybe<Array<Maybe<Invitation>>>;
+  /** Get all events */
+  event?: Maybe<Array<Maybe<CustomEvent>>>;
 };
 
 
 /** Query root */
 export type QueryEmployeeByEmailIdArgs = {
   emailId?: Maybe<Scalars['String']>;
+};
+
+
+/** Query root */
+export type QueryAccessRequestbyIdArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Query root */
+export type QueryProcessActionArgs = {
+  processId?: Maybe<Scalars['BigInteger']>;
+};
+
+
+/** Query root */
+export type QueryProjectsByRequestorArgs = {
+  id: Scalars['BigInteger'];
+};
+
+
+/** Query root */
+export type QueryGetProjectExtensionByProjectIdArgs = {
+  projectId: Scalars['BigInteger'];
+};
+
+
+/** Query root */
+export type QuerySharedResourceRequestByRequestorIdArgs = {
+  id: Scalars['BigInteger'];
+};
+
+
+/** Query root */
+export type QuerySharedResourceByEmailIdArgs = {
+  emailId?: Maybe<Scalars['String']>;
+};
+
+
+/** Query root */
+export type QuerySharedResourceRequestByIdArgs = {
+  id: Scalars['BigInteger'];
+};
+
+
+/** Query root */
+export type QueryRoleByEmployeeIdArgs = {
+  employeeId?: Maybe<Scalars['BigInteger']>;
 };
 
 
@@ -510,30 +592,6 @@ export type QuerySharedResourceByIdArgs = {
 
 
 /** Query root */
-export type QueryGetInvitationByIdArgs = {
-  id: Scalars['BigInteger'];
-};
-
-
-/** Query root */
-export type QueryAccessRequestbyIdArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Query root */
-export type QuerySharedResourceRequestByIdArgs = {
-  id: Scalars['BigInteger'];
-};
-
-
-/** Query root */
-export type QueryProjectsByResourceArgs = {
-  id: Scalars['BigInteger'];
-};
-
-
-/** Query root */
 export type QuerySharedResourceWithFiltersArgs = {
   filter?: Maybe<EmployeeFilterInput>;
 };
@@ -546,8 +604,14 @@ export type QueryIsResourceAccessAllowedArgs = {
 
 
 /** Query root */
-export type QuerySharedResourceRequestByRequestorIdArgs = {
+export type QueryProjectsByResourceArgs = {
   id: Scalars['BigInteger'];
+};
+
+
+/** Query root */
+export type QueryEmployeeByIdArgs = {
+  id?: Maybe<Scalars['BigInteger']>;
 };
 
 
@@ -558,38 +622,14 @@ export type QueryEventsByResourceArgs = {
 
 
 /** Query root */
-export type QueryEmployeesWithFilterArgs = {
-  filter?: Maybe<EmployeeFilterInput>;
-};
-
-
-/** Query root */
-export type QueryProjectsByRequestorArgs = {
+export type QueryGetInvitationByIdArgs = {
   id: Scalars['BigInteger'];
 };
 
 
 /** Query root */
-export type QueryProcessActionArgs = {
-  processId?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Query root */
-export type QuerySharedResourceByEmailIdArgs = {
-  emailId?: Maybe<Scalars['String']>;
-};
-
-
-/** Query root */
-export type QueryRoleByEmployeeIdArgs = {
-  employeeId?: Maybe<Scalars['BigInteger']>;
-};
-
-
-/** Query root */
-export type QueryEmployeeByIdArgs = {
-  id?: Maybe<Scalars['BigInteger']>;
+export type QueryEmployeesWithFilterArgs = {
+  filter?: Maybe<EmployeeFilterInput>;
 };
 
 export enum ResourceAvailabilityStatus {
@@ -908,7 +948,7 @@ export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetProjectsQuery = { project?: Maybe<Array<Maybe<(
     Pick<Project, 'projectName' | 'businessUnit' | 'status' | 'createdAt' | 'id'>
-    & { resourcerequest?: Maybe<{ resource?: Maybe<Pick<SharedResource, 'firstName' | 'employeeId'>> }>, slot?: Maybe<Pick<Slot, 'startDate' | 'endDate'>>, projectManager?: Maybe<Pick<Employee, 'firstName'>> }
+    & { resourcerequest?: Maybe<{ resource?: Maybe<Pick<SharedResource, 'firstName'>> }>, slot?: Maybe<Pick<Slot, 'startDate' | 'endDate'>>, projectManager?: Maybe<Pick<Employee, 'firstName'>> }
   )>>> };
 
 export type GetProjectByIdQueryVariables = Exact<{
@@ -924,12 +964,12 @@ export type GetProjectByIdQuery = { getProjectById?: Maybe<(
     )>, slot?: Maybe<Pick<Slot, 'startDate' | 'endDate'>>, projectManager?: Maybe<Pick<Employee, 'firstName'>> }
   )> };
 
-export type GetProjectsByRequestorQueryVariables = Exact<{
+export type ProjectsByRequestorQueryVariables = Exact<{
   id: Scalars['BigInteger'];
 }>;
 
 
-export type GetProjectsByRequestorQuery = { projectsByRequestor?: Maybe<Array<Maybe<(
+export type ProjectsByRequestorQuery = { projectsByRequestor?: Maybe<Array<Maybe<(
     Pick<Project, 'createdAt' | 'projectName' | 'businessUnit' | 'status' | 'id'>
     & { resourcerequest?: Maybe<(
       Pick<ResourceRequest, 'skillSet'>
@@ -946,7 +986,7 @@ export type ProjectsByResourceQuery = { projectsByResource?: Maybe<Array<Maybe<(
     Pick<Project, 'createdAt' | 'projectName' | 'businessUnit' | 'status' | 'id'>
     & { resourcerequest?: Maybe<(
       Pick<ResourceRequest, 'skillSet'>
-      & { resource?: Maybe<Pick<SharedResource, 'firstName' | 'employeeId'>> }
+      & { resource?: Maybe<Pick<SharedResource, 'firstName'>> }
     )>, slot?: Maybe<Pick<Slot, 'startDate' | 'endDate'>>, projectManager?: Maybe<Pick<Employee, 'firstName'>> }
   )>>> };
 
@@ -964,6 +1004,30 @@ export type CompleteProjectMutationVariables = Exact<{
 
 
 export type CompleteProjectMutation = { completeProject?: Maybe<Pick<Project, 'id' | 'status'>> };
+
+export type ExtendProjectMutationVariables = Exact<{
+  projectExtension: ProjectExtensionInput;
+}>;
+
+
+export type ExtendProjectMutation = { extendProject?: Maybe<Pick<Project, 'id'>> };
+
+export type UpdateProjectExtensionMutationVariables = Exact<{
+  projectExtension: ProjectExtensionInput;
+}>;
+
+
+export type UpdateProjectExtensionMutation = { updateProjectExtension?: Maybe<(
+    Pick<Project, 'id' | 'status'>
+    & { slot?: Maybe<Pick<Slot, 'endDate'>> }
+  )> };
+
+export type GetProjectExtensionByProjectIdQueryVariables = Exact<{
+  projectId: Scalars['BigInteger'];
+}>;
+
+
+export type GetProjectExtensionByProjectIdQuery = { getProjectExtensionByProjectId?: Maybe<Array<Maybe<Pick<ProjectExtension, 'id' | 'extendedDate' | 'reasonForExtension' | 'status'>>>> };
 
 export type GetResourceRequestsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1903,7 +1967,6 @@ export const GetProjectsDocument = gql`
     resourcerequest {
       resource {
         firstName
-        employeeId
       }
     }
     slot {
@@ -2000,8 +2063,8 @@ export function useGetProjectByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetProjectByIdQueryHookResult = ReturnType<typeof useGetProjectByIdQuery>;
 export type GetProjectByIdLazyQueryHookResult = ReturnType<typeof useGetProjectByIdLazyQuery>;
 export type GetProjectByIdQueryResult = Apollo.QueryResult<GetProjectByIdQuery, GetProjectByIdQueryVariables>;
-export const GetProjectsByRequestorDocument = gql`
-    query getProjectsByRequestor($id: BigInteger!) {
+export const ProjectsByRequestorDocument = gql`
+    query projectsByRequestor($id: BigInteger!) {
   projectsByRequestor(id: $id) {
     createdAt
     resourcerequest {
@@ -2026,32 +2089,32 @@ export const GetProjectsByRequestorDocument = gql`
     `;
 
 /**
- * __useGetProjectsByRequestorQuery__
+ * __useProjectsByRequestorQuery__
  *
- * To run a query within a React component, call `useGetProjectsByRequestorQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetProjectsByRequestorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useProjectsByRequestorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectsByRequestorQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetProjectsByRequestorQuery({
+ * const { data, loading, error } = useProjectsByRequestorQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetProjectsByRequestorQuery(baseOptions: Apollo.QueryHookOptions<GetProjectsByRequestorQuery, GetProjectsByRequestorQueryVariables>) {
+export function useProjectsByRequestorQuery(baseOptions: Apollo.QueryHookOptions<ProjectsByRequestorQuery, ProjectsByRequestorQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectsByRequestorQuery, GetProjectsByRequestorQueryVariables>(GetProjectsByRequestorDocument, options);
+        return Apollo.useQuery<ProjectsByRequestorQuery, ProjectsByRequestorQueryVariables>(ProjectsByRequestorDocument, options);
       }
-export function useGetProjectsByRequestorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsByRequestorQuery, GetProjectsByRequestorQueryVariables>) {
+export function useProjectsByRequestorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectsByRequestorQuery, ProjectsByRequestorQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectsByRequestorQuery, GetProjectsByRequestorQueryVariables>(GetProjectsByRequestorDocument, options);
+          return Apollo.useLazyQuery<ProjectsByRequestorQuery, ProjectsByRequestorQueryVariables>(ProjectsByRequestorDocument, options);
         }
-export type GetProjectsByRequestorQueryHookResult = ReturnType<typeof useGetProjectsByRequestorQuery>;
-export type GetProjectsByRequestorLazyQueryHookResult = ReturnType<typeof useGetProjectsByRequestorLazyQuery>;
-export type GetProjectsByRequestorQueryResult = Apollo.QueryResult<GetProjectsByRequestorQuery, GetProjectsByRequestorQueryVariables>;
+export type ProjectsByRequestorQueryHookResult = ReturnType<typeof useProjectsByRequestorQuery>;
+export type ProjectsByRequestorLazyQueryHookResult = ReturnType<typeof useProjectsByRequestorLazyQuery>;
+export type ProjectsByRequestorQueryResult = Apollo.QueryResult<ProjectsByRequestorQuery, ProjectsByRequestorQueryVariables>;
 export const ProjectsByResourceDocument = gql`
     query projectsByResource($id: BigInteger!) {
   projectsByResource(id: $id) {
@@ -2059,7 +2122,6 @@ export const ProjectsByResourceDocument = gql`
     resourcerequest {
       resource {
         firstName
-        employeeId
       }
       skillSet
     }
@@ -2173,6 +2235,114 @@ export function useCompleteProjectMutation(baseOptions?: Apollo.MutationHookOpti
 export type CompleteProjectMutationHookResult = ReturnType<typeof useCompleteProjectMutation>;
 export type CompleteProjectMutationResult = Apollo.MutationResult<CompleteProjectMutation>;
 export type CompleteProjectMutationOptions = Apollo.BaseMutationOptions<CompleteProjectMutation, CompleteProjectMutationVariables>;
+export const ExtendProjectDocument = gql`
+    mutation extendProject($projectExtension: ProjectExtensionInput!) {
+  extendProject(projectExtension: $projectExtension) {
+    id
+  }
+}
+    `;
+export type ExtendProjectMutationFn = Apollo.MutationFunction<ExtendProjectMutation, ExtendProjectMutationVariables>;
+
+/**
+ * __useExtendProjectMutation__
+ *
+ * To run a mutation, you first call `useExtendProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExtendProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [extendProjectMutation, { data, loading, error }] = useExtendProjectMutation({
+ *   variables: {
+ *      projectExtension: // value for 'projectExtension'
+ *   },
+ * });
+ */
+export function useExtendProjectMutation(baseOptions?: Apollo.MutationHookOptions<ExtendProjectMutation, ExtendProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ExtendProjectMutation, ExtendProjectMutationVariables>(ExtendProjectDocument, options);
+      }
+export type ExtendProjectMutationHookResult = ReturnType<typeof useExtendProjectMutation>;
+export type ExtendProjectMutationResult = Apollo.MutationResult<ExtendProjectMutation>;
+export type ExtendProjectMutationOptions = Apollo.BaseMutationOptions<ExtendProjectMutation, ExtendProjectMutationVariables>;
+export const UpdateProjectExtensionDocument = gql`
+    mutation updateProjectExtension($projectExtension: ProjectExtensionInput!) {
+  updateProjectExtension(projectExtension: $projectExtension) {
+    id
+    status
+    slot {
+      endDate
+    }
+  }
+}
+    `;
+export type UpdateProjectExtensionMutationFn = Apollo.MutationFunction<UpdateProjectExtensionMutation, UpdateProjectExtensionMutationVariables>;
+
+/**
+ * __useUpdateProjectExtensionMutation__
+ *
+ * To run a mutation, you first call `useUpdateProjectExtensionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProjectExtensionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProjectExtensionMutation, { data, loading, error }] = useUpdateProjectExtensionMutation({
+ *   variables: {
+ *      projectExtension: // value for 'projectExtension'
+ *   },
+ * });
+ */
+export function useUpdateProjectExtensionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProjectExtensionMutation, UpdateProjectExtensionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProjectExtensionMutation, UpdateProjectExtensionMutationVariables>(UpdateProjectExtensionDocument, options);
+      }
+export type UpdateProjectExtensionMutationHookResult = ReturnType<typeof useUpdateProjectExtensionMutation>;
+export type UpdateProjectExtensionMutationResult = Apollo.MutationResult<UpdateProjectExtensionMutation>;
+export type UpdateProjectExtensionMutationOptions = Apollo.BaseMutationOptions<UpdateProjectExtensionMutation, UpdateProjectExtensionMutationVariables>;
+export const GetProjectExtensionByProjectIdDocument = gql`
+    query getProjectExtensionByProjectId($projectId: BigInteger!) {
+  getProjectExtensionByProjectId(projectId: $projectId) {
+    id
+    extendedDate
+    reasonForExtension
+    status
+  }
+}
+    `;
+
+/**
+ * __useGetProjectExtensionByProjectIdQuery__
+ *
+ * To run a query within a React component, call `useGetProjectExtensionByProjectIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectExtensionByProjectIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectExtensionByProjectIdQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectExtensionByProjectIdQuery(baseOptions: Apollo.QueryHookOptions<GetProjectExtensionByProjectIdQuery, GetProjectExtensionByProjectIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectExtensionByProjectIdQuery, GetProjectExtensionByProjectIdQueryVariables>(GetProjectExtensionByProjectIdDocument, options);
+      }
+export function useGetProjectExtensionByProjectIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectExtensionByProjectIdQuery, GetProjectExtensionByProjectIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectExtensionByProjectIdQuery, GetProjectExtensionByProjectIdQueryVariables>(GetProjectExtensionByProjectIdDocument, options);
+        }
+export type GetProjectExtensionByProjectIdQueryHookResult = ReturnType<typeof useGetProjectExtensionByProjectIdQuery>;
+export type GetProjectExtensionByProjectIdLazyQueryHookResult = ReturnType<typeof useGetProjectExtensionByProjectIdLazyQuery>;
+export type GetProjectExtensionByProjectIdQueryResult = Apollo.QueryResult<GetProjectExtensionByProjectIdQuery, GetProjectExtensionByProjectIdQueryVariables>;
 export const GetResourceRequestsDocument = gql`
     query getResourceRequests {
   sharedResourceRequest {

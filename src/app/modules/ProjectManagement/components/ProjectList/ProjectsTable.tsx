@@ -1,7 +1,13 @@
 import ContextMenu from '@app/components/ContextMenu/ContextMenu';
 import { CHIPTYPE } from '@app/constants';
 import { useAuth } from '@app/context';
-import { ProjectStatus, RoleType, useGetProjectsQuery, useGetProjectsByRequestorQuery, useProjectsByResourceQuery } from '@app/models';
+import {
+  ProjectStatus,
+  RoleType,
+  useGetProjectsQuery,
+  useProjectsByRequestorQuery,
+  useProjectsByResourceQuery,
+} from '@app/models';
 import Chip from '@mui/material/Chip';
 import MUIDataTable from 'mui-datatables';
 import { default as React, useState } from 'react';
@@ -25,17 +31,18 @@ export const ProjectsTable = () => {
             businessUnit: s?.businessUnit,
             resource: s?.resourcerequest?.resource?.firstName,
             projectManager: s?.projectManager?.firstName,
-            startDate: s?.slot?.startDate,
-            endDate: s?.slot?.endDate,
+            startDate: new Date(s?.slot?.startDate).toLocaleDateString(),
+            endDate: new Date(s?.slot?.endDate).toLocaleDateString(),
             status: s?.status,
           };
         })
       );
     },
   });
-  useGetProjectsByRequestorQuery({
+  useProjectsByRequestorQuery({
     fetchPolicy: 'network-only',
     skip: !auth?.getRoles()?.includes(RoleType.Requestor),
+    notifyOnNetworkStatusChange: true,
     variables: { id: auth?.getEmployeeId() },
     onCompleted: (data) => {
       setRows(
@@ -46,8 +53,8 @@ export const ProjectsTable = () => {
             businessUnit: s?.businessUnit,
             resource: s?.resourcerequest?.resource?.firstName,
             projectManager: s?.projectManager?.firstName,
-            startDate: s?.slot?.startDate,
-            endDate: s?.slot?.endDate,
+            startDate: new Date(s?.slot?.startDate).toLocaleDateString(),
+            endDate: new Date(s?.slot?.endDate).toLocaleDateString(),
             status: s?.status,
           };
         })
@@ -68,8 +75,8 @@ export const ProjectsTable = () => {
             businessUnit: s?.businessUnit,
             resource: s?.resourcerequest?.resource?.firstName,
             projectManager: s?.projectManager?.firstName,
-            startDate: s?.slot?.startDate,
-            endDate: s?.slot?.endDate,
+            startDate: new Date(s?.slot?.startDate).toLocaleDateString(),
+            endDate: new Date(s?.slot?.endDate).toLocaleDateString(),
             status: s?.status,
           };
         })
@@ -150,12 +157,7 @@ export const ProjectsTable = () => {
         filter: true,
         sort: true,
         customBodyRender: (value) => {
-          return (
-            <Chip
-              label={value}
-              color={resolveChipColor(value)}
-            />
-          );
+          return <Chip label={value} color={resolveChipColor(value)} />;
         },
       },
     },

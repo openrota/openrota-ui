@@ -3,7 +3,6 @@ query getProjects {
     resourcerequest {
       resource {
         firstName
-        employeeId
       }
     }
     slot {
@@ -43,7 +42,7 @@ query getProjectById($id: BigInteger!) {
     id
   }
 }
-query getProjectsByRequestor($id: BigInteger!) {
+query projectsByRequestor($id: BigInteger!) {
   projectsByRequestor(id: $id) {
     createdAt
     resourcerequest {
@@ -72,7 +71,6 @@ query projectsByResource($id: BigInteger!) {
     resourcerequest {
       resource {
         firstName
-        employeeId
       }
       skillSet
     }
@@ -96,9 +94,34 @@ mutation createProject($project: ProjectInput!) {
   }
 }
 
-mutation completeProject ($projectId: BigInteger!, $comments: String!) {
+mutation completeProject($projectId: BigInteger!, $comments: String!) {
   completeProject(projectId: $projectId, comments: $comments) {
     id
-    status    
+    status
+  }
+}
+
+mutation extendProject($projectExtension: ProjectExtensionInput!) {
+  extendProject(projectExtension: $projectExtension) {
+    id
+  }
+}
+
+mutation updateProjectExtension($projectExtension: ProjectExtensionInput!) {
+  updateProjectExtension(projectExtension: $projectExtension) {
+    id
+    status
+    slot {
+      endDate
+    }
+  }
+}
+
+query getProjectExtensionByProjectId($projectId: BigInteger!) {
+  getProjectExtensionByProjectId(projectId: $projectId) {
+    id
+    extendedDate
+    reasonForExtension
+    status
   }
 }
